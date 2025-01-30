@@ -11,9 +11,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-// TODO: To be reviewed and tested
+// TODO: To be reviewed
 // This class should be able to Import a file into the system
 // as well as given a JsonString, export a JSON File.
+
+//Successfully tested in main with this code
+//FileHandler handler = new FileHandler();
+//JSONObject jsonObject = handler.read("src/main/resources/inventory.json");
+//System.out.println(jsonObject.toJSONString());
 
 //Note: If ParseException catching is added,
 // when you throw ParseException it requires an int for error type
