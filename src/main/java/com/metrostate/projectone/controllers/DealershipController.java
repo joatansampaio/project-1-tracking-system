@@ -5,7 +5,9 @@ import com.metrostate.projectone.models.Vehicle;
 import com.metrostate.projectone.utils.FileHandler;
 import com.metrostate.projectone.utils.IFileHandler;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +53,8 @@ public class DealershipController implements IDealershipController {
     }
 
     @Override
-    public boolean importJsonFile(String fileName) {
+    public boolean importJsonFile(String fileName) throws IOException, ParseException {
+        //Suggest trying src/main/resources/inventory.json for testing
         JSONObject object = fileHandler.read(fileName);
         return false;
     }
