@@ -1,7 +1,56 @@
 package com.metrostate.projectone;
 
+import com.metrostate.projectone.controllers.DealershipController;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Nothing here yet.");
+        Scanner scan = new Scanner(System.in);
+        DealershipController controller = new DealershipController();
+        while(true) {
+            showMainMenu();
+            String option = scan.nextLine();
+            switch(option) {
+                case "1":
+                    listAllVehicles();
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    break;
+                case "7":
+                    break;
+                case "0":
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid option! Enter one of the available options.");
+            }
+        }
+    }
+
+    public static void showMainMenu() {
+        System.out.println("Tracking system v1");
+        System.out.println("-".repeat(30));
+        System.out.println("1 - List All Vehicles");
+        System.out.println("2 - List Vehicles By Dealership ID");
+        System.out.println("3 - Add Incoming Vehicle");
+        System.out.println("4 - Enable Vehicle Acquisition");
+        System.out.println("5 - Disable Vehicle Acquisition");
+        System.out.println("-".repeat(30));
+        System.out.println("6 - Import Json File");
+        System.out.println("7 - Export Dealer Vehicles To Json");
+        System.out.println("-".repeat(30));
+        System.out.println("0 - Exit");
+    }
+
+    public static void listAllVehicles() {
+
     }
 }

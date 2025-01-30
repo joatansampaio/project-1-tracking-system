@@ -8,12 +8,12 @@ public class Dealer {
 
     private String dealershipId;
     private boolean acquisitionEnabled;
-    private List<Vehicle> inventory;
+    private List<Vehicle> vehicles;
 
     public Dealer(String dealershipId) {
         this.dealershipId = dealershipId;
         this.acquisitionEnabled = true;
-        this.inventory = new ArrayList<>();
+        this.vehicles = new ArrayList<>();
     }
 
     /**
@@ -26,7 +26,7 @@ public class Dealer {
         if (!this.acquisitionEnabled) {
             return false;
         }
-        inventory.add(vehicle);
+        vehicles.add(vehicle);
         return true;
     }
 
@@ -69,11 +69,11 @@ public class Dealer {
         this.acquisitionEnabled = acquisitionEnabled;
     }
 
-    public List<Vehicle> getInventory() {
-        return inventory;
+    public List<Vehicle> getVehicles() {
+        return vehicles;
     }
 
-    public void setInventory(List<Vehicle> inventory) {
-        this.inventory = inventory;
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 }
