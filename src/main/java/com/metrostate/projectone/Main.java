@@ -1,13 +1,22 @@
 package com.metrostate.projectone;
 
+//Intra-project imports
 import com.metrostate.projectone.controllers.DealershipController;
+import com.metrostate.projectone.utils.FileHandler;
 
+//Maven json-simple dependency imports
+import org.json.simple.JSONObject;
+
+//Java API imports
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         DealershipController controller = new DealershipController();
+        JSONObject jsonObject = null;
+
         while(true) {
             showMainMenu();
             String option = scan.nextLine();
@@ -24,6 +33,17 @@ public class Main {
                 case "5":
                     break;
                 case "6":
+                    FileHandler handler = new FileHandler();
+                    //src/main/resources/inventory.json is the initial inventory file to load
+                    jsonObject = handler.read("src/main/resources/inventory.json");
+                    if (jsonObject != null){
+                        System.out.println("Inventory file loaded");
+                    } else {
+                        throw new IOException("Error loading file");
+                    }
+
+                    //To print out all the json for testing
+                    //System.out.println(jsonObject.toJSONString());
                     break;
                 case "7":
                     break;
