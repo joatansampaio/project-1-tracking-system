@@ -8,6 +8,11 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public interface IFileHandler {
+    /**
+     * @param fileName The name of the json formatted file to be loaded.
+     * @return JSONObject of the file if it loaded properly, null if the json file did not load properly.
+     */
     JSONObject read(String fileName) throws IOException, ParseException;
+
     void write(JSONObject jsonObject);
 }

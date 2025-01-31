@@ -15,6 +15,7 @@ import java.io.Reader;
 // This class should be able to Import a file into the system
 // as well as given a JsonString, export a JSON File.
 
+
 //Successfully tested in main with this code
 //FileHandler handler = new FileHandler();
 //JSONObject jsonObject = handler.read("src/main/resources/inventory.json");
@@ -32,6 +33,11 @@ public class FileHandler implements IFileHandler {
 
     // We'll use the resources folder, and the fileName will always be a valid
     // json filename in main>resources
+
+    /**
+     * @param fileName The name of the json formatted file to be loaded.
+     * @return JSONObject of the file if it loaded properly, null if the json file did not load properly.
+     */
     @Override
     public JSONObject read(String fileName) throws IOException {
 
