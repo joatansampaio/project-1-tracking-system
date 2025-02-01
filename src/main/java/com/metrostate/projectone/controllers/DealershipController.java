@@ -5,6 +5,7 @@ import com.metrostate.projectone.models.Vehicle;
 import com.metrostate.projectone.utils.FileHandler;
 import com.metrostate.projectone.utils.IFileHandler;
 import com.metrostate.projectone.utils.JsonHelper;
+import com.metrostate.projectone.utils.Printer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -31,9 +32,18 @@ public class DealershipController implements IDealershipController {
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 * @param dealershipId The Dealer ID
+	 * @return A list of vehicles for the given dealership ID or null if not found.
+	 */
 	@Override
 	public List<Vehicle> getVehiclesByDealershipId(String dealershipId) {
-		return List.of();
+		Dealer dealer = findDealerById(dealershipId);
+		if (dealer == null) {
+			Printer.println("Dealership ID not found.", Printer.Color.RED);
+			return null;
+		}
+		return dealer.getVehicles();
 	}
 
 	@Override
@@ -53,7 +63,7 @@ public class DealershipController implements IDealershipController {
 
 	@Override
 	public boolean disableAcquisition(String dealershipId) {
-		Dealer dealer = findDealer(dealershipId);
+		Dealer dealer = findDealerById(dealershipId);
 		if (dealer == null) {
 			return false;
 		}
@@ -129,27 +139,39 @@ public class DealershipController implements IDealershipController {
 			Long acquisitionDate = JsonHelper.getLong(item, "acquisition_date");
 
 			if (dealershipId == null || vehicleId == null) {
-				System.err.println("Vehicle ID & Dealership ID can't be null, skipping record...");
+				Printer.println("Vehicle ID & Dealership ID can't be null, skipping record...", Printer.Color.RED);
 				continue;
 			}
 
-			Dealer existingDealer = findDealer(dealershipId);
+			Dealer existingDealer = findDealerById(dealershipId);
 
 			if (existingDealer != null) {
-				if (!existingDealer.addVehicle(
-						new Vehicle(vehicleId, vehicleManufacturer, vehicleModel, acquisitionDate, vehiclePrice, dealershipId, vehicleType))) {
-					System.err.println("Error: Dealership is disabled for acquisition. Vehicle ID: " + vehicleId + " will not be added.");
+				if (!existingDealer.addVehicle(new Vehicle(
+						vehicleId,
+						vehicleManufacturer,
+						vehicleModel,
+						acquisitionDate,
+						vehiclePrice,
+						dealershipId,
+						vehicleType))) {
+					Printer.println("Error: Dealership is disabled for acquisition. Vehicle ID: " + vehicleId + " will not be added.", Printer.Color.RED);
 				}
 			} else {
 				Dealer newDealer = new Dealer(dealershipId);
-				newDealer.addVehicle(
-						new Vehicle(vehicleId, vehicleManufacturer, vehicleModel, acquisitionDate, vehiclePrice, dealershipId, vehicleType));
+				newDealer.addVehicle(new Vehicle(
+						vehicleId,
+						vehicleManufacturer,
+						vehicleModel,
+						acquisitionDate,
+						vehiclePrice,
+						dealershipId,
+						vehicleType));
 				dealers.add(newDealer);
 			}
 		}
 	}
 
-	public Dealer findDealer(String dealershipId) {
+	public Dealer findDealerById(String dealershipId) {
 		Dealer dealer = null;
 		for (Dealer d : dealers) {
 			if (d.getDealershipId().equals(dealershipId)) {
