@@ -2,6 +2,7 @@ package com.metrostate.projectone.utils;
 
 
 //Maven json-simple dependency imports
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.FileWriter;
 
 // TODO: To be reviewed
 // This class should be able to Import a file into the system
@@ -40,12 +42,10 @@ public class FileHandler implements IFileHandler {
      */
     @Override
     public JSONObject read(String fileName) throws IOException {
-
-
         try {
             JSONParser parser = new JSONParser();
 
-            //Path for file might be wrong - suggest trying src/main/resources/inventory.json
+            // Correct path for the main inventory  file should be src/main/resources/inventory.json
             reader = new FileReader(fileName);
             Object jsonObj = parser.parse(reader);
             reader.close();
@@ -54,12 +54,37 @@ public class FileHandler implements IFileHandler {
             reader.close();
             return null;
         }
-
+    }
+    
+    // Write the inventory from a single dealership to json file in main>resources
+    @Override
+    public boolean writeDealerToJson(JSONArray jsonArray, String dealershipId) {
+        try {
+            String outputFile = "src/main/resources/" + dealershipId + ".json";
+            FileWriter file = new FileWriter(outputFile);
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            file.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    // Write the json file to main>resources
-    @Override
-    public void write(JSONObject jsonObject) {
-
+    // Write a single vehicle to json file in main>resources
+    //Not needed, is overcoding, could flood folder with files for a large company. That is bad!
+    public boolean writeVehicleToJson(JSONObject jsonFormatVehicle, String dealerShipId, String vehicleId) {
+        try {
+            String outputFile = "src/main/resources/" + dealerShipId + "-" + vehicleId + ".json";
+            FileWriter file = new FileWriter(outputFile);
+            file.write(jsonFormatVehicle.toJSONString());
+            file.flush();
+            file.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

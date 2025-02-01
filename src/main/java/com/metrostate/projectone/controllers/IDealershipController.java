@@ -15,4 +15,5 @@ public interface IDealershipController {
     boolean disableAcquisition(String dealershipId);
     boolean importJsonFile(String fileName) throws ParseException, IOException;
     boolean exportVehiclesToJson(String dealershipId);
+    boolean exportDealerToJson(String dealershipId);
 }

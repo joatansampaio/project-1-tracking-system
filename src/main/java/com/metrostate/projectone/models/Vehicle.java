@@ -1,5 +1,7 @@
 package com.metrostate.projectone.models;
 
+import org.json.simple.JSONObject;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -107,5 +109,26 @@ public class Vehicle {
 				"Manufacturer: " + getManufacturer() + " Model: " + getModel() + "\tType: " + getType() + "\n" +
 				"Price: " + (price == null ? "Unknown" : price) + "\n" +
 				"Acquisition Date: " + getFormattedAcquisitionDate() + "\n";
+	}
+
+	//To suppress warning about type safety because "JSONObject extends HashMap but doesn’t support Generics." as per
+	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
+	@SuppressWarnings("unchecked")
+    public JSONObject getJSONFormat() {
+
+			//https://stackoverflow.com/questions/30458975/content-of-collection-never-updated-warning-in-intellij-idea
+            @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") JSONObject jsonVehicle = new JSONObject();
+            jsonVehicle.put("dealership_id", (this.getDealershipId()));
+			jsonVehicle.put("vehicle_type", (this.getType()));
+			jsonVehicle.put("vehicle_manufacturer", (this.getManufacturer()));
+			jsonVehicle.put("vehicle_model", (this.getModel()));
+			jsonVehicle.put("vehicle_id", (this.getVehicleId()));
+			jsonVehicle.put("price", (this.getPrice()));
+			jsonVehicle.put("acquisition_date", (this.getAcquisitionDate()));
+			return jsonVehicle;
+
+
+
+
 	}
 }

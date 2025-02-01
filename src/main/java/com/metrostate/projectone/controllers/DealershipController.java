@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,10 +76,46 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
+	//To suppress warning about type safety because "JSONObject extends HashMap but doesn’t support Generics." as per
+	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
+	//@SuppressWarnings("unchecked")
 	@Override
 	public boolean exportVehiclesToJson(String dealershipId) {
 		List<Vehicle> dealershipVehicles = getVehiclesByDealershipId(dealershipId);
+
+		for (Vehicle vehicle : dealershipVehicles) {
+			JSONObject jsonFormatVehicle = vehicle.getJSONFormat();
+			fileHandler.writeVehicleToJson(jsonFormatVehicle, vehicle.getDealershipId(), vehicle.getVehicleId());
+		}
+
 		return false;
+	}
+	//TODO: Needs review and testing after getVehiclesByDealershipId() gets implemented
+	//To suppress warning about type safety because "JSONObject extends HashMap but doesn’t support Generics." as per
+	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean exportDealerToJson(String dealershipId) {
+		List<Vehicle> dealershipVehicles = getVehiclesByDealershipId(dealershipId);
+
+		List output = new LinkedList();
+		output.add("car_inventory");
+
+		//https://stackoverflow.com/questions/30458975/content-of-collection-never-updated-warning-in-intellij-idea
+		@SuppressWarnings("MismatchedQueryAndUpdateOfCollection") JSONArray jsonOutArray = new JSONArray();
+
+		for (Vehicle vehicle : dealershipVehicles) {
+			JSONObject jsonFormatVehicle = vehicle.getJSONFormat();
+			jsonOutArray.add(jsonFormatVehicle);
+		}
+
+		if (fileHandler.writeDealerToJson(jsonOutArray, dealershipId) == true){
+			return true;
+		} else{
+			return false;
+		}
+
+
 	}
 
 	private void HandleInventoryObject(JSONArray inventory) {

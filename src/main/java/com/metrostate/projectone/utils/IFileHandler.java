@@ -1,6 +1,7 @@
 package com.metrostate.projectone.utils;
 
 //Maven json-simple dependency imports
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -14,5 +15,9 @@ public interface IFileHandler {
      */
     JSONObject read(String fileName) throws IOException, ParseException;
 
-    void write(JSONObject jsonObject);
+    //Write a single vehicle to file (Used for exporting vehicles from the dealer to json) - not part of grading
+    //See exportVehiclesToJson() in DealershipController
+    boolean writeVehicleToJson(JSONObject jsonFormatVehicle, String dealerShipId, String vehicleId);
+
+    boolean writeDealerToJson(JSONArray jsonArray, String dealershipId);
 }

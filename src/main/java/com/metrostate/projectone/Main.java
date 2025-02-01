@@ -8,7 +8,7 @@ import com.metrostate.projectone.utils.Printer;
 
 //Java API imports
 import java.io.File;
-import java.io.IOException;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +18,7 @@ public class Main {
 	static Scanner scan = new Scanner(System.in);
 	static DealershipController controller = new DealershipController();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 
 		while (true) {
 			showMainMenu();
@@ -41,6 +41,7 @@ public class Main {
 					importFile();
 					break;
 				case "7":
+					handleDealerExport();
 					break;
 				case "0":
 					System.exit(0);
@@ -51,6 +52,9 @@ public class Main {
 		}
 	}
 
+
+
+	//Todo: Reorder menu methods in their menu order when presented to user
 	public static void showMainMenu() {
 		Printer.println("Tracking system v1");
 		Printer.println("-".repeat(30), Printer.Color.BLUE, false);
@@ -120,6 +124,16 @@ public class Main {
 		}
 		scan.nextLine();
 	}
+	private static void handleDealerExport() {
+		//  Not working yet: TODO: Test with exportDealerToJson() after getVehiclesByDealershipId() is implemented
+		// supply String dealershipID to this method: controller.exportDealerToJson();
+
+		System.out.println("Exporting Dealer Vehicles To Json");
+		// for testing -
+		//controller.exportDealerToJson("12513");
+	}
+
+
 
 	private static void handleDealerAcquisition(boolean isEnable) {
 		Printer.print("Enter Dealership ID: ");
