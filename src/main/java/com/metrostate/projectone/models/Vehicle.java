@@ -62,6 +62,10 @@ public class Vehicle {
 		return acquisitionDate;
 	}
 
+	public Long getAcquisitionDateEpochMilli() {
+		return acquisitionDate.toEpochMilli();
+	}
+
 	public void setAcquisitionDate(Instant acquisitionDate) {
 		this.acquisitionDate = acquisitionDate;
 	}
@@ -115,7 +119,6 @@ public class Vehicle {
 	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
 	@SuppressWarnings("unchecked")
     public JSONObject getJSONFormat() {
-
 			//https://stackoverflow.com/questions/30458975/content-of-collection-never-updated-warning-in-intellij-idea
             @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") JSONObject jsonVehicle = new JSONObject();
             jsonVehicle.put("dealership_id", (this.getDealershipId()));
@@ -124,11 +127,7 @@ public class Vehicle {
 			jsonVehicle.put("vehicle_model", (this.getModel()));
 			jsonVehicle.put("vehicle_id", (this.getVehicleId()));
 			jsonVehicle.put("price", (this.getPrice()));
-			jsonVehicle.put("acquisition_date", (this.getAcquisitionDate()));
+			jsonVehicle.put("acquisition_date", (this.getAcquisitionDateEpochMilli()));
 			return jsonVehicle;
-
-
-
-
 	}
 }

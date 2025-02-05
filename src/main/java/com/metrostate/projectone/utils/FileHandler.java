@@ -63,7 +63,7 @@ public class FileHandler implements IFileHandler {
         try {
             String outputFile = "src/main/resources/" + dealershipId + ".json";
             FileWriter file = new FileWriter(outputFile);
-            file.write(JSONValue.toJSONString(jsonObj));
+            file.write(JsonHelper.prettify(jsonObj.toJSONString()));
             file.flush();
             file.close();
             return true;
