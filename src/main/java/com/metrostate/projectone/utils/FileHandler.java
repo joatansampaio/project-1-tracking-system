@@ -4,6 +4,7 @@ package com.metrostate.projectone.utils;
 //Maven json-simple dependency imports
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -58,11 +59,11 @@ public class FileHandler implements IFileHandler {
     
     // Write the inventory from a single dealership to json file in main>resources
     @Override
-    public boolean writeDealerToJson(JSONArray jsonArray, String dealershipId) {
+    public boolean writeDealerToJson(JSONObject jsonObj, String dealershipId) {
         try {
             String outputFile = "src/main/resources/" + dealershipId + ".json";
             FileWriter file = new FileWriter(outputFile);
-            file.write(jsonArray.toJSONString());
+            file.write(JSONValue.toJSONString(jsonObj));
             file.flush();
             file.close();
             return true;

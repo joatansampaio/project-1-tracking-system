@@ -130,7 +130,7 @@ public class Main {
 
 		System.out.println("Exporting Dealer Vehicles To Json");
 		// for testing -
-		//controller.exportDealerToJson("12513");
+		controller.exportDealerToJson("12513");
 	}
 
 

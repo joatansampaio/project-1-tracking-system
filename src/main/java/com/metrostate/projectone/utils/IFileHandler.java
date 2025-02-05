@@ -19,5 +19,5 @@ public interface IFileHandler {
     //See exportVehiclesToJson() in DealershipController
     boolean writeVehicleToJson(JSONObject jsonFormatVehicle, String dealerShipId, String vehicleId);
 
-    boolean writeDealerToJson(JSONArray jsonArray, String dealershipId);
+    boolean writeDealerToJson(JSONObject jsonObj, String dealershipId);
 }

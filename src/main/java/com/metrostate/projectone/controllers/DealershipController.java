@@ -11,9 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DealershipController implements IDealershipController {
@@ -108,18 +106,20 @@ public class DealershipController implements IDealershipController {
 	public boolean exportDealerToJson(String dealershipId) {
 		List<Vehicle> dealershipVehicles = getVehiclesByDealershipId(dealershipId);
 
-		List output = new LinkedList();
-		output.add("car_inventory");
+		JSONObject outputObj = new JSONObject();
+
 
 		//https://stackoverflow.com/questions/30458975/content-of-collection-never-updated-warning-in-intellij-idea
 		@SuppressWarnings("MismatchedQueryAndUpdateOfCollection") JSONArray jsonOutArray = new JSONArray();
 
 		for (Vehicle vehicle : dealershipVehicles) {
-			JSONObject jsonFormatVehicle = vehicle.getJSONFormat();
-			jsonOutArray.add(jsonFormatVehicle);
+			JSONObject vehicleObj = new JSONObject();
+			vehicleObj = vehicle.getJSONFormat();
+			jsonOutArray.add(vehicleObj);
 		}
+		outputObj.put("car_inventory", jsonOutArray);
 
-		if (fileHandler.writeDealerToJson(jsonOutArray, dealershipId) == true){
+		if (fileHandler.writeDealerToJson(outputObj, dealershipId) == true){
 			return true;
 		} else{
 			return false;
