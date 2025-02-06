@@ -3,6 +3,7 @@ package com.metrostate.projectone;
 //Intra-project imports
 
 import com.metrostate.projectone.controllers.DealershipController;
+import com.metrostate.projectone.models.Dealer;
 import com.metrostate.projectone.models.Vehicle;
 import com.metrostate.projectone.utils.Printer;
 
@@ -128,9 +129,17 @@ public class Main {
 		//  Not working yet: TODO: Test with exportDealerToJson() after getVehiclesByDealershipId() is implemented
 		// supply String dealershipID to this method: controller.exportDealerToJson();
 
-		System.out.println("Exporting Dealer Vehicles To Json");
-		// for testing -
-		controller.exportDealerToJson("12513");
+		Printer.println("Enter the dealership ID for the dealer that you want to export:");
+		String dealershipId = scan.next();
+		Dealer dealer = controller.findDealerById(dealershipId);
+		if(dealer != null){
+			controller.exportDealerToJson(dealershipId);
+			Printer.println("Dealer " + dealershipId + " successfully exported to JSON");
+		}
+		else{
+			Printer.println("Dealership ID not found.");
+		}
+		scan.nextLine();
 	}
 
 
@@ -138,15 +147,21 @@ public class Main {
 	private static void handleDealerAcquisition(boolean isEnable) {
 		Printer.print("Enter Dealership ID: ");
 		String dealershipId = scan.next();
-		if (isEnable) {
-			// to be implemented
-			return;
+		Dealer dealer = controller.findDealerById(dealershipId);
+		if (dealer != null) {
+			if (isEnable) {
+				dealer.enableAcquisition();
+				Printer.println("Acquisition successfully enabled for Dealership ID: " + dealershipId);
+			}
+			else {
+				dealer.disableAcquisition();
+				Printer.println("Acquisition successfully disabled for Dealership ID: " + dealershipId);
+			}
 		}
-		if (!controller.disableAcquisition(dealershipId)) {
+		else{
 			Printer.println("Dealership ID not found.", Printer.Color.RED);
-		} else {
-			Printer.println("Acquisition successfully disabled for Dealership ID: " + dealershipId);
 		}
+
 		scan.nextLine();
 	}
 
