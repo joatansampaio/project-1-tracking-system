@@ -19,15 +19,9 @@ public class Dealer {
     /**
      * Only dealers with acquisition enabled should be able to add a vehicle.
      * @param vehicle The vehicle to add.
-     * @return true if added, false if acquisition is disabled.
-     * TODO: Check with Tim if we need to worry about duplicate ids.
      */
-    public boolean addVehicle(Vehicle vehicle) {
-        if (!this.acquisitionEnabled) {
-            return false;
-        }
+    public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
-        return true;
     }
 
     /**
@@ -44,12 +38,8 @@ public class Dealer {
         this.acquisitionEnabled = false;
     }
 
-    /**
-     * Serializes this class into a JSON String.
-     * @return a JSON String
-     */
-    public String toJsonString() {
-        return null; // Not implemented.
+    public boolean isEnabledForAcquisition() {
+        return acquisitionEnabled;
     }
 
     // Getters & Setters from here.
@@ -59,14 +49,6 @@ public class Dealer {
 
     public void setDealershipId(String dealershipId) {
         this.dealershipId = dealershipId;
-    }
-
-    public boolean getAcquisitionEnabled() {
-        return acquisitionEnabled;
-    }
-
-    public void setAcquisitionEnabled(boolean acquisitionEnabled) {
-        this.acquisitionEnabled = acquisitionEnabled;
     }
 
     public List<Vehicle> getVehicles() {

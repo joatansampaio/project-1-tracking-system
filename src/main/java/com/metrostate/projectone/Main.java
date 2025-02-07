@@ -3,15 +3,10 @@ package com.metrostate.projectone;
 //Intra-project imports
 
 import com.metrostate.projectone.controllers.DealershipController;
-import com.metrostate.projectone.models.Dealer;
-import com.metrostate.projectone.models.Vehicle;
 import com.metrostate.projectone.utils.Printer;
 
 //Java API imports
-import java.io.File;
 
-import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -42,7 +37,7 @@ public class Main {
 					importFile();
 					break;
 				case "7":
-					handleDealerExport();
+					exportDealer();
 					break;
 				case "0":
 					System.exit(0);
@@ -53,9 +48,6 @@ public class Main {
 		}
 	}
 
-
-
-	//Todo: Reorder menu methods in their menu order when presented to user
 	public static void showMainMenu() {
 		Printer.println("Tracking system v1");
 		Printer.println("-".repeat(30), Printer.Color.BLUE, false);
@@ -73,96 +65,28 @@ public class Main {
 	}
 
 	public static void listAllVehicles() {
-		List<Vehicle> vehicleList = controller.getVehicles();
-		if (vehicleList.isEmpty()) {
-			Printer.println("No vehicles registered yet.");
-			return;
-		}
-		for (Vehicle v : vehicleList) {
-			Printer.println(v.toString());
-		}
+		controller.printAllVehicles();
 	}
 
-	public static void importFile() {
-		Printer.println("\nSelect a file to import: ");
+	// TODO: [Not-required] Implement it
+	public static void listVehiclesByDealershipId() { }
 
-		File folder = new File("src/main/resources");
-		File[] jsonFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
-
-		if (jsonFiles == null || jsonFiles.length == 0) {
-			Printer.println("No JSON files were found in the resources folder.");
-			return;
-		}
-
-		int counter = 1;
-		for (File file : jsonFiles) {
-			Printer.println(counter + " - " + file.getName(), Printer.Color.YELLOW);
-			counter++;
-		}
-
-		Printer.print("Select a file number to import: ");
-		// Read the file number
-
-		int fileNumber;
-		try {
-			int option = scan.nextInt();
-			if (option <= 0 || option > jsonFiles.length) {
-				Printer.println("Invalid file number, try again...", Printer.Color.RED);
-				scan.nextLine();
-				return;
-			}
-			fileNumber = option;
-		} catch (InputMismatchException e) {
-			Printer.println("Invalid file number, try again...", Printer.Color.RED);
-			scan.nextLine();
-			return;
-		}
-
-		if (controller.importJsonFile(jsonFiles[fileNumber - 1].getName())) {
-			Printer.println("File loaded", Printer.Color.YELLOW);
-		} else {
-			Printer.println("Error loading file", Printer.Color.RED);
-		}
-		scan.nextLine();
-	}
-	private static void handleDealerExport() {
-		//  Not working yet: TODO: Test with exportDealerToJson() after getVehiclesByDealershipId() is implemented
-		// supply String dealershipID to this method: controller.exportDealerToJson();
-
-		Printer.println("Enter the dealership ID for the dealer that you want to export:");
-		String dealershipId = scan.next();
-		Dealer dealer = controller.findDealerById(dealershipId);
-		if(dealer != null){
-			controller.exportDealerToJson(dealershipId);
-			Printer.println("Dealer " + dealershipId + " successfully exported to JSON");
-		}
-		else{
-			Printer.println("Dealership ID not found.");
-		}
-		scan.nextLine();
-	}
-
-
+	// TODO: Implement it
+	public static void addIncomingVehicle(){ }
 
 	private static void handleDealerAcquisition(boolean isEnable) {
 		Printer.print("Enter Dealership ID: ");
 		String dealershipId = scan.next();
-		Dealer dealer = controller.findDealerById(dealershipId);
-		if (dealer != null) {
-			if (isEnable) {
-				dealer.enableAcquisition();
-				Printer.println("Acquisition successfully enabled for Dealership ID: " + dealershipId);
-			}
-			else {
-				dealer.disableAcquisition();
-				Printer.println("Acquisition successfully disabled for Dealership ID: " + dealershipId);
-			}
-		}
-		else{
-			Printer.println("Dealership ID not found.", Printer.Color.RED);
-		}
-
+		controller.setDealerAcquisition(isEnable, dealershipId);
 		scan.nextLine();
+	}
+
+	public static void importFile() {
+		controller.importJsonFile(scan);
+	}
+
+	private static void exportDealer() {
+		controller.exportDealerToJson(scan);
 	}
 
 	private static void waitUser() {

@@ -1,19 +1,15 @@
 package com.metrostate.projectone.controllers;
 
 import com.metrostate.projectone.models.Vehicle;
-import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Scanner;
 
 public interface IDealershipController {
-    List<Vehicle> getVehicles();
-    List<Vehicle> getVehiclesByDealershipId(String dealershipId);
-    boolean addCar(Vehicle car, String dealershipId);
-    boolean removeCar(String vehicleId, String dealershipId);
-    boolean enableAcquisition(String dealershipId);
-    boolean disableAcquisition(String dealershipId);
-    boolean importJsonFile(String fileName) throws ParseException, IOException;
-    boolean exportVehiclesToJson(String dealershipId);
-    boolean exportDealerToJson(String dealershipId);
+    void printAllVehicles();
+    void printVehiclesForDealershipId(String dealershipId);
+    void addVehicle(Vehicle car, String dealershipId);
+    void setDealerAcquisition(boolean isEnabled, String dealershipId);
+    void importJsonFile(Scanner scan);
+    void exportVehiclesToJson(Scanner scan);
+    void exportDealerToJson(Scanner scan);
 }
