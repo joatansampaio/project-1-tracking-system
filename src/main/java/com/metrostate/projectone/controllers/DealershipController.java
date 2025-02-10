@@ -36,7 +36,7 @@ public class DealershipController implements IDealershipController {
 
 	@Override
 	public void printAllVehicles() {
-		var vehicles =  db.getVehicles();
+		var vehicles = db.getVehicles();
 		if (vehicles.isEmpty()) {
 			Printer.println("No vehicles registered yet.");
 			return;
@@ -64,9 +64,10 @@ public class DealershipController implements IDealershipController {
 	}
 
 	// TODO: [Required] Implement the incoming vehicle operation
-	//  use db.AddVehicleToDealer()
+	// use db.AddVehicleToDealer()
 	@Override
 	public void addVehicle(Vehicle vehicle, String dealershipId) {
+		db.addVehicleToDealer2(vehicle, dealershipId);
 	}
 
 	@Override
@@ -91,7 +92,6 @@ public class DealershipController implements IDealershipController {
 		Printer.println("\nAvailable JSON Files: ");
 		File folder = new File("src/main/resources");
 		File[] jsonFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
-
 		if (jsonFiles == null || jsonFiles.length == 0) {
 			Printer.println("No JSON files were found in the resources folder.", Printer.Color.RED);
 			return;
@@ -134,9 +134,11 @@ public class DealershipController implements IDealershipController {
 		scan.nextLine();
 	}
 
-	//To suppress warning about type safety because "JSONObject extends HashMap but doesn’t support Generics." as per
-	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
-	//@SuppressWarnings("unchecked")
+	// To suppress warning about type safety because "JSONObject extends HashMap but
+	// doesn’t support Generics." as per
+	// reference:
+	// https://www.digitalocean.com/community/tutorials/json-simple-example
+	// @SuppressWarnings("unchecked")
 	@Override
 	public void exportVehiclesToJson(Scanner scan) {
 		var result = db.getVehiclesByDealershipId(null);
@@ -152,9 +154,12 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
-	//TODO: Needs review and testing after getVehiclesByDealershipId() gets implemented
-	//To suppress warning about type safety because "JSONObject extends HashMap but doesn’t support Generics." as per
-	//reference: https://www.digitalocean.com/community/tutorials/json-simple-example
+	// TODO: Needs review and testing after getVehiclesByDealershipId() gets
+	// implemented
+	// To suppress warning about type safety because "JSONObject extends HashMap but
+	// doesn’t support Generics." as per
+	// reference:
+	// https://www.digitalocean.com/community/tutorials/json-simple-example
 	@SuppressWarnings("unchecked")
 	@Override
 	public void exportDealerToJson(Scanner scan) {
@@ -188,6 +193,8 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
+	
+
 	private void HandleInventoryObject(JSONArray inventory) {
 		for (Object item : inventory) {
 			String dealershipId = JsonHelper.getString(item, "dealership_id");
@@ -212,32 +219,24 @@ public class DealershipController implements IDealershipController {
 
 			var getDealerResult = db.getDealerByDealershipId(dealershipId);
 			if (getDealerResult.IsSuccess()) {
-				var addVehicleResult = db.addVehicleToDealer(new Vehicle(
-						vehicleId,
-						vehicleManufacturer,
-						vehicleModel,
-						acquisitionDate,
-						vehiclePrice,
-						dealershipId,
-						vehicleType), dealershipId);
+				var addVehicleResult = db.addVehicleToDealer(new Vehicle(vehicleId, vehicleManufacturer, vehicleModel,
+						acquisitionDate, vehiclePrice, dealershipId, vehicleType), dealershipId);
 				if (!addVehicleResult.IsSuccess()) {
 					Printer.println(addVehicleResult.getErrorMessage(), Printer.Color.RED);
 				}
 			} else {
 				Dealer newDealer = new Dealer(dealershipId);
-				newDealer.addVehicle(new Vehicle(
-						vehicleId,
-						vehicleManufacturer,
-						vehicleModel,
-						acquisitionDate,
-						vehiclePrice,
-						dealershipId,
-						vehicleType));
+				newDealer.addVehicle(new Vehicle(vehicleId, vehicleManufacturer, vehicleModel, acquisitionDate,
+						vehiclePrice, dealershipId, vehicleType));
 				var addDealerResult = db.addDealer(newDealer);
 				if (!addDealerResult.IsSuccess()) {
 					Printer.println(addDealerResult.getErrorMessage(), Printer.Color.RED);
 				}
 			}
 		}
+	}
+
+	public void addVehicleToDealer(Vehicle g, String string) {
+		db.addVehicleToDealer2(g, string);
 	}
 }

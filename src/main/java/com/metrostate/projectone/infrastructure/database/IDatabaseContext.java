@@ -13,4 +13,5 @@ public interface IDatabaseContext {
     Result<Dealer> getDealerByDealershipId(String dealershipId);
     Result<Boolean> addDealer(Dealer dealer);
     Result<Boolean> addVehicleToDealer(Vehicle vehicle, String dealershipId);
+	Result<Boolean> addVehicleToDealer2(Vehicle g, String string);
 }

@@ -1,0 +1,13 @@
+{
+  "car_inventory":[
+    {
+      "price":30.0,
+      "vehicle_model":"1",
+      "vehicle_type":"sedan",
+      "dealership_id":"30",
+      "vehicle_manufacturer":"1",
+      "vehicle_id":"30",
+      "acquisition_date":1739184969
+    }
+  ]
+}

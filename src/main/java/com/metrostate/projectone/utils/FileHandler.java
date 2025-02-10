@@ -72,7 +72,7 @@ public class FileHandler implements IFileHandler {
         }
         return false;
     }
-
+  
     // Write a single vehicle to json file in main>resources
     //Not needed, is overcoding, could flood folder with files for a large company. That is bad!
     public boolean writeVehicleToJson(JSONObject jsonFormatVehicle, String dealerShipId, String vehicleId) {
@@ -88,4 +88,6 @@ public class FileHandler implements IFileHandler {
         }
         return false;
     }
+
+
 }

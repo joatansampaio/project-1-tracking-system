@@ -137,4 +137,40 @@ public class DatabaseContext implements IDatabaseContext {
         vehicles.add(vehicle);
         return new Result<Boolean>().Success();
     }
+    public Result<Boolean> addVehicleToDealer2(Vehicle vehicle, String dealershipId) {
+    	Dealer dealer;
+        if (vehicle == null) {
+            return new Result<Boolean>().Fail("Vehicle can't be null");
+        }
+        var getDealerResult = getDealerByDealershipId(dealershipId);
+        if (!getDealerResult.IsSuccess())
+        {
+        dealer = new Dealer(dealershipId);
+           dealers.add(dealer);
+        } else
+        {
+        dealer = getDealerResult.getData();
+}
+
+if (!(dealer).isEnabledForAcquisition()) {
+            return new Result<Boolean>().Fail("Dealer ID \"" + dealershipId + "\" is disabled for acquisition.");
+        }
+
+        var vehicles = dealer.getVehicles();
+        //Debug 1
+        
+        var existingVehicleWithSameId = vehicles
+            .stream()
+            .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
+            .findFirst()
+            .orElse(null);
+
+        // ID is being used already.
+        if (existingVehicleWithSameId != null) {
+            return new Result<Boolean>().Fail("Vehicle ID \"" + vehicle.getVehicleId() + "\" is already being used...");
+        }
+
+        vehicles.add(vehicle);
+        return new Result<Boolean>().Success();
+    }
 }

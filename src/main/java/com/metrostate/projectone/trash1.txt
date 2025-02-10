@@ -1,0 +1,44 @@
+		for (Object item : inventory) {
+			String dealershipId = JsonHelper.getString(item, "dealership_id");
+
+@@ -212,27 +219,15 @@ public class DealershipController implements IDealershipController {
+
+			var getDealerResult = db.getDealerByDealershipId(dealershipId);
+			if (getDealerResult.IsSuccess()) {
+				var addVehicleResult = db.addVehicleToDealer(new Vehicle(
+						vehicleId,
+						vehicleManufacturer,
+						vehicleModel,
+						acquisitionDate,
+						vehiclePrice,
+						dealershipId,
+						vehicleType), dealershipId);
+				var addVehicleResult = db.addVehicleToDealer(new Vehicle(vehicleId, vehicleManufacturer, vehicleModel,
+						acquisitionDate, vehiclePrice, dealershipId, vehicleType), dealershipId);
+				if (!addVehicleResult.IsSuccess()) {
+					Printer.println(addVehicleResult.getErrorMessage(), Printer.Color.RED);
+				}
+			} else {
+				Dealer newDealer = new Dealer(dealershipId);
+				newDealer.addVehicle(new Vehicle(
+						vehicleId,
+						vehicleManufacturer,
+						vehicleModel,
+						acquisitionDate,
+						vehiclePrice,
+						dealershipId,
+						vehicleType));
+				newDealer.addVehicle(new Vehicle(vehicleId, vehicleManufacturer, vehicleModel, acquisitionDate,
+						vehiclePrice, dealershipId, vehicleType));
+				var addDealerResult = db.addDealer(newDealer);
+				if (!addDealerResult.IsSuccess()) {
+					Printer.println(addDealerResult.getErrorMessage(), Printer.Color.RED);
+
+@@ -240,4 +235,8 @@ public class DealershipController implements IDealershipController {
+			}
+		}
+	}
+	
+	
+	trashed
+	

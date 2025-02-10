@@ -3,7 +3,14 @@ package com.metrostate.projectone;
 //Intra-project imports
 
 import com.metrostate.projectone.controllers.DealershipController;
+import com.metrostate.projectone.models.Dealer;
+import com.metrostate.projectone.models.Vehicle;
+import com.metrostate.projectone.utils.FileHandler;
 import com.metrostate.projectone.utils.Printer;
+
+import java.io.IOException;
+import java.time.Clock;
+import java.time.Instant;
 
 //Java API imports
 
@@ -26,6 +33,7 @@ public class Main {
 				case "2":
 					break;
 				case "3":
+					carEntryTool();
 					break;
 				case "4":
 					handleDealerAcquisition(true);
@@ -71,9 +79,59 @@ public class Main {
 	// TODO: [Not-required] Implement it
 	public static void listVehiclesByDealershipId() { }
 
-	// TODO: Implement it
-	public static void addIncomingVehicle(){ }
+	
+	
+	public static void carEntryTool() {
+		Printer.print("What is the make of the vehicle");
+		System.out.println();
+		String make = scan.nextLine();
+		Printer.print("What is the model of the vehicle");
+		System.out.println();
+		String model = scan.nextLine();
+		boolean validType = false;
+		String carType = "";
+		while (!validType) {
+			Printer.print("What is the car type of the vehicle (sedan, pickup)");
+			System.out.println();
+			carType = scan.nextLine();
+			validType = isValidCarType(carType);
+		}
+		Clock timer = Clock.systemUTC();
+		Instant cally = Instant.now(timer);
+		long call2 = cally.getEpochSecond();
+		Printer.print("What is the price of the vehicle");
+		System.out.println();
+		Float price = Float.parseFloat(scan.nextLine());
+		Printer.print("What is the dealer ID?");
+		System.out.println();
+		String dealID = scan.nextLine();
+		Printer.print("What is the vehicle ID?");
+		System.out.println();
+		String vehiID = scan.nextLine();
+		Vehicle newVehicle = new Vehicle(vehiID, make, model, call2, price, dealID, carType);
+		addIncomingVehicle(newVehicle, dealID);
+	}
+	
+	
+	private static void addIncomingVehicle(Vehicle g, String dealerID) {
+		controller.addVehicle(g, dealerID);
+		
+	}
+	//used for the car entry tool, sorry for not using return was running late as is
+	private static boolean isValidCarType(String carType) {
+		if (carType.equalsIgnoreCase("sedan") || carType.equalsIgnoreCase("suv") || carType.equalsIgnoreCase("pickup") || carType.equalsIgnoreCase("sports car") || carType.equalsIgnoreCase("sportscar") )
+		{
+			return true;
+			
+		} else {
+			Printer.print(
+					"Unsupported car type, reminder that the valid car types are sedan, sports car, suv and pickup \n");
+			Printer.println("invalid car type was " + carType);
+			return false;
+		}
+			
 
+	}
 	private static void handleDealerAcquisition(boolean isEnable) {
 		Printer.print("Enter Dealership ID: ");
 		String dealershipId = scan.next();
