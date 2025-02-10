@@ -67,7 +67,7 @@ public class DealershipController implements IDealershipController {
 	// use db.AddVehicleToDealer()
 	@Override
 	public void addVehicle(Vehicle vehicle, String dealershipId) {
-		db.addVehicleToDealer2(vehicle, dealershipId);
+		db.addVehicleToDealer(vehicle, dealershipId);
 	}
 
 	@Override
@@ -193,8 +193,6 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
-	
-
 	private void HandleInventoryObject(JSONArray inventory) {
 		for (Object item : inventory) {
 			String dealershipId = JsonHelper.getString(item, "dealership_id");
@@ -234,9 +232,5 @@ public class DealershipController implements IDealershipController {
 				}
 			}
 		}
-	}
-
-	public void addVehicleToDealer(Vehicle g, String string) {
-		db.addVehicleToDealer2(g, string);
 	}
 }

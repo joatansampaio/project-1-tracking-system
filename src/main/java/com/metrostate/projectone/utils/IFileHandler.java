@@ -1,7 +1,6 @@
 package com.metrostate.projectone.utils;
 
 //Maven json-simple dependency imports
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 

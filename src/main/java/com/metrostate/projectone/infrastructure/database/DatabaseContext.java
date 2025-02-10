@@ -101,28 +101,31 @@ public class DatabaseContext implements IDatabaseContext {
     /**
      * Adds a vehicle to a dealer
      * - Checks if dealer is enabled for acquisition
-     * - Checks if dealershipId exists
+     * - Checks if dealershipId exists (Adds a new one if it doesn't)
      * - Checks if vehicleId is already being used.
      * - Simple null validation
      * @param vehicle the vehicle
-     * @return adds a new vehicle or returns an error message if vehicle ID is used.
+     * @return adds a new vehicle or returns an appropriate error message.
      */
     public Result<Boolean> addVehicleToDealer(Vehicle vehicle, String dealershipId) {
+        Dealer dealer;
         if (vehicle == null) {
             return new Result<Boolean>().Fail("Vehicle can't be null");
         }
 
         var getDealerResult = getDealerByDealershipId(dealershipId);
         if (!getDealerResult.IsSuccess()) {
-            return new Result<Boolean>().Fail(getDealerResult.getErrorMessage());
+            dealer = new Dealer(dealershipId);
+            dealers.add(dealer);
+        } else {
+            dealer = getDealerResult.getData();
         }
 
-        var dealer = getDealerResult.getData();
         if (!dealer.isEnabledForAcquisition()) {
             return new Result<Boolean>().Fail("Dealer ID \"" + dealershipId + "\" is disabled for acquisition.");
         }
 
-        var vehicles = getDealerResult.getData().getVehicles();
+        var vehicles = dealer.getVehicles();
         var existingVehicleWithSameId = vehicles
             .stream()
             .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
@@ -137,6 +140,10 @@ public class DatabaseContext implements IDatabaseContext {
         vehicles.add(vehicle);
         return new Result<Boolean>().Success();
     }
+
+    /**
+     * @deprecated
+     */
     public Result<Boolean> addVehicleToDealer2(Vehicle vehicle, String dealershipId) {
     	Dealer dealer;
         if (vehicle == null) {

@@ -3,12 +3,9 @@ package com.metrostate.projectone;
 //Intra-project imports
 
 import com.metrostate.projectone.controllers.DealershipController;
-import com.metrostate.projectone.models.Dealer;
 import com.metrostate.projectone.models.Vehicle;
-import com.metrostate.projectone.utils.FileHandler;
 import com.metrostate.projectone.utils.Printer;
 
-import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 

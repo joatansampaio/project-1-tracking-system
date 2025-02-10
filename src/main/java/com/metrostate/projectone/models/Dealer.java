@@ -1,14 +1,8 @@
 
 package com.metrostate.projectone.models;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.simple.JSONObject;
-
-import com.metrostate.projectone.utils.FileHandler;
-import com.metrostate.projectone.utils.Printer;
 
 public class Dealer {
 
