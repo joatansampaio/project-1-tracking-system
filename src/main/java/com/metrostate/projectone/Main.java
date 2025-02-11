@@ -3,6 +3,7 @@ package com.metrostate.projectone;
 /*
 	Phase 1 of our implementation of an inventory system for use by a company that tracks
 	vehicle inventories across multiple dealerships.
+	Uses https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple as a Maven dependency for json format support
 
 	Implemented by (in random order chosen by the website wheel of names):
 	GitHub ID: @joatansampaio
