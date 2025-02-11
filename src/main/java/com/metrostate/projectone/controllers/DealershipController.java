@@ -34,6 +34,9 @@ public class DealershipController implements IDealershipController {
 		this.db = DatabaseContext.getInstance();
 	}
 
+	/**
+	 * Prints all vehicles in current JSON file.
+	 */
 	@Override
 	public void printAllVehicles() {
 		var vehicles = db.getVehicles();
@@ -46,6 +49,10 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
+	/**
+	 * Prints all vehicles held by a particular dealer.
+	 * @param dealershipId the dealer ID
+	 */
 	@Override
 	public void printVehiclesForDealershipId(String dealershipId) {
 		var result = db.getDealerByDealershipId(dealershipId);
@@ -65,11 +72,22 @@ public class DealershipController implements IDealershipController {
 
 	// TODO: [Required] Implement the incoming vehicle operation
 	// use db.AddVehicleToDealer()
+
+	/**
+	 * Adds a given vehicle to a given dealer.
+	 * @param vehicle The vehicle to be added
+	 * @param dealershipId The IDof the dealer to which the vehicle is added
+	 */
 	@Override
 	public void addVehicle(Vehicle vehicle, String dealershipId) {
 		db.addVehicleToDealer(vehicle, dealershipId);
 	}
 
+	/**
+	 * Sets whether a dealer can receive new vehicles
+	 * @param isEnabled whether the dealer can receive new vehicles
+	 * @param dealershipId the ID of the dealer to which isEnabled is set
+	 */
 	@Override
 	public void setDealerAcquisition(boolean isEnabled, String dealershipId) {
 		var result = db.getDealerByDealershipId(dealershipId);
@@ -87,6 +105,10 @@ public class DealershipController implements IDealershipController {
 		Printer.println("Acquisition changed successfully");
 	}
 
+	/**
+	 * Retrieves list of JSON files in src/main/resources and prompts user to choose 1 to be imported
+	 * @param scan Java scanner for user input
+	 */
 	@Override
 	public void importJsonFile(Scanner scan) {
 		Printer.println("\nAvailable JSON Files: ");
@@ -193,6 +215,10 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
+	/**
+	 * Initializes dealership information from given JSONArray
+	 * @param inventory JSON array being imported
+	 */
 	private void HandleInventoryObject(JSONArray inventory) {
 		for (Object item : inventory) {
 			String dealershipId = JsonHelper.getString(item, "dealership_id");

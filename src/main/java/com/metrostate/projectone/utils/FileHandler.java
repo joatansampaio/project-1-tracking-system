@@ -54,8 +54,13 @@ public class FileHandler implements IFileHandler {
             return null;
         }
     }
-    
-    // Write the inventory from a single dealership to json file in main>resources
+
+    /**
+     * Write the inventory from a single dealership to json file in main>resources
+     * @param jsonObj Formatted JSON information about dealer
+     * @param dealershipId The dealer's ID
+     * @return True if successfully exported, false if unsuccessful
+     */
     @Override
     public boolean writeDealerToJson(JSONObject jsonObj, String dealershipId) {
         try {
