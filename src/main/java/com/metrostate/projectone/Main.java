@@ -1,16 +1,27 @@
 package com.metrostate.projectone;
 
-//Intra-project imports
+/*
+	Phase 1 of our implementation of an inventory system for use by a company that tracks
+	vehicle inventories across multiple dealerships.
 
+	Implemented by (in random order chosen by the website wheel of names):
+	GitHub ID: @joatansampaio
+	GitHub ID: @dragostego
+	GitHub ID: @hcxmed
+	GitHub ID: @Bit2ByteGitHype
+	GitHub ID: @yoyoeyes
+
+	For the Metro State University ICS 372-02 Spring 2025 Semester taught by Timmothy Carlson
+ */
+
+//Intra-project imports
 import com.metrostate.projectone.controllers.DealershipController;
 import com.metrostate.projectone.models.Vehicle;
 import com.metrostate.projectone.utils.Printer;
 
+//Java API imports
 import java.time.Clock;
 import java.time.Instant;
-
-//Java API imports
-
 import java.util.Scanner;
 
 public class Main {
@@ -28,6 +39,7 @@ public class Main {
 					listAllVehicles();
 					break;
 				case "2":
+
 					break;
 				case "3":
 					carEntryTool();
@@ -53,6 +65,10 @@ public class Main {
 		}
 	}
 
+
+	/**
+	 * Displays a menu system in the console, could be replaced by graphical interface later
+	 */
 	public static void showMainMenu() {
 		Printer.println("Tracking system v1");
 		Printer.println("-".repeat(30), Printer.Color.BLUE, false);
@@ -69,6 +85,9 @@ public class Main {
 		Printer.print("Enter an option: ");
 	}
 
+	/**
+	 * Prints all vehicles using a method call from a DealershipController object
+	 */
 	public static void listAllVehicles() {
 		controller.printAllVehicles();
 	}
@@ -76,8 +95,10 @@ public class Main {
 	// TODO: [Not-required] Implement it
 	public static void listVehiclesByDealershipId() { }
 
-	
-	
+
+	/**
+	 * Prompts for information from the user about a vehicle to be added to the database
+	 */
 	public static void carEntryTool() {
 		Printer.print("What is the make of the vehicle");
 		System.out.println();
@@ -108,12 +129,23 @@ public class Main {
 		Vehicle newVehicle = new Vehicle(vehiID, make, model, call2, price, dealID, carType);
 		addIncomingVehicle(newVehicle, dealID);
 	}
-	
-	
+
+
+	/**
+	 * Calls to a DealershipController object to add a given vehicle to a given dealer.
+	 * @param g A vehicle object to be added to the database
+	 * @param dealerID The ID for the dealership to receive the vehicle
+	 */
 	private static void addIncomingVehicle(Vehicle g, String dealerID) {
 		controller.addVehicle(g, dealerID);
 		
 	}
+
+	/**
+	 * Checks for a valid vehicle entry type
+	 * @param carType The type of vehicle to check for validity
+	 * @return True if vehicle type is valid, false if the vehicle type is invalid
+	 */
 	//used for the car entry tool, sorry for not using return was running late as is
 	private static boolean isValidCarType(String carType) {
 		if (carType.equalsIgnoreCase("sedan") || carType.equalsIgnoreCase("suv") || carType.equalsIgnoreCase("pickup") || carType.equalsIgnoreCase("sports car") || carType.equalsIgnoreCase("sportscar") )
@@ -129,6 +161,11 @@ public class Main {
 			
 
 	}
+
+	/**
+	 * Prompts for a dealership ID to be enabled/disabled for vehicle acquisition
+	 * @param isEnable true will enable vehicle acquisition, false will disable vehicle acquisition for the given dealership ID
+	 */
 	private static void handleDealerAcquisition(boolean isEnable) {
 		Printer.print("Enter Dealership ID: ");
 		String dealershipId = scan.next();
@@ -136,14 +173,23 @@ public class Main {
 		scan.nextLine();
 	}
 
+	/**
+	 * Calls a method on a DealershipController object to handle importing of a json file from the src/main/resources/ folder
+	 */
 	public static void importFile() {
 		controller.importJsonFile(scan);
 	}
 
+	/**
+	 * Calls a method on a DealershipController object to handle exporting of a json file to the src/main/resources/ folder
+	 */
 	private static void exportDealer() {
 		controller.exportDealerToJson(scan);
 	}
 
+	/**
+	 * Waits for the user to be ready
+	 */
 	private static void waitUser() {
 		Printer.println("Press \"ENTER\" to continue...");
 		scan.nextLine();
