@@ -86,7 +86,7 @@ public class FileHandler implements IFileHandler {
      *
      * @param jsonFormatVehicle A vehicle object formatted as JSON and stored as a JSONObject
      * @param dealerShipId A dealership ID to be used for the filename
-     * @param vehicleId
+     * @param vehicleId The vehicle ID to be used for the filename
      * @return true if the operation was completed, false if some error occurred
      */
 
