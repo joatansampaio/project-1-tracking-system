@@ -60,4 +60,11 @@ public class Dealer {
 	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
+
+	@Override
+	public String toString(){
+		return "DealershipID: " + dealershipId + "\n" +
+				"Acquisition enabled: " + acquisitionEnabled + "\n" +
+				"Vehicles held: " + vehicles.size() + "\n";
+	}
 }

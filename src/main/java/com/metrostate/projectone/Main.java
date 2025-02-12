@@ -40,7 +40,7 @@ public class Main {
 					listAllVehicles();
 					break;
 				case "2":
-
+					listVehiclesByDealershipId();
 					break;
 				case "3":
 					carEntryTool();
@@ -94,7 +94,19 @@ public class Main {
 	}
 
 	// TODO: [Not-required] Implement it
-	public static void listVehiclesByDealershipId() { }
+	public static void listVehiclesByDealershipId() {
+		if(!controller.printAllDealers()){
+			return;
+		}
+		Printer.println("Enter the Dealership ID of the dealer you want to see the vehicles of:");
+		String dealershipID = scan.nextLine();
+		if(controller.isValidDealershipID(dealershipID)){
+			controller.printVehiclesForDealershipId(dealershipID);
+		}
+		else {
+			Printer.println("Dealership not found.");
+		}
+	}
 
 
 	/**

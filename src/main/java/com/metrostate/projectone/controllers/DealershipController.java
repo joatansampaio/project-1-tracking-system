@@ -50,6 +50,42 @@ public class DealershipController implements IDealershipController {
 	}
 
 	/**
+	 * Prints a list of dealers in the current JSON file.
+	 * Returns a boolean so that {@link com.metrostate.projectone.Main#listVehiclesByDealershipId() ListVehiclesByDealershipID} doesn't get stuck.
+	 * @return False if no dealers loaded to memory, True otherwise
+	 */
+	@Override
+	public boolean printAllDealers() {
+		var dealers = db.getDealers();
+		if (dealers.isEmpty()){
+			Printer.println("No dealers registered yet.");
+			return false;
+		}
+		else{
+			Printer.println("Current Dealers:\n");
+			for(Dealer d : dealers){
+				Printer.println(d.toString());
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * Determines if a given string matches with a dealershipID of a dealer in memory
+	 * @param dealershipID The string to be compared against the dealershipID of dealers in memory
+	 * @return True if a match is found, False if not
+	 */
+	@Override
+	public boolean isValidDealershipID(String dealershipID) {
+		var dealers = db.getDealers();
+		for(Dealer d : dealers){
+			if(d.getDealershipId().equals(dealershipID)){
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
 	 * Prints all vehicles held by a particular dealer.
 	 * @param dealershipId the dealer ID
 	 */
@@ -76,7 +112,7 @@ public class DealershipController implements IDealershipController {
 	/**
 	 * Adds a given vehicle to a given dealer.
 	 * @param vehicle The vehicle to be added
-	 * @param dealershipId The IDof the dealer to which the vehicle is added
+	 * @param dealershipId The ID of the dealer to which the vehicle is added
 	 */
 	@Override
 	public void addVehicle(Vehicle vehicle, String dealershipId) {
