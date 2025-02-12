@@ -100,13 +100,13 @@ public class Main {
 		if(!controller.printAllDealers()){
 			return;
 		}
-		Printer.println("Enter the Dealership ID of the dealer you want to see the vehicles of:");
+		Printer.println("Enter the DealershipID of the dealer you want to see the vehicles of:");
 		String dealershipID = scan.nextLine();
 		if(controller.isValidDealershipID(dealershipID)){
 			controller.printVehiclesForDealershipId(dealershipID);
 		}
 		else {
-			Printer.println("Dealership not found.");
+			Printer.println("The Dealership is not found.");
 		}
 	}
 
