@@ -61,6 +61,10 @@ public class Dealer {
 		this.vehicles = vehicles;
 	}
 
+	/**
+	 * Gives a string with information about the dealer
+	 * @return The dealer's dealershipID, whether vehicle acquisition is enabled, and number of vehicles held. All on separate lines.
+	 */
 	@Override
 	public String toString(){
 		return "DealershipID: " + dealershipId + "\n" +

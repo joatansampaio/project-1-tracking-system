@@ -93,7 +93,9 @@ public class Main {
 		controller.printAllVehicles();
 	}
 
-	// TODO: [Not-required] Implement it
+	/**
+	 * Lists all current dealers and prompts user to select one to print the vehicles of.
+	 */
 	public static void listVehiclesByDealershipId() {
 		if(!controller.printAllDealers()){
 			return;
