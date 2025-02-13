@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.FileWriter;
 
-// TODO: To be reviewed
 // This class should be able to Import a file into the system
 // as well as given a JsonString, export a JSON File.
 

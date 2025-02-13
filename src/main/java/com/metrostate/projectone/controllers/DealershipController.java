@@ -106,9 +106,6 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
-	// TODO: [Required] Implement the incoming vehicle operation
-	// use db.AddVehicleToDealer()
-
 	/**
 	 * Adds a given vehicle to a given dealer.
 	 * @param vehicle The vehicle to be added
@@ -212,8 +209,6 @@ public class DealershipController implements IDealershipController {
 		}
 	}
 
-	// TODO: Needs review and testing after getVehiclesByDealershipId() gets
-	// implemented
 	// To suppress warning about type safety because "JSONObject extends HashMap but
 	// doesn’t support Generics." as per
 	// reference:
