@@ -14,6 +14,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.*;
 
 public class DealershipController implements IDealershipController {
@@ -112,9 +114,45 @@ public class DealershipController implements IDealershipController {
 	 * @param dealershipId The ID of the dealer to which the vehicle is added
 	 */
 	@Override
-	public void addVehicle(Vehicle vehicle, String dealershipId) {
-		db.addVehicleToDealer(vehicle, dealershipId);
+	public void addVehicle(Scanner scan) {
+		Printer.print("What is the make of the vehicle");
+		System.out.println();
+		String make = scan.nextLine();
+		Printer.print("What is the model of the vehicle");
+		System.out.println();
+		String model = scan.nextLine();
+		String carType = "";
+
+		while (!VALID_VEHICLE_TYPES.contains(carType)) {
+			Printer.print("What is the car type of the vehicle (sedan, pickup)");
+			System.out.println();
+			carType = scan.nextLine();
+			if (!VALID_VEHICLE_TYPES.contains(carType.toLowerCase())) {
+				Printer.print("Unsupported car type, reminder that the valid car types are sedan, sports car, suv and pickup \n");
+				continue;
+			}
+		}
+		Clock timer = Clock.systemUTC();
+		Instant cally = Instant.now(timer);
+		long call2 = cally.getEpochSecond();
+		Printer.print("What is the price of the vehicle");
+		System.out.println();
+		Float price = Float.parseFloat(scan.nextLine());
+		Printer.print("What is the dealer ID?");
+		System.out.println();
+		String dealID = scan.nextLine();
+		Printer.print("What is the vehicle ID?");
+		System.out.println();
+		String vehiID = scan.nextLine();
+		Vehicle newVehicle = new Vehicle(vehiID, make, model, call2, price, dealID, carType);
+		var result = db.addVehicleToDealer(newVehicle, dealID);
+		if ( result.IsSuccess()){
+			Printer.println("Success");
+		} else{
+			Printer.println(result.getErrorMessage());
+		}
 	}
+
 
 	/**
 	 * Sets whether a dealer can receive new vehicles

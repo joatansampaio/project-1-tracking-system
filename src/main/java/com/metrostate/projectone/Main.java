@@ -115,66 +115,7 @@ public class Main {
 	 * Prompts for information from the user about a vehicle to be added to the database
 	 */
 	public static void carEntryTool() {
-		Printer.print("What is the make of the vehicle");
-		System.out.println();
-		String make = scan.nextLine();
-		Printer.print("What is the model of the vehicle");
-		System.out.println();
-		String model = scan.nextLine();
-		boolean validType = false;
-		String carType = "";
-		while (!validType) {
-			Printer.print("What is the car type of the vehicle (sedan, pickup)");
-			System.out.println();
-			carType = scan.nextLine();
-			validType = isValidCarType(carType);
-		}
-		Clock timer = Clock.systemUTC();
-		Instant cally = Instant.now(timer);
-		long call2 = cally.getEpochSecond();
-		Printer.print("What is the price of the vehicle");
-		System.out.println();
-		Float price = Float.parseFloat(scan.nextLine());
-		Printer.print("What is the dealer ID?");
-		System.out.println();
-		String dealID = scan.nextLine();
-		Printer.print("What is the vehicle ID?");
-		System.out.println();
-		String vehiID = scan.nextLine();
-		Vehicle newVehicle = new Vehicle(vehiID, make, model, call2, price, dealID, carType);
-		addIncomingVehicle(newVehicle, dealID);
-	}
-
-
-	/**
-	 * Calls to a DealershipController object to add a given vehicle to a given dealer.
-	 * @param g A vehicle object to be added to the database
-	 * @param dealerID The ID for the dealership to receive the vehicle
-	 */
-	private static void addIncomingVehicle(Vehicle g, String dealerID) {
-		controller.addVehicle(g, dealerID);
-		
-	}
-
-	/**
-	 * Checks for a valid vehicle entry type
-	 * @param carType The type of vehicle to check for validity
-	 * @return True if vehicle type is valid, false if the vehicle type is invalid
-	 */
-	//used for the car entry tool, sorry for not using return was running late as is
-	private static boolean isValidCarType(String carType) {
-		if (carType.equalsIgnoreCase("sedan") || carType.equalsIgnoreCase("suv") || carType.equalsIgnoreCase("pickup") || carType.equalsIgnoreCase("sports car") || carType.equalsIgnoreCase("sportscar") )
-		{
-			return true;
-			
-		} else {
-			Printer.print(
-					"Unsupported car type, reminder that the valid car types are sedan, sports car, suv and pickup \n");
-			Printer.println("invalid car type was " + carType);
-			return false;
-		}
-			
-
+		controller.addVehicle(scan);
 	}
 
 	/**

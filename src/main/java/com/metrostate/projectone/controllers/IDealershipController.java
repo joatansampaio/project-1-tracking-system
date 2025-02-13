@@ -9,7 +9,7 @@ public interface IDealershipController {
     boolean printAllDealers();
     boolean isValidDealershipID(String dealershipID);
     void printVehiclesForDealershipId(String dealershipId);
-    void addVehicle(Vehicle car, String dealershipId);
+    void addVehicle(Scanner scan);
     void setDealerAcquisition(boolean isEnabled, String dealershipId);
     void importJsonFile(Scanner scan);
     void exportVehiclesToJson(Scanner scan);
