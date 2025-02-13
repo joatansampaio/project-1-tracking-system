@@ -1,0 +1,40 @@
+@startuml
+actor User
+
+participant "Main" as Main
+participant "DealershipController" as Controller
+participant "Vehicle" as Vehicle
+participant "DatabaseContext" as Database
+participant "Printer" as Printer
+participant "FileHandler" as FileHandler
+
+== User Adds a Vehicle ==
+User -> Main: Select "Add Incoming Vehicle"
+Main -> User: Prompt for vehicle details
+User -> Main: Enter vehicle details (make, model, price, etc.)
+Main -> Vehicle: Create new Vehicle object
+Main -> Controller: addVehicle(vehicle, dealerID)
+Controller -> Database: addVehicleToDealer(vehicle, dealerID)
+Database -> Controller: Confirmation
+Controller -> Main: Vehicle added successfully
+
+== User Lists All Vehicles ==
+User -> Main: Select "List All Vehicles"
+Main -> Controller: printAllVehicles()
+Controller -> Database: getVehicles()
+Database -> Controller: Return vehicle list
+Controller -> Printer: Print vehicle details
+
+== User Exports Vehicles ==
+User -> Main: Select "Export Vehicles to JSON"
+Main -> Controller: exportVehiclesToJson()
+Controller -> Database: getVehiclesByDealershipId(null)
+Database -> Controller: Return list of vehicles
+Controller -> FileHandler: Write vehicle data to JSON
+FileHandler -> Controller: Confirmation
+Controller -> Main: Export successful
+
+@enduml
+
+
+
