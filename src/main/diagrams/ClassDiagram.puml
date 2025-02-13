@@ -1,0 +1,190 @@
+@startuml
+
+interface IDealershipController  {
+getVehicles : List<Vehicle>
+getVehiclesByDealershipId : List<Vehicle>
+addVehicle : boolean
+enableAcquisition : boolean
+disableAcquisition : boolean
+importJsonFile : boolean
+exportVehiclesToJSon : boolean
+exportDealerToJson : boolean
+
+}
+
+
+class DatabaseContext  {
+	-{static} instance: DatabaseContext
+	-dealers: List<Dealer>
+	-DatabaseContext()
+	+{static} getInstance(): DatabaseContext
+	+getDealers(): List<Dealer>
+	+getVehicles(): List<Vehicle>
+	+getVehiclesByDealershipId(dealershipId: String): Result<List<Vehicle>>
+	+getDealerByDealershipId(dealershipId: String): Result<Dealer>
+	+addDealer(dealer: Dealer): Result<Boolean>
+	+addVehicleToDealer(vehicle: Vehicle, dealershipId: String): Result<Boolean>
+	+addVehicleToDealer2(vehicle: Vehicle, dealershipId: String): Result<Boolean>
+}
+interface IDatabaseContext {
+}
+IDatabaseContext <|.. DatabaseContext
+
+class DealershipController  {
+	-VALID_VEHICLE_TYPES: List<String>
+	-fileHandler: IFileHandler
+	-db: IDatabaseContext
+	+DealershipController()
+	+printAllVehicles(): void
+	+printAllDealers(): boolean
+	+isValidDealershipID(dealershipID: String): boolean
+	+printVehiclesForDealershipId(dealershipId: String): void
+	+addVehicle(scan: Scanner): void
+	+setDealerAcquisition(isEnabled: boolean, dealershipId: String): void
+	+importJsonFile(scan: Scanner): void
+	+exportVehiclesToJson(scan: Scanner): void
+	+exportDealerToJson(scan: Scanner): void
+	-HandleInventoryObject(inventory: JSONArray): void
+}
+interface IDealershipController {
+}
+
+class Main {
+	~{static} scan: Scanner
+	~{static} controller: DealershipController
+	+{static} main(args: String[]): void
+	+{static} showMainMenu(): void
+	+{static} listAllVehicles(): void
+	+{static} listVehiclesByDealershipId(): void
+	+{static} carEntryTool(): void
+	-{static} isValidCarType(carType: String): boolean
+	-{static} handleDealerAcquisition(isEnable: boolean): void
+	+{static} importFile(): void
+	-{static} exportDealer(): void
+	-{static} waitUser(): void
+}
+
+
+class "Result<T>" as Result_T_  {
+	-data: T
+	-isSuccess: boolean
+	-errorMessage: String
+	+Success(): Result<T>
+	+Success(data: T): Result<T>
+	+Fail(errorMessage: String): Result<T>
+	+getData(): T
+	+getErrorMessage(): String
+	+IsSuccess(): boolean
+}
+class Dealer  {
+	-dealershipId: String
+	-acquisitionEnabled: boolean
+	-vehicles: List<Vehicle>
+	+Dealer(dealershipId: String)
+	+addVehicle(vehicle: Vehicle): void
+	+enableAcquisition(): void
+	+disableAcquisition(): void
+	+isEnabledForAcquisition(): boolean
+	+getDealershipId(): String
+	+setDealershipId(dealershipId: String): void
+	+getVehicles(): List<Vehicle>
+	+setVehicles(vehicles: List<Vehicle>): void
+	+toString(): String
+}
+class Vehicle  {
+	-vehicleId: String
+	-manufacturer: String
+	-model: String
+	-type: String
+	-acquisitionDate: Instant
+	-price: Float
+	-dealershipId: String
+	+Vehicle(vehicleId: String, manufacturer: String, model: String, acquisitionDate: Long, price: Float, dealershipId: String, type: String)
+	+getVehicleId(): String
+	+setVehicleId(vehicleId: String): void
+	+getManufacturer(): String
+	+setManufacturer(manufacturer: String): void
+	+getModel(): String
+	+setModel(model: String): void
+	+getAcquisitionDate(): Instant
+	+getAcquisitionDateEpochMilli(): Long
+	+setAcquisitionDate(acquisitionDate: Instant): void
+	+getPrice(): Float
+	+setPrice(price: float): void
+	+getDealershipId(): String
+	+setDealershipId(dealershipId: String): void
+	+getType(): String
+	+setType(type: String): void
+	+getFormattedAcquisitionDate(): String
+	+toString(): String
+	+getJSONFormat(): JSONObject
+}
+
+
+class FileHandler  {
+	~reader: Reader
+	+read(fileName: String): JSONObject
+	+writeDealerToJson(jsonObj: JSONObject, dealershipId: String): boolean
+	+writeVehicleToJson(jsonFormatVehicle: JSONObject, dealerShipId: String, vehicleId: String): boolean
+}
+
+class JsonHelper  {
+	+{static} getString(object: Object, property: String): String
+	+{static} getFloat(object: Object, property: String): Float
+	+{static} getLong(object: Object, property: String): Long
+	-{static} Validate(object: Object, property: String): JSONObject
+	+{static} prettify(jsonString: String): String
+	-{static} indentNewLine(indentLevel: int, stringBuilder: StringBuilder): void
+}
+class Printer  {
+	+{static} RESET: String
+	+{static} println(message: String, type: Color, reset: boolean): void
+	+{static} println(message: String, type: Color): void
+	+{static} println(message: String): void
+	+{static} print(message: String): void
+	-{static} printInner(message: String, type: Color, reset: boolean): void
+}
+
+interface IDatabaseContext  {
+	getDealers(): List<Dealer>
+	getVehicles(): List<Vehicle>
+	getVehiclesByDealershipId(dealershipId: String): Result<List<Vehicle>>
+	getDealerByDealershipId(dealershipId: String): Result<Dealer>
+	addDealer(dealer: Dealer): Result<Boolean>
+	addVehicleToDealer(vehicle: Vehicle, dealershipId: String): Result<Boolean>
+	addVehicleToDealer2(g: Vehicle, string: String): Result<Boolean>
+}
+interface IFileHandler  {
+	read(fileName: String): JSONObject
+	writeVehicleToJson(jsonFormatVehicle: JSONObject, dealerShipId: String, vehicleId: String): boolean
+	writeDealerToJson(jsonObj: JSONObject, dealershipId: String): boolean
+}
+
+
+'RelationShips
+
+
+
+IFileHandler <|.. FileHandler
+IDealershipController <|.. DealershipController
+
+
+Dealer "1" o-- "0..*" Vehicle
+Main "1" *-- "1" DealershipController
+Main ..> Printer
+DealershipController ..> Printer
+DealershipController --> Vehicle
+DealershipController --> Dealer
+DealershipController --> JsonHelper
+DealershipController *== DatabaseContext
+DealershipController *== FileHandler
+DatabaseContext "1" *--> "0..*" Dealer
+DatabaseContext "1" o--> "0..*" Vehicle
+DatabaseContext ..> Result_T_
+FileHandler --> JsonHelper
+@enduml
+
+
+
+
+
