@@ -1,0 +1,24 @@
+@startuml
+actor User
+!theme vibrant
+participant "Main" as Main
+participant "DealershipController" as Controller
+participant "Vehicle" as Vehicle
+participant "DatabaseContext" as Database
+
+== User Adds a Vehicle ==
+User -> Main: Select "Add Incoming Vehicle"
+Main -> Controller: addVehicle(scan)
+Controller -> User: Prompt for vehicle details
+User -> Controller: Enter vehicle details (make, model, price, etc.)
+Controller -> Vehicle: Create new Vehicle object
+'Main -> Controller: addVehicle(vehicle, dealerID)
+Controller -> Database: addVehicleToDealer(vehicle, dealerID)
+Database -> Controller: Confirmation
+Controller -> Main: Vehicle added successfully
+Main -> User: Result
+
+@enduml
+
+
+

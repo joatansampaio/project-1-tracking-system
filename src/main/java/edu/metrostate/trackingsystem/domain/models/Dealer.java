@@ -1,0 +1,64 @@
+
+package edu.metrostate.trackingsystem.domain.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Dealer {
+
+	private String dealershipId;
+	private boolean enabledForAcquisition;
+	private List<Vehicle> vehicles;
+
+	public Dealer(String dealershipId) {
+		this.dealershipId = dealershipId;
+		this.enabledForAcquisition = true;
+		this.vehicles = new ArrayList<>();
+	}
+
+	/**
+	 * Only dealers with acquisition enabled should be able to add a vehicle.
+	 * 
+	 * @param vehicle The vehicle to add.
+	 */
+	
+	public void addVehicle(Vehicle vehicle) {
+	vehicles.add(vehicle);
+	}
+
+	public boolean getEnabledForAcquisition() {
+		return enabledForAcquisition;
+	}
+
+	public void setEnabledForAcquisition(boolean isEnabledForAcquisition) {
+		this.enabledForAcquisition = isEnabledForAcquisition;
+	}
+
+	// Getters & Setters from here.
+	public String getDealershipId() {
+		return dealershipId;
+	}
+
+	public void setDealershipId(String dealershipId) {
+		this.dealershipId = dealershipId;
+	}
+
+	public List<Vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(List<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
+
+	/**
+	 * Gives a string with information about the dealer
+	 * @return The dealer's dealershipID, whether vehicle acquisition is enabled, and number of vehicles held. All on separate lines.
+	 */
+	@Override
+	public String toString(){
+		return "DealershipID: " + dealershipId + "\n" +
+				"Acquisition enabled: " + enabledForAcquisition + "\n" +
+				"Vehicles held: " + vehicles.size() + "\n";
+	}
+}

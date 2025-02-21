@@ -1,0 +1,167 @@
+/*
+  The default theme sucks, so let's make a default dark theme that will look much better.
+}
+*/
+
+.root {
+    -fx-font-size: 14px;
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #dddddd;
+}
+
+/* -------------------------------------------------- LABELS */
+.label {
+    -fx-text-fill: #dddddd;
+}
+
+/* -------------------------------------------------- BUTTONS */
+.button {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #dddddd;
+    -fx-border-color: none;
+}
+.button:hover {
+    -fx-background-color: #4a4a4a;
+    -fx-cursor: hand;
+}
+
+/* -------------------------------------------------- TABLE VIEW */
+.table-view {
+    -fx-background-color: #252526;
+    -fx-table-cell-border-color: #444;
+    -fx-control-inner-background: #1e1e1e;
+}
+.table-view .column-header-background,
+.table-view .column-header,
+.table-view .filler,
+.table-column-header {
+    -fx-background-color: #2d2d30;
+    -fx-text-fill: #dddddd;
+    -fx-border-color: #444;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #dddddd;
+}
+
+/* -------------------------------------------------- MENU */
+.menu-bar {
+    -fx-background-color: #2d2d30;
+    -fx-border-color: #444;
+    -fx-border-width: 0 0 1px 0;
+}
+.menu, .menu-item, .context-menu {
+    -fx-background-color: #2d2d30;
+    -fx-text-fill: #dddddd;
+    -fx-border-color: #444;
+    -fx-border-width: 0 0 1px 0;
+}
+.menu:hover,
+.menu-item:hover {
+    -fx-background-color: #3c3c3c;
+    -fx-cursor: hand;
+}
+
+/* -------------------------------------------------- DATE PICKER */
+.date-picker {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #dddddd;
+    -fx-prompt-text-fill: #888888;
+}
+/* The text field portion of the DatePicker */
+.date-picker .text-field {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+    -fx-border-color: #444444;
+}
+/* The arrow button that shows the calendar */
+.date-picker .arrow-button {
+    -fx-background-color: #3c3c3c;
+}
+/* The popup calendar container */
+.date-picker-popup {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #444444;
+}
+/* The header in the calendar popup (month and year display) */
+.date-picker-popup .header {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+}
+/* DatePicker popup header (month-year pane) */
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #2e2e2e;
+    -fx-padding: 8px;
+}
+/* Labels in the header */
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: #dddddd;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+/* The individual date cells */
+.date-cell {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+}
+/* Hover state for date cells */
+.date-cell:hover {
+    -fx-background-color: #3c3c3c;
+}
+/* Selected and focused date cells */
+.date-cell:selected,
+.date-cell:focused {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
+/* -------------------------------------------------- TEXT FIELDS */
+.text-field {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+    -fx-prompt-text-fill: #888888;
+    -fx-border-color: #444444;
+    -fx-border-width: 1px;
+}
+
+/* -------------------------------------------------- COMBO BOXES */
+.combo-box {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+}
+/* The arrow button in the ComboBox */
+.combo-box .arrow-button {
+    -fx-background-color: #3c3c3c;
+}
+/* The popup list for the ComboBox */
+.combo-box-popup {
+    -fx-background-color: #1e1e1e;
+}
+/* List cells in the ComboBox's dropdown */
+.combo-box .list-cell {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #dddddd;
+}
+/* Hover state for list cells */
+.combo-box .list-cell:hover {
+    -fx-background-color: #3c3c3c;
+}
+/* Selected list cell */
+.combo-box .list-cell:selected {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
+/* When no items are found */
+.combo-box-popup .list-view {
+    -fx-background-color: #2e2e2e;
+}
+
+/* -------------------------------------------------- CUSTOM CLASSES */
+.main-view-actions {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 10px;
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+}
+.add-vehicle-grid {
+    -fx-min-width: 380px;
+}

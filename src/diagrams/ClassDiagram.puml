@@ -1,0 +1,287 @@
+@startuml
+!theme vibrant
+skinparam linetype ortho
+
+class AddVehicleController {
+  + AddVehicleController():
+  - vehicleIdField: TextField
+  - notificationHandler: NotificationHandler
+  - vehicleTypeCombo: ComboBox<String>
+  - dealershipIdCombo: ComboBox<String>
+  - mainController: MainController
+  - modelField: TextField
+  - vehicleService: VehicleService
+  - manufacturerField: TextField
+  - priceField: TextField
+  - acquisitionDatePicker: DatePicker
+  - onAddVehicle(ActionEvent): void
+  - setupFields(): void
+  + injectDependencies(MainController, VehicleService, NotificationHandler): void
+  - onCancel(ActionEvent): void
+  + initialize(): void
+  - closeStage(ActionEvent): void
+  - getStage(ActionEvent): Stage
+}
+class AutoCompleteComboBox {
+  + AutoCompleteComboBox():
+  + enableAutoComplete(ComboBox<T>): void
+}
+class CarInventory {
+  + CarInventory(List<Vehicle>):
+  - car_inventory: List<Vehicle>
+  + getCar_inventory(): List<Vehicle>
+  + setCar_inventory(List<Vehicle>): void
+}
+class DataTransferService {
+  + DataTransferService(NotificationHandler, JsonHandler):
+  - jsonHandler: JsonHandler
+  - logger: Logger
+  - notificationHandler: NotificationHandler
+  + exportData(Stage): void
+  + importData(Stage): void
+}
+class DatabaseContext {
+  - DatabaseContext():
+  - instance: DatabaseContext
+  - dealers: List<Dealer>
+  + addVehicle(Vehicle): Result<Boolean>
+  + getVehicle(String, String): Vehicle
+  + deleteVehicle(Vehicle): Result<Boolean>
+  + getInstance(): DatabaseContext
+  + getDealers(): List<Dealer>
+  + getDealershipIDs(): List<String>
+  + getVehicles(): List<Vehicle>
+  + loadDatabase(List<ImportDTO>): void
+  + toggleAcquisition(String): void
+  + getDealerByID(String): Result<Dealer>
+}
+class Dealer {
+  + Dealer(String):
+  - dealershipId: String
+  - enabledForAcquisition: boolean
+  - vehicles: List<Vehicle>
+  + getDealershipId(): String
+  + setDealershipId(String): void
+  + toString(): String
+  + getVehicles(): List<Vehicle>
+  + setVehicles(List<Vehicle>): void
+  + getEnabledForAcquisition(): boolean
+  + addVehicle(Vehicle): void
+  + setEnabledForAcquisition(boolean): void
+}
+class DealerRepository {
+  + DealerRepository(DatabaseContext):
+  - databaseContext: DatabaseContext
+  + toggleAcquisition(String): void
+  + getDealers(): List<Dealer>
+  + getDealershipIDs(): List<String>
+}
+class DealerService {
+  + DealerService(DealerRepository):
+  - repository: DealerRepository
+  + getDealershipIDs(): List<String>
+  + toggleAcquisition(String): void
+  + getDealers(): List<Dealer>
+}
+interface IDatabaseContext << interface >> {
+  + getDealers(): List<Dealer>
+  + addDealer(Dealer): Result<Boolean>
+  + getDealerByDealershipId(String): Result<Dealer>
+  + getVehicles(): List<Vehicle>
+  + getVehiclesByDealershipId(String): Result<List<Vehicle>>
+  + addVehicleToDealer(Vehicle, String): Result<Boolean>
+  + addVehicleToDealer2(Vehicle, String): Result<Boolean>
+}
+interface IFileHandler << interface >> {
+  + importFile(File): boolean
+  + exportFile(File): boolean
+}
+class ImportDTO {
+  + ImportDTO():
+  - acquisitionDate: long
+  - vehicleType: String
+  - price: float
+  - dealershipId: String
+  - vehicleManufacturer: String
+  - vehicleModel: String
+  - vehicleId: String
+  + setPrice(float): void
+  + setVehicleId(String): void
+  + setVehicleManufacturer(String): void
+  + getVehicleId(): String
+  + setVehicleType(String): void
+  + setDealershipId(String): void
+  + setVehicleModel(String): void
+  + getVehicleModel(): String
+  + getVehicleManufacturer(): String
+  + setAcquisitionDate(long): void
+  + getAcquisitionDate(): long
+  + getPrice(): float
+  + getVehicleType(): String
+  + getDealershipId(): String
+}
+class JsonHandler {
+  - JsonHandler():
+  - logger: Logger
+  - instance: JsonHandler
+  - databaseContext: DatabaseContext
+  + importFile(File): boolean
+  + exportFile(File): boolean
+  + getInstance(): JsonHandler
+  + saveSession(): void
+}
+class Logger {
+  - Logger():
+  - className: String
+  + getLogger(): Logger
+  + info(String): void
+  + error(String): void
+}
+class Main {
+  + Main():
+  + version: double
+  + logger: Logger
+  + main(String[]): void
+  + setTheme(Scene, Class<?>): void
+  + start(Stage): void
+}
+class MainController {
+  + MainController():
+  - dealerTableView: TableView<Dealer>
+  - vehicleService: VehicleService
+  - dealershipIdColumn: TableColumn<Vehicle, String>
+  - dataTransferService: DataTransferService
+  - vehicleTypeColumn: TableColumn<Vehicle, String>
+  + goToVehiclesViewBtn: Button
+  - logger: Logger
+  + isEnabledForAcquisitionColumn: TableColumn<Dealer, String>
+  + dealerNameColumn: TableColumn<Dealer, String>
+  - vehicleIdColumn: TableColumn<Vehicle, String>
+  - deleteVehicleBtn: Button
+  - dealershipIdMainCombo: ComboBox<String>
+  - jsonHandler: JsonHandler
+  + goToDealersViewBtn: Button
+  - dealerService: DealerService
+  + toggleAcquisitionBtn: Button
+  - acquisitionDate: TableColumn<Vehicle, Long>
+  - modelColumn: TableColumn<Vehicle, String>
+  + dealerIdColumn: TableColumn<Dealer, String>
+  - vehicleTableView: TableView<Vehicle>
+  - notificationHandler: NotificationHandler
+  - manufacturerColumn: TableColumn<Vehicle, String>
+  - onAddVehicle(): void
+  + injectDependencies(VehicleService, DealerService, DataTransferService, NotificationHandler): void
+  + goToVehiclesView(ActionEvent): void
+  + onShowAll(): void
+  - onExport(): void
+  - onDeleteVehicle(): void
+  + initialize(): void
+  + goToDealersView(ActionEvent): void
+  - setupOtherProperties(): void
+  - onImport(): void
+  - onExit(ActionEvent): void
+  - setupVehiclesTable(): void
+  - toggleVehicleAcquisition(): void
+  - setupListeners(): void
+  - InitializeDataAsync(): void
+  + refreshDealersTable(): void
+  + refreshDealersTable(String): void
+  - toggleView(boolean): void
+  + refreshVehiclesTable(): void
+  - setupDealersTable(): void
+  + refreshVehiclesTable(String): void
+  - initializeFromPreviousState(): void
+  - getStage(): Stage
+}
+class NotificationHandler {
+  + NotificationHandler(Stage):
+  - instance: NotificationHandler
+  - mainStage: Stage
+  + notify(String): void
+  + notifyError(String): void
+}
+class Result<T> {
+  - Result(boolean, T, String):
+  - data: T
+  - success: boolean
+  - errorMessage: String
+  + isSuccess(): boolean
+  + getErrorMessage(): String
+  + success(T): Result<T>
+  + failure(String): Result<T>
+  + success(): Result<T>
+  + getData(): T
+}
+class ValidationException {
+  + ValidationException(List<String>):
+  - validationErrors: List<String>
+  + getValidationErrors(): List<String>
+}
+class Vehicle {
+  + Vehicle(String, String, String, long, double, String, String):
+  - dealershipId: String
+  - type: String
+  - VALID_VEHICLE_TYPES: List<String>
+  - manufacturer: String
+  - model: String
+  - acquisitionDate: long
+  - price: double
+  - vehicleId: String
+  + setManufacturer(String): void
+  + getAcquisitionDate(): long
+  + getModel(): String
+  + setAcquisitionDate(long): void
+  + setVehicleId(String): void
+  + getVehicleId(): String
+  + setDealershipId(String): void
+  + setType(String): void
+  + toString(): String
+  + getFormattedAcquisitionDate(): String
+  + getManufacturer(): String
+  + getType(): String
+  + getPrice(): double
+  + getDealershipId(): String
+  + createVehicle(String, String, String, String, LocalDate, String, String): Vehicle
+  + setModel(String): void
+  + setPrice(float): void
+}
+class VehicleRepository {
+  + VehicleRepository(DatabaseContext):
+  - databaseContext: DatabaseContext
+  + deleteVehicle(Vehicle): Result<Boolean>
+  + getVehicles(): List<Vehicle>
+  + addVehicle(Vehicle): Result<Boolean>
+}
+class VehicleService {
+  + VehicleService(VehicleRepository):
+  - repository: VehicleRepository
+  + deleteVehicle(Vehicle): Result<Boolean>
+  + addVehicle(Vehicle): Result<Boolean>
+  + getVehicles(): List<Vehicle>
+}
+
+AddVehicleController            "1" *-[#595959,plain]-> "mainController\n1" MainController
+AddVehicleController            "1" *-[#595959,plain]-> "notificationHandler\n1" NotificationHandler
+AddVehicleController            "1" *-[#595959,plain]-> "vehicleService\n1" VehicleService
+CarInventory                    "1" *-[#595959,plain]-> "car_inventory\n*" Vehicle
+DataTransferService             "1" *-[#595959,plain]-> "jsonHandler\n1" JsonHandler
+DataTransferService             "1" *-[#595959,plain]-> "logger\n1" Logger
+DataTransferService             "1" *-[#595959,plain]-> "notificationHandler\n1" NotificationHandler
+DatabaseContext                 "1" *-[#595959,plain]-> "dealers\n*" Dealer
+DatabaseContext                  -[#008200,dashed]-^ IDatabaseContext
+Dealer                          "1" *-[#595959,plain]-> "vehicles\n*" Vehicle
+DealerRepository                "1" *-[#595959,plain]-> "databaseContext\n1" DatabaseContext
+DealerService                   "1" *-[#595959,plain]-> "repository\n1" DealerRepository
+JsonHandler                     "1" *-[#595959,plain]-> "databaseContext\n1" DatabaseContext
+JsonHandler                      -[#008200,dashed]-^  IFileHandler
+JsonHandler                     "1" *-[#595959,plain]-> "logger\n1" Logger
+Main                            "1" *-[#595959,plain]-> "logger\n1" Logger
+MainController                  "1" *-[#595959,plain]-> "dataTransferService\n1" DataTransferService
+MainController                  "1" *-[#595959,plain]-> "dealerService\n1" DealerService
+MainController                  "1" *-[#595959,plain]-> "jsonHandler\n1" JsonHandler
+MainController                  "1" *-[#595959,plain]-> "logger\n1" Logger
+MainController                  "1" *-[#595959,plain]-> "notificationHandler\n1" NotificationHandler
+MainController                  "1" *-[#595959,plain]-> "vehicleService\n1" VehicleService
+VehicleRepository               "1" *-[#595959,plain]-> "databaseContext\n1" DatabaseContext
+VehicleService                  "1" *-[#595959,plain]-> "repository\n1" VehicleRepository
+@enduml
