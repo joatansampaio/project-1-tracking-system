@@ -8,9 +8,9 @@ import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.utils.JsonHandler;
 import edu.metrostate.trackingsystem.infrastructure.utils.NotificationHandler;
-import edu.metrostate.trackingsystem.presentation.controllers.ui.components.AutoCompleteComboBox;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class MainController {
 
@@ -147,12 +148,16 @@ public class MainController {
             initializeFromPreviousState();
             refreshVehiclesTable();
             refreshDealersTable();
-            dealershipIdMainCombo.setItems(FXCollections.observableArrayList(dealerService.getDealershipIDs()));
+
+            ObservableList<String> dealerIds = FXCollections.observableArrayList();
+            dealerIds.add("All");
+            dealerIds.addAll(dealerService.getDealershipIDs());
+
+            dealershipIdMainCombo.setItems(dealerIds);
         });
     }
 
     private void setupOtherProperties() {
-        AutoCompleteComboBox.enableAutoComplete(dealershipIdMainCombo);
         // That will make the button not take the space when hidden
         toggleAcquisitionBtn.managedProperty().bind(toggleAcquisitionBtn.visibleProperty());
         goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color: #212121");
@@ -267,8 +272,12 @@ public class MainController {
         });
 
         dealershipIdMainCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            refreshVehiclesTable(newValue);
-            refreshDealersTable(newValue);
+            String id = newValue;
+            if (newValue.equals("All")) {
+                id = null;
+            }
+            refreshVehiclesTable(id);
+            refreshDealersTable(id);
         });
     }
 
@@ -292,7 +301,7 @@ public class MainController {
     public void onShowAll() {
         refreshDealersTable();
         refreshVehiclesTable();
-        dealershipIdMainCombo.setValue(null);
+        dealershipIdMainCombo.getSelectionModel().clearSelection();
     }
 
     private Stage getStage() {

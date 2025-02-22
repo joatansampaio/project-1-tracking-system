@@ -4,7 +4,6 @@ import edu.metrostate.trackingsystem.application.exceptions.ValidationException;
 import edu.metrostate.trackingsystem.application.services.VehicleService;
 import edu.metrostate.trackingsystem.infrastructure.database.DatabaseContext;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
-import edu.metrostate.trackingsystem.presentation.controllers.ui.components.AutoCompleteComboBox;
 import edu.metrostate.trackingsystem.infrastructure.utils.NotificationHandler;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -110,9 +109,6 @@ public class AddVehicleController {
 
         TextFormatter<String> textFormatter = new TextFormatter<>(filter);
         priceField.setTextFormatter(textFormatter);
-
-        AutoCompleteComboBox.enableAutoComplete(dealershipIdCombo);
-        AutoCompleteComboBox.enableAutoComplete(vehicleTypeCombo);
     }
 
     /**

@@ -29,7 +29,6 @@
             </MenuBar>
             <!-- Filter ComboBox inside an HBox -->
             <HBox styleClass="main-view-actions" spacing="10.0" alignment="CENTER_LEFT">
-                <Button text="Show All" onAction="#onShowAll"/>
                 <ComboBox fx:id="dealershipIdMainCombo" promptText="Dealership ID" style="-fx-min-width: 150px"/>
                 <Button text="Add Vehicle" onAction="#onAddVehicle"/>
                 <Button fx:id="toggleAcquisitionBtn" text="Toggle Acquisition" onAction="#toggleVehicleAcquisition" visible="false"/>
