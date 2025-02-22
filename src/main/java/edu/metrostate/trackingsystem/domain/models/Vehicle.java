@@ -1,5 +1,6 @@
 package edu.metrostate.trackingsystem.domain.models;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.gson.annotations.SerializedName;
 import edu.metrostate.trackingsystem.application.exceptions.ValidationException;
 
@@ -18,16 +19,36 @@ public class Vehicle {
 	 */
 	private static final List<String> VALID_VEHICLE_TYPES = List.of("sedan", "sports car", "suv", "pickup");
 
-	@SerializedName("vehicle_id") private String vehicleId;
-	@SerializedName("vehicle_manufacturer")	private String manufacturer;
-	@SerializedName("vehicle_model") private String model;
-	@SerializedName("vehicle_type")	private String type;
-	@SerializedName("acquisition_date")	private long acquisitionDate;
-	@SerializedName("price") private double price;
-	@SerializedName("dealership_id") private String dealershipId;
+	@JacksonXmlProperty(isAttribute = true, localName = "id")
+	@SerializedName("vehicle_id")
+	private String vehicleId;
+
+	@JacksonXmlProperty(localName = "Make")
+	@SerializedName("vehicle_manufacturer")
+	private String manufacturer;
+
+	@JacksonXmlProperty(localName = "Model")
+	@SerializedName("vehicle_model")
+	private String model;
+
+	@JacksonXmlProperty(isAttribute = true, localName = "type")
+	@SerializedName("vehicle_type")
+	private String type;
+
+	@SerializedName("acquisition_date")
+	private long acquisitionDate;
+
+	@JacksonXmlProperty(localName = "Price")
+	@SerializedName("price")
+	private Price price;
+
+	@SerializedName("dealership_id")
+	private String dealershipId;
+
+	public Vehicle() { }
 
 	public Vehicle(String vehicleId, String manufacturer, String model, long acquisitionDate,
-				   double price, String dealershipId, String type) {
+				   Price price, String dealershipId, String type) {
 
 		this.vehicleId = vehicleId;
 		this.manufacturer = manufacturer;
@@ -100,7 +121,7 @@ public class Vehicle {
 		}
 
 		long epochMillis = acquisitionDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		return new Vehicle(vehicleId, manufacturer, model, epochMillis, price, dealershipId, vehicleType);
+		return new Vehicle(vehicleId, manufacturer, model, epochMillis, new Price(price, "dollars"), dealershipId, vehicleType);
 	}
 
 	public void setVehicleId(String vehicleId) {
@@ -135,11 +156,15 @@ public class Vehicle {
 		this.acquisitionDate = acquisitionDate;
 	}
 
-	public double getPrice() {
+	public Price getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public String getPriceAsString() {
+		return price.toString();
+	}
+
+	public void setPrice(Price price) {
 		this.price = price;
 	}
 

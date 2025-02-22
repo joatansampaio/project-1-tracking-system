@@ -21,8 +21,9 @@
             <MenuBar>
                 <Menu text="File">
                     <MenuItem text="Add Vehicle" onAction="#onAddVehicle"/>
-                    <MenuItem text="Import Json" onAction="#onImport"/>
-                    <MenuItem text="Export" onAction="#onExport"/>
+                    <MenuItem text="Import JSON" onAction="#onImportJson"/>
+                    <MenuItem text="Import XML" onAction="#onImportXml"/>
+                    <MenuItem text="Export JSON" onAction="#onExportJson"/>
                     <MenuItem text="Save &amp; Exit" onAction="#onExit" userData="true"/>
                     <MenuItem text="Exit" onAction="#onExit" userData="false"/>
                 </Menu>
@@ -45,11 +46,12 @@
             <TableView fx:id="vehicleTableView">
                 <columns>
                     <TableColumn fx:id="vehicleIdColumn" text="Vehicle ID" prefWidth="100"/>
-                    <TableColumn fx:id="manufacturerColumn" text="Manufacturer" prefWidth="200"/>
+                    <TableColumn fx:id="manufacturerColumn" text="Manufacturer" prefWidth="120"/>
                     <TableColumn fx:id="modelColumn" text="Model" prefWidth="140"/>
                     <TableColumn fx:id="vehicleTypeColumn" text="Type" prefWidth="140"/>
                     <TableColumn fx:id="dealershipIdColumn" text="Dealership ID" prefWidth="100"/>
-                    <TableColumn fx:id="acquisitionDate" text="Acquisition Date" prefWidth="120"/>
+                    <TableColumn fx:id="acquisitionDate" text="Acquisition Date" prefWidth="140"/>
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="150"/>
                 </columns>
             </TableView>
             <TableView fx:id="dealerTableView" visible="false">

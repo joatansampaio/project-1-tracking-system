@@ -6,7 +6,10 @@
       "vehicle_model": "Explorer",
       "vehicle_type": "suv",
       "acquisition_date": 1515354694451,
-      "price": 20123.0,
+      "price": {
+        "price": 20123.0,
+        "currency": "dollars"
+      },
       "dealership_id": "12513"
     },
     {
@@ -15,7 +18,10 @@
       "vehicle_model": "Model 3",
       "vehicle_type": "sedan",
       "acquisition_date": 1515354694451,
-      "price": 50444.0,
+      "price": {
+        "price": 50444.0,
+        "currency": "dollars"
+      },
       "dealership_id": "12513"
     },
     {
@@ -24,7 +30,10 @@
       "vehicle_model": "Silverado",
       "vehicle_type": "pickup",
       "acquisition_date": 1515354694451,
-      "price": 70444.0,
+      "price": {
+        "price": 70444.0,
+        "currency": "dollars"
+      },
       "dealership_id": "12513"
     },
     {
@@ -33,98 +42,11 @@
       "vehicle_model": "Supra",
       "vehicle_type": "sports car",
       "acquisition_date": 1515354694451,
-      "price": 49889.0,
+      "price": {
+        "price": 49889.0,
+        "currency": "dollars"
+      },
       "dealership_id": "77338"
-    },
-    {
-      "vehicle_id": "X22134C",
-      "vehicle_manufacturer": "Chevrolet",
-      "vehicle_model": "Colorado",
-      "vehicle_type": "pickup",
-      "acquisition_date": 1615354694451,
-      "price": 36500.0,
-      "dealership_id": "77338"
-    },
-    {
-      "vehicle_id": "X13456A",
-      "vehicle_manufacturer": "Ford",
-      "vehicle_model": "Explorer",
-      "vehicle_type": "suv",
-      "acquisition_date": 1615354694451,
-      "price": 21500.0,
-      "dealership_id": "99871"
-    },
-    {
-      "vehicle_id": "X99812B",
-      "vehicle_manufacturer": "Honda",
-      "vehicle_model": "Accord",
-      "vehicle_type": "sedan",
-      "acquisition_date": 1615354694451,
-      "price": 27500.0,
-      "dealership_id": "99871"
-    },
-    {
-      "vehicle_id": "Y78453D",
-      "vehicle_manufacturer": "Nissan",
-      "vehicle_model": "370Z",
-      "vehicle_type": "sports car",
-      "acquisition_date": 1615354694451,
-      "price": 41500.0,
-      "dealership_id": "66234"
-    },
-    {
-      "vehicle_id": "Y22314E",
-      "vehicle_manufacturer": "Ram",
-      "vehicle_model": "1500",
-      "vehicle_type": "truck",
-      "acquisition_date": 1615354694451,
-      "price": 48500.0,
-      "dealership_id": "66234"
-    },
-    {
-      "vehicle_id": "Z99873F",
-      "vehicle_manufacturer": "Tesla",
-      "vehicle_model": "Model X",
-      "vehicle_type": "electric",
-      "acquisition_date": 1615354694451,
-      "price": 90999.0,
-      "dealership_id": "88345"
-    },
-    {
-      "vehicle_id": "W33211I",
-      "vehicle_manufacturer": "Hyundai",
-      "vehicle_model": "Elantra",
-      "vehicle_type": "sedan",
-      "acquisition_date": 1615354694451,
-      "price": 22999.0,
-      "dealership_id": "55021"
-    },
-    {
-      "vehicle_id": "V76234J",
-      "vehicle_manufacturer": "Toyota",
-      "vehicle_model": "Highlander",
-      "vehicle_type": "suv",
-      "acquisition_date": 1615354694451,
-      "price": 39999.0,
-      "dealership_id": "77492"
-    },
-    {
-      "vehicle_id": "V55478L",
-      "vehicle_manufacturer": "Ford",
-      "vehicle_model": "F-150",
-      "vehicle_type": "truck",
-      "acquisition_date": 1615354694451,
-      "price": 47999.0,
-      "dealership_id": "77492"
-    },
-    {
-      "vehicle_id": "V99843M",
-      "vehicle_manufacturer": "Chevrolet",
-      "vehicle_model": "Corvette",
-      "vehicle_type": "sports car",
-      "acquisition_date": 1615354694451,
-      "price": 75999.0,
-      "dealership_id": "77492"
     }
   ]
 }

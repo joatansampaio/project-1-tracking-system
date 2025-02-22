@@ -53,6 +53,7 @@ public class Main extends Application {
             // If the user closes from the native close button, we save it too.
             jsonHandler.saveSession();
         });
+
         stage.show();
     }
 

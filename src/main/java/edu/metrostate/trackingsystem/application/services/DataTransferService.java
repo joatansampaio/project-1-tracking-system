@@ -19,7 +19,7 @@ public class DataTransferService {
         this.jsonHandler = jsonHandler;
     }
 
-    public void importData(Stage stage) {
+    public void importJson(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import JSON File");
 
@@ -41,7 +41,7 @@ public class DataTransferService {
         }
     }
 
-    public void exportData(Stage stage) {
+    public void exportJson(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Export Database JSON");
         fileChooser.setInitialFileName("export.json");
@@ -57,5 +57,9 @@ public class DataTransferService {
                 notificationHandler.notifyError("Couldn't export the file.");
             }
         }
+    }
+
+    public void importXml(Stage stage) {
+        // TODO: needs an XML handler
     }
 }

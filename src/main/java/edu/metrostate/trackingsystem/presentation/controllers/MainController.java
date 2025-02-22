@@ -25,11 +25,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class MainController {
 
@@ -47,18 +42,19 @@ public class MainController {
     @FXML private TableColumn<Vehicle, String> vehicleTypeColumn;
     @FXML private TableColumn<Vehicle, String> modelColumn;
     @FXML private TableColumn<Vehicle, String> dealershipIdColumn;
-    @FXML private TableColumn<Vehicle, Long> acquisitionDate;
+    @FXML private TableColumn<Vehicle, String> priceColumn;
+    @FXML private TableColumn<Vehicle, String> acquisitionDate;
 
     @FXML private TableView<Dealer> dealerTableView;
-    @FXML public TableColumn<Dealer, String> dealerIdColumn;
-    @FXML public TableColumn<Dealer, String> dealerNameColumn;
-    @FXML public TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
+    @FXML private TableColumn<Dealer, String> dealerIdColumn;
+    @FXML private TableColumn<Dealer, String> dealerNameColumn;
+    @FXML private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
 
     @FXML private ComboBox<String> dealershipIdMainCombo;
-    @FXML public Button toggleAcquisitionBtn;
+    @FXML private Button toggleAcquisitionBtn;
     @FXML private Button deleteVehicleBtn;
-    @FXML public Button goToVehiclesViewBtn;
-    @FXML public Button goToDealersViewBtn;
+    @FXML private Button goToVehiclesViewBtn;
+    @FXML private Button goToDealersViewBtn;
 
     @FXML
     public void initialize() {
@@ -122,14 +118,20 @@ public class MainController {
     }
 
     @FXML
-    private void onImport() {
-        dataTransferService.importData(getStage());
+    private void onImportJson() {
+        dataTransferService.importJson(getStage());
         refreshVehiclesTable();
     }
 
     @FXML
-    private void onExport() {
-        dataTransferService.exportData(getStage());
+    private void onImportXml() {
+        dataTransferService.importXml(getStage());
+        refreshVehiclesTable();
+    }
+
+    @FXML
+    private void onExportJson() {
+        dataTransferService.exportJson(getStage());
     }
 
     @FXML
@@ -220,22 +222,14 @@ public class MainController {
         modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
         vehicleTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dealershipIdColumn.setCellValueFactory(new PropertyValueFactory<>("dealershipId"));
-        acquisitionDate.setCellValueFactory(new PropertyValueFactory<>("acquisitionDate"));
-        acquisitionDate.setCellFactory(column -> new TableCell<>() {
-            private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
-            @Override
-            protected void updateItem(Long epoch, boolean empty) {
-                super.updateItem(epoch, empty);
-                if (empty || epoch == null) {
-                    setText(null);
-                } else {
-                    LocalDateTime dateTime = Instant.ofEpochMilli(epoch)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDateTime();
-                    setText(formatter.format(dateTime));
-                }
-            }
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        priceColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(cellData.getValue().getPriceAsString());
         });
+
+        acquisitionDate.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFormattedAcquisitionDate()));
     }
 
     private void setupDealersTable() {

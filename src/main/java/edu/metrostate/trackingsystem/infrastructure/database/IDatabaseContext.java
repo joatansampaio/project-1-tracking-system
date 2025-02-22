@@ -3,6 +3,7 @@ package edu.metrostate.trackingsystem.infrastructure.database;
 import edu.metrostate.trackingsystem.application.dto.ImportDTO;
 import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
+import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;
 
 import java.util.List;
 
@@ -23,5 +24,6 @@ public interface IDatabaseContext {
 
     Vehicle getVehicle(String id, String dealerId);
 
-    void loadDatabase(List<ImportDTO> data);
+    void importJson(List<Vehicle> data);
+    void importXML(DealersXMLModel model);
 }

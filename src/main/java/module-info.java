@@ -5,11 +5,13 @@ module edu.metrostate.trackingsystem {
     requires org.controlsfx.controls;
     requires javafx.controls;
     requires java.logging;
+    requires com.fasterxml.jackson.dataformat.xml;
 
     opens edu.metrostate.trackingsystem to javafx.fxml;
     opens edu.metrostate.trackingsystem.presentation.controllers to javafx.fxml;
     opens edu.metrostate.trackingsystem.domain.models to javafx.base, com.google.gson;
     opens edu.metrostate.trackingsystem.application.dto to com.google.gson;
+    opens edu.metrostate.trackingsystem.infrastructure.database.models to com.google.gson, javafx.base;
 
     exports edu.metrostate.trackingsystem;
     exports edu.metrostate.trackingsystem.application.exceptions;
@@ -21,4 +23,5 @@ module edu.metrostate.trackingsystem {
     exports edu.metrostate.trackingsystem.infrastructure.utils;
     exports edu.metrostate.trackingsystem.infrastructure.logging;
     exports edu.metrostate.trackingsystem.infrastructure.database;
+    exports edu.metrostate.trackingsystem.infrastructure.database.models;
 }

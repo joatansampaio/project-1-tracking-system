@@ -6,10 +6,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import edu.metrostate.trackingsystem.application.dto.ImportDTO;
+import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import edu.metrostate.trackingsystem.infrastructure.database.DatabaseContext;
-import edu.metrostate.trackingsystem.domain.models.CarInventory;
+import edu.metrostate.trackingsystem.infrastructure.database.models.DealershipDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,9 +48,9 @@ public class JsonHandler implements IFileHandler {
                 .parseString(json)
                 .getAsJsonObject();
 
-            Type listType = new TypeToken<List<ImportDTO>>() {}.getType();
-            List<ImportDTO> data = new Gson().fromJson(jsonObject.get("car_inventory"), listType);
-            databaseContext.loadDatabase(data);
+            Type listType = new TypeToken<List<Vehicle>>() {}.getType();
+            List<Vehicle> data = new Gson().fromJson(jsonObject.get("car_inventory"), listType);
+            databaseContext.importJson(data);
             logger.info("Imported successfully.");
             return true;
         } catch (Exception e) {
@@ -64,7 +65,7 @@ public class JsonHandler implements IFileHandler {
             .setPrettyPrinting()
             .create();
         var data = databaseContext.getVehicles();
-        CarInventory wrapper = new CarInventory(data);
+        DealershipDatabase wrapper = new DealershipDatabase(data);
         String json = gson.toJson(wrapper);
         String path = file.getAbsolutePath();
 
@@ -83,7 +84,7 @@ public class JsonHandler implements IFileHandler {
     }
 
     /**
-     * This is a special internal process to auto-save the session's data to database.json
+     * The following methods are internal processes to auto-save & load the database.json
      */
     public void saveSession() {
         Gson gson = new GsonBuilder()
@@ -91,7 +92,7 @@ public class JsonHandler implements IFileHandler {
             .create();
 
         var data = databaseContext.getVehicles();
-        CarInventory wrapper = new CarInventory(data);
+        DealershipDatabase wrapper = new DealershipDatabase(data);
         String json = gson.toJson(wrapper);
 
         File folder = new File("src/main/resources/database");
@@ -104,5 +105,9 @@ public class JsonHandler implements IFileHandler {
             logger.error(e.getMessage());
             System.exit(0);
         }
+    }
+
+    public boolean loadSession(File file) {
+        return true;
     }
 }

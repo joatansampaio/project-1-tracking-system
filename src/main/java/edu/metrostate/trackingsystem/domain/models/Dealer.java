@@ -1,19 +1,30 @@
 
 package edu.metrostate.trackingsystem.domain.models;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
 
+	@JacksonXmlProperty(isAttribute = true, localName = "id")
 	private String dealershipId;
 	private boolean enabledForAcquisition;
+
+	@JacksonXmlElementWrapper(useWrapping = false)
+	@JacksonXmlProperty(localName = "Vehicle")
 	private List<Vehicle> vehicles;
 
-	public Dealer(String dealershipId) {
-		this.dealershipId = dealershipId;
+	public Dealer() {
 		this.enabledForAcquisition = true;
 		this.vehicles = new ArrayList<>();
+	}
+
+	public Dealer(String dealershipId) {
+		this(); // Call the default constructor.
+		this.dealershipId = dealershipId;
 	}
 
 	/**
@@ -51,14 +62,4 @@ public class Dealer {
 		this.vehicles = vehicles;
 	}
 
-	/**
-	 * Gives a string with information about the dealer
-	 * @return The dealer's dealershipID, whether vehicle acquisition is enabled, and number of vehicles held. All on separate lines.
-	 */
-	@Override
-	public String toString(){
-		return "DealershipID: " + dealershipId + "\n" +
-				"Acquisition enabled: " + enabledForAcquisition + "\n" +
-				"Vehicles held: " + vehicles.size() + "\n";
-	}
 }

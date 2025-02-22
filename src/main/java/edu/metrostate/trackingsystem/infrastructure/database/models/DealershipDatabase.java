@@ -1,11 +1,13 @@
-package edu.metrostate.trackingsystem.domain.models;
+package edu.metrostate.trackingsystem.infrastructure.database.models;
+
+import edu.metrostate.trackingsystem.domain.models.Vehicle;
 
 import java.util.List;
 
-public class CarInventory {
+public class DealershipDatabase {
     private List<Vehicle> car_inventory;
 
-    public CarInventory(List<Vehicle> vehicles) {
+    public DealershipDatabase(List<Vehicle> vehicles) {
         this.car_inventory = vehicles;
     }
 

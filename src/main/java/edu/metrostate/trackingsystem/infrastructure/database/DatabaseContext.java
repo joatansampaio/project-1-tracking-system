@@ -2,7 +2,9 @@ package edu.metrostate.trackingsystem.infrastructure.database;
 
 import edu.metrostate.trackingsystem.application.dto.ImportDTO;
 import edu.metrostate.trackingsystem.domain.models.Dealer;
+import edu.metrostate.trackingsystem.domain.models.Price;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
+import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;
 import javafx.collections.FXCollections;
 
 import java.util.List;
@@ -147,7 +149,7 @@ public class DatabaseContext implements IDatabaseContext {
     }
 
     @Override
-    public void loadDatabase(List<ImportDTO> data) {
+    public void importJson(List<Vehicle> data) {
         for (var item : data) {
             var dealer = dealers
                 .stream()
@@ -166,21 +168,28 @@ public class DatabaseContext implements IDatabaseContext {
             if (vehicle == null) {
                 vehicle = new Vehicle(
                         item.getVehicleId(),
-                        item.getVehicleManufacturer(),
-                        item.getVehicleModel(),
+                        item.getManufacturer(),
+                        item.getModel(),
                         item.getAcquisitionDate(),
                         item.getPrice(),
                         item.getDealershipId(),
-                        item.getVehicleType()
+                        item.getType()
                 );
                 dealer.addVehicle(vehicle);
             } else {
-                vehicle.setManufacturer(item.getVehicleManufacturer());
-                vehicle.setModel(item.getVehicleModel());
-                vehicle.setType(item.getVehicleType());
+                vehicle.setManufacturer(item.getManufacturer());
+                vehicle.setModel(item.getModel());
+                vehicle.setType(item.getType());
                 vehicle.setPrice(item.getPrice());
                 vehicle.setAcquisitionDate(item.getAcquisitionDate());
             }
         }
+    }
+
+    public void importXML(DealersXMLModel model) {
+        var dealers = model.getDealers();
+        // TODO: validate before pushing it into dealers
+        // Make sure to deal with non-existent fields
+        this.dealers.addAll(dealers);
     }
 }

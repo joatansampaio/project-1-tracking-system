@@ -1,0 +1,55 @@
+@startuml
+
+skinparam shadowing<<dialog>> true
+skinparam shadowing<<table>> true
+skinparam linetype ortho
+
+
+actor Manager
+
+left to right direction
+
+rectangle "Main UI" {
+    usecase "Filter Tables by Dealer"
+    usecase "Import JSON"
+    usecase "Import XML"
+    usecase "Export JSON"
+    usecase "Export XMl"
+    usecase "Exit"
+
+    frame Tabs {
+        rectangle "Vehicles" <<table>> {
+            usecase "Delete Vehicle"
+            usecase "Add Vehicle"
+            usecase "View Vehicle Information"
+        }
+
+        rectangle "Dealers" <<table>> {
+            usecase "Toggle Acquisition"
+            usecase "Transfer Inventory"
+            usecase "View Dealer Information"
+        }
+    }
+}
+
+rectangle "Add Vehicle Dialog" <<dialog>> {
+    usecase Save
+    usecase Cancel
+}
+
+Manager --> "Exit"
+Manager --> "Import JSON"
+Manager --> "Export JSON"
+Manager --> "Import XML"
+Manager --> "Export XMl"
+Manager --> "Toggle Acquisition"
+Manager --> "Filter Tables by Dealer"
+Manager --> "View Vehicle Information"
+Manager --> "View Dealer Information"
+Manager --> "Transfer Inventory"
+Manager --> "Delete Vehicle"
+Manager --> "Add Vehicle"
+"Add Vehicle" --> "Save"
+"Add Vehicle" --> "Cancel"
+
+@enduml
