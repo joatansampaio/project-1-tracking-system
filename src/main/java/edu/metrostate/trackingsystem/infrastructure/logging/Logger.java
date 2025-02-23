@@ -4,6 +4,7 @@ package edu.metrostate.trackingsystem.infrastructure.logging;
  * We could have a LoggerFactory, but this is way too much for such small need.
  */
 public class Logger {
+
     private final String className;
 
     private Logger() {

@@ -1,6 +1,5 @@
 package edu.metrostate.trackingsystem.infrastructure.database;
 
-import edu.metrostate.trackingsystem.application.dto.ImportDTO;
 import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;

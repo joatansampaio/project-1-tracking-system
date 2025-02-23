@@ -10,9 +10,9 @@ import java.io.File;
 
 public class DataTransferService {
 
+    private static final Logger logger = Logger.getLogger();
     private final NotificationHandler notificationHandler;
     private final JsonHandler jsonHandler;
-    private final Logger logger = Logger.getLogger();
 
     public DataTransferService(NotificationHandler notificationHandler, JsonHandler jsonHandler) {
         this.notificationHandler = notificationHandler;

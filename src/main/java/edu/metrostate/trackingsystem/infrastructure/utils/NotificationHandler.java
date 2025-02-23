@@ -4,8 +4,8 @@ import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 public class NotificationHandler {
-    private static NotificationHandler instance;
-    private final Stage mainStage; // or MainController reference, whichever you prefer
+
+    private final Stage mainStage;
 
     public NotificationHandler(Stage stage) {
         this.mainStage = stage;

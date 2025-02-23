@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import edu.metrostate.trackingsystem.application.dto.ImportDTO;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
