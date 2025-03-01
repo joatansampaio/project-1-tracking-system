@@ -8,6 +8,7 @@ import edu.metrostate.trackingsystem.domain.repositories.VehicleRepository;
 import edu.metrostate.trackingsystem.infrastructure.database.DatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import edu.metrostate.trackingsystem.infrastructure.utils.JsonHandler;
+import edu.metrostate.trackingsystem.infrastructure.utils.XmlHandler;
 import edu.metrostate.trackingsystem.infrastructure.utils.NotificationHandler;
 import edu.metrostate.trackingsystem.presentation.controllers.MainController;
 import javafx.application.Application;
@@ -35,13 +36,14 @@ public class Main extends Application {
 
         // Dependencies
         var jsonHandler = JsonHandler.getInstance();
+        var xmlHandler = XmlHandler.getInstance();
         var database = DatabaseContext.getInstance();
         var notificationHandler = new NotificationHandler(stage);
         var vehicleRepository = new VehicleRepository(database);
         var dealerRepository = new DealerRepository(database);
         var vehicleService = new VehicleService(vehicleRepository);
         var dealerService = new DealerService(dealerRepository);
-        var dataTransferService = new DataTransferService(notificationHandler, jsonHandler);
+        var dataTransferService = new DataTransferService(notificationHandler, jsonHandler, xmlHandler);
 
         MainController mainController = fxmlLoader.getController();
         mainController.injectDependencies(vehicleService, dealerService, dataTransferService, notificationHandler);

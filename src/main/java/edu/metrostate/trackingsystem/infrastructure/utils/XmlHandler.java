@@ -2,15 +2,29 @@ package edu.metrostate.trackingsystem.infrastructure.utils;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import edu.metrostate.trackingsystem.infrastructure.database.DatabaseContext;
+import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import java.io.File;
 
 public class XmlHandler implements IFileHandler {
+    private static Logger logger = Logger.getLogger();
+    private static XmlHandler instance;
+    private static IDatabaseContext databaseContext;
 
-    Logger logger = Logger.getLogger();
 
-    @Override
+    private XmlHandler() { }
+
+    public static XmlHandler getInstance() {
+        if (instance == null) {
+            instance = new XmlHandler();
+            logger = Logger.getLogger();
+            databaseContext = DatabaseContext.getInstance();
+        }
+        return instance;
+    }
+
+        @Override
     public boolean importFile(File file) {
 
         XmlMapper mapper = new XmlMapper();

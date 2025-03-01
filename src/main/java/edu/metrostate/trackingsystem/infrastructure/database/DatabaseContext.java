@@ -184,10 +184,78 @@ public class DatabaseContext implements IDatabaseContext {
         }
     }
 
+
+    //Current problem is that it will not add the dealer id to the database in the ui
     public void importXML(DealersXMLModel model) {
         var dealers = model.getDealers();
+
+
         // TODO: validate before pushing it into dealers
         // Make sure to deal with non-existent fields
-        this.dealers.addAll(dealers);
+        for (Dealer dealer : dealers){
+
+          //If dealer ID is already in database
+            if (getDealershipIDs().contains(dealer.getDealershipId())){
+
+                var result = getDealerByID(dealer.getDealershipId());
+                if (result.isSuccess()) {
+                    List<Vehicle> vehicleListToUpdate = result.getData().getVehicles();
+
+                    //Check the existing dealer for vehicle ID conflicts with the incoming XML data
+                    for (Vehicle xmlVehicle : dealer.getVehicles()){
+                        //
+                        var test = vehicleListToUpdate
+                                .stream()
+                                .filter(v -> v.getVehicleId().matches((xmlVehicle.getVehicleId())))
+                                .findFirst()
+                                .orElse(null);
+
+                        //If there is no matching vehicle ID for the dealer, add the vehicle
+                        if (test == null) {
+                            Vehicle vehicleToAdd =  new Vehicle(
+                                    xmlVehicle.getVehicleId(),
+                                    xmlVehicle.getManufacturer(),
+                                    xmlVehicle.getModel(),
+                                    xmlVehicle.getAcquisitionDate(),
+                                    xmlVehicle.getPrice(),
+                                    xmlVehicle.getDealershipId(),
+                                    xmlVehicle.getType());
+
+                            vehicleListToUpdate.add(vehicleToAdd);
+                            //TODO: Update vehicle
+                        } else {
+
+                        }
+                    }
+
+
+                    }
+                } else {//If dealer is not in database
+
+                System.out.println(dealer.getDealershipId());
+                    Dealer newDealer = new Dealer(dealer.getDealershipId());
+                    this.dealers.add(newDealer);
+//Check the existing dealer for vehicle ID conflicts with the incoming XML data
+                for (Vehicle xmlVehicle : dealer.getVehicles()){
+                        Vehicle vehicleToAdd =  new Vehicle(
+                                xmlVehicle.getVehicleId(),
+                                xmlVehicle.getManufacturer(),
+                                xmlVehicle.getModel(),
+                                xmlVehicle.getAcquisitionDate(),
+                                xmlVehicle.getPrice(),
+                                xmlVehicle.getDealershipId(),
+                                xmlVehicle.getType());
+
+                    newDealer.addVehicle(vehicleToAdd);
+
+                }
+            }
+
+        }
+
+
+
+
+       // this.dealers.addAll(dealers);
     }
 }

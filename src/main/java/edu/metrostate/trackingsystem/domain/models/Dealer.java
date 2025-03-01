@@ -17,6 +17,11 @@ public class Dealer {
 	@JacksonXmlProperty(localName = "Vehicle")
 	private List<Vehicle> vehicles;
 
+
+
+	@JacksonXmlProperty(localName = "Name")
+	private String name;
+
 	public Dealer() {
 		this.enabledForAcquisition = true;
 		this.vehicles = new ArrayList<>();
@@ -60,6 +65,14 @@ public class Dealer {
 
 	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
