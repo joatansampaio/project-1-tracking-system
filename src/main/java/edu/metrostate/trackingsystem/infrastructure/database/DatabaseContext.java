@@ -231,8 +231,8 @@ public class DatabaseContext implements IDatabaseContext {
 
                     }
                 } else {//If dealer is not in database
-
-                System.out.println(dealer.getDealershipId());
+                //Debugging message
+                //System.out.println(dealer.getDealershipId());
                     Dealer newDealer = new Dealer(dealer.getDealershipId());
                     this.dealers.add(newDealer);
 //Check the existing dealer for vehicle ID conflicts with the incoming XML data
@@ -243,7 +243,7 @@ public class DatabaseContext implements IDatabaseContext {
                                 xmlVehicle.getModel(),
                                 xmlVehicle.getAcquisitionDate(),
                                 xmlVehicle.getPrice(),
-                                xmlVehicle.getDealershipId(),
+                                dealer.getDealershipId(),
                                 xmlVehicle.getType());
 
                     newDealer.addVehicle(vehicleToAdd);
