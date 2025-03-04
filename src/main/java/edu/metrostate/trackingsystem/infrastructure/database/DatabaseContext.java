@@ -187,26 +187,33 @@ public class DatabaseContext implements IDatabaseContext {
 
     //Current problem is that it will not add the dealer id to the database in the ui
     public void importXML(DealersXMLModel model) {
-        var dealers = model.getDealers();
+        var xmlDealers = model.getDealers();
 
 
         // TODO: validate before pushing it into dealers
         // Make sure to deal with non-existent fields
-        for (Dealer dealer : dealers){
+        for (Dealer xmlDealer : xmlDealers){
 
           //If dealer ID is already in database
-            if (getDealershipIDs().contains(dealer.getDealershipId())){
+            if (getDealershipIDs().contains(xmlDealer.getDealershipId())){
 
-                var result = getDealerByID(dealer.getDealershipId());
+                //Get the vehicle list for the existing dealer
+                var result = getDealerByID(xmlDealer.getDealershipId());
                 if (result.isSuccess()) {
                     List<Vehicle> vehicleListToUpdate = result.getData().getVehicles();
+                    String currentName = result.getData().getName();
+                    if (currentName == null || currentName.isEmpty() ) {
+
+                        result.getData().setName(xmlDealer.getName());
+
+                    }
 
                     //Check the existing dealer for vehicle ID conflicts with the incoming XML data
-                    for (Vehicle xmlVehicle : dealer.getVehicles()){
-                        //
+                    for (Vehicle xmlVehicle : xmlDealer.getVehicles()){
+
                         var test = vehicleListToUpdate
                                 .stream()
-                                .filter(v -> v.getVehicleId().matches((xmlVehicle.getVehicleId())))
+                                .filter(v -> v.getVehicleId().equals((xmlVehicle.getVehicleId())))
                                 .findFirst()
                                 .orElse(null);
 
@@ -222,28 +229,53 @@ public class DatabaseContext implements IDatabaseContext {
                                     xmlVehicle.getType());
 
                             vehicleListToUpdate.add(vehicleToAdd);
-                            //TODO: Update vehicle
+                            //TODO: Update vehicle if we want to
+                            //Discarding current data means possibly replacing the current data with old outdated data
                         } else {
 
                         }
                     }
 
+                }
+            } else {
+                    //The dealer is not in the database so add the dealer
+                    Dealer newDealer = new Dealer(xmlDealer.getDealershipId());
+                    newDealer.setName("Testing Name");
+                    dealers.add(newDealer);
+//Trying to debug name dealer name not showing in dealers scene/stage
+//
+//                var dbDealer = dealers
+//                        .stream()
+//                        .filter(d -> d.getDealershipId().equals(xmlDealer.getDealershipId()))
+//                        .findFirst()
+//                        .orElse(null);
+//
+//                if (dbDealer != null){
+//                    dbDealer.setName("Testing Name");
+//                    System.out.println("I'm here");
+//                }
+//
+//                var dbDealerNameCheck = dealers
+//                        .stream()
+//                        .filter(d -> d.getName().equals("Testing Name"))
+//                        .findFirst()
+//                        .orElse(null);
+//
+//                if (dbDealerNameCheck != null){
+//
+//                    System.out.println("Name is ok");
+//                }
 
-                    }
-                } else {//If dealer is not in database
-                //Debugging message
-                //System.out.println(dealer.getDealershipId());
-                    Dealer newDealer = new Dealer(dealer.getDealershipId());
-                    this.dealers.add(newDealer);
-//Check the existing dealer for vehicle ID conflicts with the incoming XML data
-                for (Vehicle xmlVehicle : dealer.getVehicles()){
+
+                //Add new vehicles
+                for (Vehicle xmlVehicle : xmlDealer.getVehicles()){
                         Vehicle vehicleToAdd =  new Vehicle(
                                 xmlVehicle.getVehicleId(),
                                 xmlVehicle.getManufacturer(),
                                 xmlVehicle.getModel(),
                                 xmlVehicle.getAcquisitionDate(),
                                 xmlVehicle.getPrice(),
-                                dealer.getDealershipId(),
+                                xmlDealer.getDealershipId(),
                                 xmlVehicle.getType());
 
                     newDealer.addVehicle(vehicleToAdd);
@@ -252,10 +284,6 @@ public class DatabaseContext implements IDatabaseContext {
             }
 
         }
-
-
-
-
        // this.dealers.addAll(dealers);
     }
 }
