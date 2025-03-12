@@ -1,0 +1,9 @@
+1. The software shall read a file that is in JSON format containing various vehicle information.
+2. The software shall support 4 different types of vehicles in the input file: suv, sedan, pickup, and sports car.
+3. The software shall read and store the vehicle ID, manufacturer, model, acquisition date, and price for each entry and associate it with the specified dealer ID.
+4. The software shall read and store the associated metadata for each vehicle.
+5. The software shall support the following commands for each dealer: add incoming vehicle, enable dealer vehicle acquisition, and disable dealer vehicle acquisition.
+6. The software shall only allow adding incoming vehicles to a dealer that has enabled receiving vehicles.
+7. The software shall keep records for a dealer that has disabled receiving vehicles, but will not allow new incoming vehicles.
+8. The software shall be able to export all vehicles from a dealer into a single JSON file.
+9. The software shall show the list of current vehicles for each dealer.

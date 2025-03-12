@@ -17,8 +17,6 @@ public class Dealer {
 	@JacksonXmlProperty(localName = "Vehicle")
 	private List<Vehicle> vehicles;
 
-
-
 	@JacksonXmlProperty(localName = "Name")
 	private String name;
 
@@ -30,6 +28,12 @@ public class Dealer {
 	public Dealer(String dealershipId) {
 		this(); // Call the default constructor.
 		this.dealershipId = dealershipId;
+	}
+
+	public Dealer(String dealershipId, String name) {
+		this();
+		this.dealershipId = dealershipId;
+		this.name = name;
 	}
 
 	/**

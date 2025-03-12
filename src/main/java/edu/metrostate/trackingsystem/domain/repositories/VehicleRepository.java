@@ -14,8 +14,8 @@ public class VehicleRepository {
         this.databaseContext = databaseContext;
     }
 
-    public Result<Boolean> deleteVehicle(Vehicle vehicle) {
-        return databaseContext.deleteVehicle(vehicle);
+    public Result<Boolean> deleteVehicle(String id, String dealerId) {
+        return databaseContext.deleteVehicle(id, dealerId);
     }
 
     public Result<Boolean> addVehicle(Vehicle vehicle) {

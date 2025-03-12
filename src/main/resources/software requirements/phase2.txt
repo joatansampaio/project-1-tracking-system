@@ -1,0 +1,1 @@
+1. The software shall have an automated unit test suite ensuring critical business logic is tested.

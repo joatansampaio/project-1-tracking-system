@@ -98,7 +98,7 @@ public class MainController {
     @FXML
     private void onDeleteVehicle() {
         var selected = vehicleTableView.getSelectionModel().getSelectedItem();
-        var response = vehicleService.deleteVehicle(selected);
+        var response = vehicleService.deleteVehicle(selected.getVehicleId(), selected.getDealershipId());
         if (response.isSuccess()) {
             notificationHandler.notify("Vehicle deleted.");
             vehicleTableView.getItems().remove(selected);

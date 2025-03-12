@@ -14,8 +14,8 @@ public class VehicleService {
         this.repository = repository;
     }
 
-    public Result<Boolean> deleteVehicle(Vehicle vehicle) {
-        return repository.deleteVehicle(vehicle);
+    public Result<Boolean> deleteVehicle(String id, String dealerId) {
+        return repository.deleteVehicle(id, dealerId);
     }
 
     public Result<Boolean> addVehicle(Vehicle vehicle) {

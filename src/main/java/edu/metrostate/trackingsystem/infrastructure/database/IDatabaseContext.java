@@ -19,7 +19,7 @@ public interface IDatabaseContext {
 
     Result<Boolean> addVehicle(Vehicle vehicle);
 
-    Result<Boolean> deleteVehicle(Vehicle vehicle);
+    Result<Boolean> deleteVehicle(String id, String dealerId);
 
     Vehicle getVehicle(String id, String dealerId);
 

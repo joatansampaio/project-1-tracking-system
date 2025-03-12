@@ -32,6 +32,7 @@ public class DatabaseContext implements IDatabaseContext {
     public List<Dealer> getDealers() {
         return dealers;
     }
+
     /**
      * @return All registered dealership IDs.
      */
@@ -115,13 +116,15 @@ public class DatabaseContext implements IDatabaseContext {
     }
 
     @Override
-    public Result<Boolean> deleteVehicle(Vehicle vehicle) {
-        var result = getDealerByID(vehicle.getDealershipId());
+    public Result<Boolean> deleteVehicle(String id, String dealerId) {
+        var result = getDealerByID(dealerId);
         if (result.isSuccess()) {
-            result.getData()
+            if (result.getData()
                   .getVehicles()
-                  .removeIf(v -> v.getVehicleId().equals(vehicle.getVehicleId()));
-            return Result.success();
+                  .removeIf(v -> v.getVehicleId().equals(id))) {
+                return Result.success();
+            }
+            return Result.failure("Vehicle ID not found.");
         }
         return Result.failure(result.getErrorMessage());
     }

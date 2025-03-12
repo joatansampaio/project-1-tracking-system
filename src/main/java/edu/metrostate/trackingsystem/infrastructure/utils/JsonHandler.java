@@ -42,12 +42,12 @@ public class JsonHandler implements IFileHandler {
     @Override
     public boolean importFile(File file) {
         try {
-            String json = Files.readString(file.toPath());
-            JsonObject jsonObject = JsonParser
+            var json = Files.readString(file.toPath());
+            var jsonObject = JsonParser
                 .parseString(json)
                 .getAsJsonObject();
 
-            Type listType = new TypeToken<List<Vehicle>>() {}.getType();
+            var listType = new TypeToken<List<Vehicle>>() {}.getType();
             List<Vehicle> data = new Gson().fromJson(jsonObject.get("car_inventory"), listType);
             databaseContext.importJson(data);
             logger.info("Imported successfully.");
@@ -60,13 +60,13 @@ public class JsonHandler implements IFileHandler {
 
     @Override
     public boolean exportFile(File file) {
-        Gson gson = new GsonBuilder()
+        var gson = new GsonBuilder()
             .setPrettyPrinting()
             .create();
         var data = databaseContext.getVehicles();
-        DealershipDatabase wrapper = new DealershipDatabase(data);
-        String json = gson.toJson(wrapper);
-        String path = file.getAbsolutePath();
+        var wrapper = new DealershipDatabase(data);
+        var json = gson.toJson(wrapper);
+        var path = file.getAbsolutePath();
 
         if (!path.toLowerCase().endsWith(".json")) {
             file = new File(path + ".json");
@@ -91,11 +91,11 @@ public class JsonHandler implements IFileHandler {
             .create();
 
         var data = databaseContext.getVehicles();
-        DealershipDatabase wrapper = new DealershipDatabase(data);
-        String json = gson.toJson(wrapper);
+        var wrapper = new DealershipDatabase(data);
+        var json = gson.toJson(wrapper);
 
-        File folder = new File("src/main/resources/database");
-        File file = new File(folder, "database.json");
+        var folder = new File("src/main/resources/database");
+        var file = new File(folder, "database.json");
 
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(json);

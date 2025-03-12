@@ -6,6 +6,7 @@ import edu.metrostate.trackingsystem.application.services.VehicleService;
 import edu.metrostate.trackingsystem.domain.repositories.DealerRepository;
 import edu.metrostate.trackingsystem.domain.repositories.VehicleRepository;
 import edu.metrostate.trackingsystem.infrastructure.database.DatabaseContext;
+import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import edu.metrostate.trackingsystem.infrastructure.utils.JsonHandler;
 import edu.metrostate.trackingsystem.infrastructure.utils.XmlHandler;
@@ -35,6 +36,23 @@ public class Main extends Application {
         setTheme(scene, getClass());
 
         // Dependencies
+        DependencyPackage result = getDependencies(stage);
+
+        MainController mainController = fxmlLoader.getController();
+        mainController.injectDependencies(result.vehicleService(), result.dealerService(), result.dataTransferService(), result.notificationHandler());
+
+        stage.setTitle("Dealership System v" + version);
+        stage.setScene(scene);
+
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            // If the user closes from the native close button, we save it too.
+            result.jsonHandler().saveSession();
+        });
+
+        stage.show();
+    }
+
+    public static DependencyPackage getDependencies(Stage stage) {
         var jsonHandler = JsonHandler.getInstance();
         var xmlHandler = XmlHandler.getInstance();
         var database = DatabaseContext.getInstance();
@@ -44,19 +62,7 @@ public class Main extends Application {
         var vehicleService = new VehicleService(vehicleRepository);
         var dealerService = new DealerService(dealerRepository);
         var dataTransferService = new DataTransferService(notificationHandler, jsonHandler, xmlHandler);
-
-        MainController mainController = fxmlLoader.getController();
-        mainController.injectDependencies(vehicleService, dealerService, dataTransferService, notificationHandler);
-
-        stage.setTitle("Dealership System v" + version);
-        stage.setScene(scene);
-
-        stage.setOnCloseRequest((WindowEvent event) -> {
-            // If the user closes from the native close button, we save it too.
-            jsonHandler.saveSession();
-        });
-
-        stage.show();
+        return new DependencyPackage(jsonHandler, notificationHandler, vehicleService, dealerService, dataTransferService, database);
     }
 
     public static void main(String[] args) {
@@ -69,4 +75,7 @@ public class Main extends Application {
     public static void setTheme(Scene scene, Class<?> classRef) {
         scene.getStylesheets().add(Objects.requireNonNull(classRef.getResource("/css/style.css")).toExternalForm());
     }
+
+    // I need that for my 'integration' unit tests.
+    public record DependencyPackage(JsonHandler jsonHandler, NotificationHandler notificationHandler, VehicleService vehicleService, DealerService dealerService, DataTransferService dataTransferService, IDatabaseContext database) { }
 }
