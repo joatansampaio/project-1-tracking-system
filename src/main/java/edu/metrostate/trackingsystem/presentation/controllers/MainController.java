@@ -127,6 +127,7 @@ public class MainController {
     private void onImportXml() {
         dataTransferService.importXml(getStage());
         refreshVehiclesTable();
+        refreshDealersTable();
     }
 
     @FXML
@@ -156,6 +157,8 @@ public class MainController {
             dealerIds.addAll(dealerService.getDealershipIDs());
 
             dealershipIdMainCombo.setItems(dealerIds);
+
+            System.out.println(dealerService.getDealers().get(0).getName());
         });
     }
 
@@ -235,6 +238,7 @@ public class MainController {
     private void setupDealersTable() {
         logger.info("Configuring Dealer TableView columns.");
         dealerIdColumn.setCellValueFactory(new PropertyValueFactory<>("dealershipId"));
+        dealerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         isEnabledForAcquisitionColumn.setCellValueFactory(new PropertyValueFactory<>("enabledForAcquisition"));
         // Set up the checkbox column for Acquisition Status
         isEnabledForAcquisitionColumn.setCellValueFactory(cellData -> {

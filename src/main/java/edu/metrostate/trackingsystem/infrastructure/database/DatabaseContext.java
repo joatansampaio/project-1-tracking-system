@@ -195,24 +195,24 @@ public class DatabaseContext implements IDatabaseContext {
 
         // TODO: validate before pushing it into dealers
         // Make sure to deal with non-existent fields
-        for (Dealer xmlDealer : xmlDealers){
+        for (Dealer xmlDealer : xmlDealers) {
 
-          //If dealer ID is already in database
-            if (getDealershipIDs().contains(xmlDealer.getDealershipId())){
+            //If dealer ID is already in database
+            if (getDealershipIDs().contains(xmlDealer.getDealershipId())) {
 
                 //Get the vehicle list for the existing dealer
                 var result = getDealerByID(xmlDealer.getDealershipId());
                 if (result.isSuccess()) {
                     List<Vehicle> vehicleListToUpdate = result.getData().getVehicles();
                     String currentName = result.getData().getName();
-                    if (currentName == null || currentName.isEmpty() ) {
+                    if (currentName == null || currentName.isEmpty()) {
 
                         result.getData().setName(xmlDealer.getName());
 
                     }
 
                     //Check the existing dealer for vehicle ID conflicts with the incoming XML data
-                    for (Vehicle xmlVehicle : xmlDealer.getVehicles()){
+                    for (Vehicle xmlVehicle : xmlDealer.getVehicles()) {
 
                         var test = vehicleListToUpdate
                                 .stream()
@@ -222,7 +222,7 @@ public class DatabaseContext implements IDatabaseContext {
 
                         //If there is no matching vehicle ID for the dealer, add the vehicle
                         if (test == null) {
-                            Vehicle vehicleToAdd =  new Vehicle(
+                            Vehicle vehicleToAdd = new Vehicle(
                                     xmlVehicle.getVehicleId(),
                                     xmlVehicle.getManufacturer(),
                                     xmlVehicle.getModel(),
@@ -241,10 +241,10 @@ public class DatabaseContext implements IDatabaseContext {
 
                 }
             } else {
-                    //The dealer is not in the database so add the dealer
-                    Dealer newDealer = new Dealer(xmlDealer.getDealershipId());
-                    newDealer.setName("Testing Name");
-                    dealers.add(newDealer);
+                //The dealer is not in the database so add the dealer
+                Dealer newDealer = new Dealer(xmlDealer.getDealershipId());
+                newDealer.setName("Testing Name");
+                dealers.add(newDealer);
 //Trying to debug name dealer name not showing in dealers scene/stage
 //
 //                var dbDealer = dealers
@@ -271,15 +271,15 @@ public class DatabaseContext implements IDatabaseContext {
 
 
                 //Add new vehicles
-                for (Vehicle xmlVehicle : xmlDealer.getVehicles()){
-                        Vehicle vehicleToAdd =  new Vehicle(
-                                xmlVehicle.getVehicleId(),
-                                xmlVehicle.getManufacturer(),
-                                xmlVehicle.getModel(),
-                                xmlVehicle.getAcquisitionDate(),
-                                xmlVehicle.getPrice(),
-                                xmlDealer.getDealershipId(),
-                                xmlVehicle.getType());
+                for (Vehicle xmlVehicle : xmlDealer.getVehicles()) {
+                    Vehicle vehicleToAdd = new Vehicle(
+                            xmlVehicle.getVehicleId(),
+                            xmlVehicle.getManufacturer(),
+                            xmlVehicle.getModel(),
+                            xmlVehicle.getAcquisitionDate(),
+                            xmlVehicle.getPrice(),
+                            xmlDealer.getDealershipId(),
+                            xmlVehicle.getType());
 
                     newDealer.addVehicle(vehicleToAdd);
 
@@ -287,6 +287,8 @@ public class DatabaseContext implements IDatabaseContext {
             }
 
         }
+        var dealers = getDealers();
+        System.out.println("hi");
        // this.dealers.addAll(dealers);
     }
 }

@@ -44,11 +44,6 @@ public class Main extends Application {
         stage.setTitle("Dealership System v" + version);
         stage.setScene(scene);
 
-        stage.setOnCloseRequest((WindowEvent event) -> {
-            // If the user closes from the native close button, we save it too.
-            result.jsonHandler().saveSession();
-        });
-
         stage.show();
     }
 

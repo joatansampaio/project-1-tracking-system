@@ -1,52 +1,52 @@
 {
   "car_inventory": [
     {
-      "vehicle_id": "48934j",
-      "vehicle_manufacturer": "Ford",
-      "vehicle_model": "Explorer",
+      "vehicle_id": "848432",
+      "vehicle_manufacturer": "Land Rover",
+      "vehicle_model": "Range Rover",
       "vehicle_type": "suv",
-      "acquisition_date": 1515354694451,
+      "acquisition_date": 0,
       "price": {
-        "price": 20123.0,
-        "currency": "dollars"
+        "price": 17000.0,
+        "currency": "pounds"
       },
-      "dealership_id": "12513"
+      "dealership_id": "485"
     },
     {
-      "vehicle_id": "83883",
-      "vehicle_manufacturer": "Tesla",
-      "vehicle_model": "Model 3",
-      "vehicle_type": "sedan",
-      "acquisition_date": 1515354694451,
-      "price": {
-        "price": 50444.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "12513"
-    },
-    {
-      "vehicle_id": "89343883",
-      "vehicle_manufacturer": "Chevy",
-      "vehicle_model": "Silverado",
-      "vehicle_type": "pickup",
-      "acquisition_date": 1515354694451,
-      "price": {
-        "price": 70444.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "12513"
-    },
-    {
-      "vehicle_id": "229393",
+      "vehicle_id": "52523",
       "vehicle_manufacturer": "Toyota",
-      "vehicle_model": "Supra",
-      "vehicle_type": "sports car",
-      "acquisition_date": 1515354694451,
+      "vehicle_model": "Tundra",
+      "vehicle_type": "pickup",
+      "acquisition_date": 0,
       "price": {
-        "price": 49889.0,
+        "price": 22600.0,
         "currency": "dollars"
       },
-      "dealership_id": "77338"
+      "dealership_id": "485"
+    },
+    {
+      "vehicle_id": "151e5dde",
+      "vehicle_manufacturer": "Genesis",
+      "vehicle_model": "G70",
+      "vehicle_type": "sedan",
+      "acquisition_date": 0,
+      "price": {
+        "price": 36600.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485"
+    },
+    {
+      "vehicle_id": "ern222",
+      "vehicle_manufacturer": "Mazda",
+      "vehicle_model": "Miata",
+      "vehicle_type": "sports car",
+      "acquisition_date": 0,
+      "price": {
+        "price": 22330.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485"
     }
   ]
 }
