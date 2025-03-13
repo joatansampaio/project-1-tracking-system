@@ -1,27 +1,32 @@
-@startuml
-'https://plantuml.com/sequence-diagram
-'WIP
-autonumber
+New feature 2: The system currently does not save user preferences between sessions. Please implement a mechanism to store and retrieve user preferences, such as language settings and theme selection, when the program starts up.
 
-actor Manager
-participant UI
-participant MainController
-participant VehicleService
-participant VehicleRepository
-participant DatabaseContext
-participant Vehicle
-
-Manager -> UI: Clicks to toggle if a vehicle is rented
-UI -> MainController: Toggle Rented
-MainController -> VehicleService: toggleRented(String dealershipID, String vehicleID)
-VehicleService -> VehicleRepository: toggleRented(String dealershipID, String vehicleID)
-VehicleRepository -> DatabaseContext: toggleRented(String dealershipID, String vehicleID)
-DatabaseContext -> DatabaseContext: getVehicle(String dealershipID, String vehicleID)
-DatabaseContext -> Vehicle: toggleRented
-Vehicle -> DatabaseContext: response
-DatabaseContext -> VehicleRepository: response
-VehicleRepository -> VehicleService: response
-VehicleService -> MainController: response
-MainController -> UI: display error message if appropriate
-MainController -> UI: update vehicle info
-@enduml
+@@ -0,0 +1,27 @@
+ @startuml
+ 'https://plantuml.com/sequence-diagram
+ 'WIP
+ autonumber
+ 
+ actor User
+ participant UI
+ participant MainController
+ participant UserPreferenceService
+ participant UserPreferenceRepository
+ participant DatabaseContext
+ 
+ User -> UI: Modifies preferences (e.g., theme, language)
+ UI -> MainController: Save preferences
+ MainController -> UserPreferenceService: savePreferences(UserID, Preferences)
+ UserPreferenceService -> UserPreferenceRepository: savePreferences(UserID, Preferences)
+ UserPreferenceRepository -> DatabaseContext: savePreferences(UserID, Preferences)
+ DatabaseContext -> DatabaseContext: store preferences
+ 
+ User -> UI: Opens application
+ UI -> MainController: Load preferences
+ MainController -> UserPreferenceService: getPreferences(UserID)
+ UserPreferenceService -> UserPreferenceRepository: getPreferences(UserID)
+ UserPreferenceRepository -> DatabaseContext: getPreferences(UserID)
+ DatabaseContext -> UserPreferenceRepository: return preferences
+ UserPreferenceRepository -> UserPreferenceService: return preferences
+ UserPreferenceService -> MainController: return preferences
+ MainController -> UI: Apply user preferences
+ @enduml
