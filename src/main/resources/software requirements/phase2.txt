@@ -1,1 +1,9 @@
 1. The software shall have an automated unit test suite ensuring critical business logic is tested.
+
+
+
+The software shall allow the user to toggle if a vehicle is rented.
+
+The software shall update the display to show if a vehicle is being rented.
+
+The software shall not allow a user to set a vehicle car as rented if it is a sports car. 
