@@ -44,6 +44,12 @@ public class Main extends Application {
         stage.setTitle("Dealership System v" + version);
         stage.setScene(scene);
 
+        // Comment here if you don't want to save when closing through the X button.
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            // If the user closes from the native close button, we save it too.
+            result.jsonHandler().saveSession();
+        });
+
         stage.show();
     }
 

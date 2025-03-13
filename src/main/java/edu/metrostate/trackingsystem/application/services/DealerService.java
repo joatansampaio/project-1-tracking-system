@@ -24,4 +24,6 @@ public class DealerService {
     public List<Dealer> getDealers() {
         return repository.getDealers();
     }
+
+    public boolean UpdateDealer(Dealer dealer) { return true; }
 }

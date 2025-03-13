@@ -84,6 +84,9 @@ public class DatabaseContext implements IDatabaseContext {
         }
     }
 
+    //TODO: Add a method to update the dealer's information
+    // which right now should only allow name
+
     @Override
     public Result<Boolean> addVehicle(Vehicle vehicle) {
         Dealer dealer;
