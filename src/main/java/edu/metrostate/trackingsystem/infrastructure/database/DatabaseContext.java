@@ -5,6 +5,7 @@ import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;
 import javafx.collections.FXCollections;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +40,9 @@ public class DatabaseContext implements IDatabaseContext {
     @Override
     public List<String> getDealershipIDs() {
         return dealers
-            .stream()
-            .map(Dealer::getDealershipId)
-            .collect(Collectors.toList());
+                .stream()
+                .map(Dealer::getDealershipId)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -52,9 +53,9 @@ public class DatabaseContext implements IDatabaseContext {
     @Override
     public List<Vehicle> getVehicles() {
         return dealers
-            .stream()
-            .flatMap(dealer -> dealer.getVehicles().stream())
-            .collect(Collectors.toList());
+                .stream()
+                .flatMap(dealer -> dealer.getVehicles().stream())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -65,10 +66,10 @@ public class DatabaseContext implements IDatabaseContext {
     @Override
     public Result<Dealer> getDealerByID(String dealershipId) {
         var dealer = dealers
-            .stream()
-            .filter(d -> d.getDealershipId().equals(dealershipId))
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(d -> d.getDealershipId().equals(dealershipId))
+                .findFirst()
+                .orElse(null);
 
         if (dealer != null) {
             return Result.success(dealer);
@@ -104,10 +105,10 @@ public class DatabaseContext implements IDatabaseContext {
 
         var vehicles = dealer.getVehicles();
         var existingVehicleWithSameId = vehicles
-            .stream()
-            .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
+                .findFirst()
+                .orElse(null);
 
         // ID is being used already.
         if (existingVehicleWithSameId != null) {
@@ -123,8 +124,8 @@ public class DatabaseContext implements IDatabaseContext {
         var result = getDealerByID(dealerId);
         if (result.isSuccess()) {
             if (result.getData()
-                  .getVehicles()
-                  .removeIf(v -> v.getVehicleId().equals(id))) {
+                    .getVehicles()
+                    .removeIf(v -> v.getVehicleId().equals(id))) {
                 return Result.success();
             }
             return Result.failure("Vehicle ID not found.");
@@ -135,31 +136,31 @@ public class DatabaseContext implements IDatabaseContext {
     @Override
     public Vehicle getVehicle(String id, String dealerId) {
         var dealer =  dealers
-            .stream()
-            .filter(d -> d.getDealershipId().equals(dealerId))
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(d -> d.getDealershipId().equals(dealerId))
+                .findFirst()
+                .orElse(null);
 
         if (dealer == null) {
             return null;
         }
 
         return dealer
-            .getVehicles()
-            .stream()
-            .filter(v -> v.getVehicleId().equals((id)))
-            .findFirst()
-            .orElse(null);
+                .getVehicles()
+                .stream()
+                .filter(v -> v.getVehicleId().equals((id)))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public void importJson(List<Vehicle> data) {
         for (var item : data) {
             var dealer = dealers
-                .stream()
-                .filter(d -> d.getDealershipId().equals(item.getDealershipId()))
-                .findFirst()
-                .orElse(null);
+                    .stream()
+                    .filter(d -> d.getDealershipId().equals(item.getDealershipId()))
+                    .findFirst()
+                    .orElse(null);
 
             // create a dealer if one with the same ID does not exist.
             if (dealer == null) {
@@ -191,7 +192,7 @@ public class DatabaseContext implements IDatabaseContext {
     }
 
 
-    //Current problem is that it will not add the dealer id to the database in the ui
+    //Current problem is that dealer name is not showing or not getting added to database correctly
     public void importXML(DealersXMLModel model) {
         var xmlDealers = model.getDealers();
 
@@ -207,6 +208,8 @@ public class DatabaseContext implements IDatabaseContext {
                 var result = getDealerByID(xmlDealer.getDealershipId());
                 if (result.isSuccess()) {
                     List<Vehicle> vehicleListToUpdate = result.getData().getVehicles();
+
+                    //Set name if it is not set by using the new XML data
                     String currentName = result.getData().getName();
                     if (currentName == null || currentName.isEmpty()) {
 
@@ -217,12 +220,8 @@ public class DatabaseContext implements IDatabaseContext {
                     //Check the existing dealer for vehicle ID conflicts with the incoming XML data
                     for (Vehicle xmlVehicle : xmlDealer.getVehicles()) {
 
-                        var test = vehicleListToUpdate
-                                .stream()
-                                .filter(v -> v.getVehicleId().equals((xmlVehicle.getVehicleId())))
-                                .findFirst()
-                                .orElse(null);
 
+                        var test = getVehicle(xmlVehicle.getVehicleId(), xmlVehicle.getDealershipId());
                         //If there is no matching vehicle ID for the dealer, add the vehicle
                         if (test == null) {
                             Vehicle vehicleToAdd = new Vehicle(
@@ -234,64 +233,59 @@ public class DatabaseContext implements IDatabaseContext {
                                     xmlVehicle.getDealershipId(),
                                     xmlVehicle.getType());
 
+                            long acquisitionDate = Instant.now().toEpochMilli();
+                            vehicleToAdd.setAcquisitionDate(acquisitionDate);
+
                             vehicleListToUpdate.add(vehicleToAdd);
-                            //TODO: Update vehicle if we want to
+
                             //Discarding current data means possibly replacing the current data with old outdated data
                         } else {
+                            test.setManufacturer(xmlVehicle.getManufacturer());
+                            test.setModel(xmlVehicle.getModel());
+                            test.setType(xmlVehicle.getType());
+                            test.setPrice(xmlVehicle.getPrice());
 
+                            //TODO: Does this make sense to use or use something else?
+                            long acquisitionDate = Instant.now().toEpochMilli();
+                            test.setAcquisitionDate(acquisitionDate);
                         }
                     }
-
                 }
             } else {
                 //The dealer is not in the database so add the dealer
                 Dealer newDealer = new Dealer(xmlDealer.getDealershipId());
-                newDealer.setName("Testing Name");
+                newDealer.setName(xmlDealer.getName());
                 dealers.add(newDealer);
-//Trying to debug name dealer name not showing in dealers scene/stage
-//
-//                var dbDealer = dealers
-//                        .stream()
-//                        .filter(d -> d.getDealershipId().equals(xmlDealer.getDealershipId()))
-//                        .findFirst()
-//                        .orElse(null);
-//
-//                if (dbDealer != null){
-//                    dbDealer.setName("Testing Name");
-//                    System.out.println("I'm here");
-//                }
-//
-//                var dbDealerNameCheck = dealers
-//                        .stream()
-//                        .filter(d -> d.getName().equals("Testing Name"))
-//                        .findFirst()
-//                        .orElse(null);
-//
-//                if (dbDealerNameCheck != null){
-//
-//                    System.out.println("Name is ok");
-//                }
 
 
                 //Add new vehicles
                 for (Vehicle xmlVehicle : xmlDealer.getVehicles()) {
-                    Vehicle vehicleToAdd = new Vehicle(
-                            xmlVehicle.getVehicleId(),
-                            xmlVehicle.getManufacturer(),
-                            xmlVehicle.getModel(),
-                            xmlVehicle.getAcquisitionDate(),
-                            xmlVehicle.getPrice(),
-                            xmlDealer.getDealershipId(),
-                            xmlVehicle.getType());
+                    var vehicle = getVehicle(xmlVehicle.getVehicleId(), xmlVehicle.getDealershipId());
+                    if (vehicle == null){
+                        Vehicle vehicleToAdd = new Vehicle(
+                                xmlVehicle.getVehicleId(),
+                                xmlVehicle.getManufacturer(),
+                                xmlVehicle.getModel(),
+                                xmlVehicle.getAcquisitionDate(),
+                                xmlVehicle.getPrice(),
+                                xmlDealer.getDealershipId(),
+                                xmlVehicle.getType());
+                        long acquisitionDate = Instant.now().toEpochMilli();
+                        vehicleToAdd.setAcquisitionDate(acquisitionDate);
 
-                    newDealer.addVehicle(vehicleToAdd);
+                        newDealer.addVehicle(vehicleToAdd);
+                    } else {
+                        vehicle.setManufacturer(xmlVehicle.getManufacturer());
+                        vehicle.setModel(xmlVehicle.getModel());
+                        vehicle.setType(xmlVehicle.getType());
+                        vehicle.setPrice(xmlVehicle.getPrice());
 
+                        //TODO: Does this make sense to use or use something else?
+                        long acquisitionDate = Instant.now().toEpochMilli();
+                        xmlVehicle.setAcquisitionDate(acquisitionDate);
+                    }
                 }
             }
-
         }
-        var dealers = getDealers();
-        System.out.println("hi");
-       // this.dealers.addAll(dealers);
     }
 }
