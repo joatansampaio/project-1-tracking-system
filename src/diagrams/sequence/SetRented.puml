@@ -3,7 +3,7 @@
 'WIP
 autonumber
 
-actor Manager
+actor Dealer
 participant UI
 participant MainController
 participant VehicleService
@@ -11,7 +11,14 @@ participant VehicleRepository
 participant DatabaseContext
 participant Vehicle
 
-Manager -> UI: Clicks to toggle if a vehicle is rented
+Dealer -> UI: Selects vehicle to toggle rent status
+UI -> MainController: Get vehicle information
+MainController -> Vehicle: getType()
+Vehicle -> MainController: returns getType()
+MainController -> UI: If vehicle.getType() is "sports car", gray out button and make it unclickable
+
+
+Dealer -> UI: Clicks to toggle if a vehicle is rented
 UI -> MainController: Toggle Rented
 MainController -> VehicleService: toggleRented(String dealershipID, String vehicleID)
 VehicleService -> VehicleRepository: toggleRented(String dealershipID, String vehicleID)
