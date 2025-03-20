@@ -36,6 +36,7 @@
                 <Button fx:id="deleteVehicleBtn" text="Delete Vehicle" onAction="#onDeleteVehicle"
                         style="-fx-background-color:#2a2a2a"
                         disable="true"/>
+                <Button fx:id="toggleRentedBtn" text="Toggle Rented" onAction="#toggleRented" style="-fx-background-color:#2a2a2a" disable="true"/>
             </HBox>
         </VBox>
     </top>
@@ -52,6 +53,7 @@
                     <TableColumn fx:id="dealershipIdColumn" text="Dealership ID" prefWidth="100"/>
                     <TableColumn fx:id="acquisitionDate" text="Acquisition Date" prefWidth="140"/>
                     <TableColumn fx:id="priceColumn" text="Price" prefWidth="150"/>
+                    <TableColumn fx:id="isRentedColumn" text="Rented" prefWidth="60"/>
                 </columns>
             </TableView>
             <TableView fx:id="dealerTableView" visible="false">

@@ -25,4 +25,6 @@ public class VehicleRepository {
     public List<Vehicle> getVehicles() {
         return databaseContext.getVehicles();
     }
+
+    public void toggleIsRented(Vehicle vehicle) { databaseContext.toggleIsRented(vehicle);}
 }

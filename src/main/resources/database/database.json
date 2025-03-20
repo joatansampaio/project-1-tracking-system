@@ -10,7 +10,8 @@
         "price": 17000.0,
         "currency": "pounds"
       },
-      "dealership_id": "485"
+      "dealership_id": "485",
+      "is_rented": false
     },
     {
       "vehicle_id": "52523",
@@ -22,7 +23,8 @@
         "price": 22600.0,
         "currency": "dollars"
       },
-      "dealership_id": "485"
+      "dealership_id": "485",
+      "is_rented": false
     },
     {
       "vehicle_id": "151e5dde",
@@ -34,7 +36,8 @@
         "price": 36600.0,
         "currency": "dollars"
       },
-      "dealership_id": "485"
+      "dealership_id": "485",
+      "is_rented": false
     },
     {
       "vehicle_id": "ern222",
@@ -46,7 +49,8 @@
         "price": 22330.0,
         "currency": "dollars"
       },
-      "dealership_id": "485"
+      "dealership_id": "485",
+      "is_rented": false
     }
   ]
 }

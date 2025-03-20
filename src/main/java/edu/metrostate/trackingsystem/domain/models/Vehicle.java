@@ -45,6 +45,9 @@ public class Vehicle {
 	@SerializedName("dealership_id")
 	private String dealershipId;
 
+	@SerializedName("is_rented")
+	private boolean isRented = false;
+
 	public Vehicle() { }
 
 	public Vehicle(String vehicleId, String manufacturer, String model, long acquisitionDate,
@@ -182,6 +185,29 @@ public class Vehicle {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean getIsRented() { return isRented;}
+
+	public void setIsRented(boolean rented) {this.isRented = rented;}
+
+	public void toggleIsRented(){
+		if(this.getType().equalsIgnoreCase("sports car")){
+			isRented = false;
+			System.out.println("bad");
+		}
+		else{
+			isRented = !isRented;
+		}
+	}
+
+	public String getIsRentedAsString() {
+		if(isRented){
+			return "Yes";
+		}
+		else{
+			return "No";
+		}
 	}
 
 	public String getFormattedAcquisitionDate() {

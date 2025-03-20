@@ -44,6 +44,7 @@ public class MainController {
     @FXML private TableColumn<Vehicle, String> dealershipIdColumn;
     @FXML private TableColumn<Vehicle, String> priceColumn;
     @FXML private TableColumn<Vehicle, String> acquisitionDate;
+    @FXML private TableColumn<Vehicle, String> isRentedColumn;
 
     @FXML private TableView<Dealer> dealerTableView;
     @FXML private TableColumn<Dealer, String> dealerIdColumn;
@@ -55,6 +56,7 @@ public class MainController {
     @FXML private Button deleteVehicleBtn;
     @FXML private Button goToVehiclesViewBtn;
     @FXML private Button goToDealersViewBtn;
+    @FXML private Button toggleRentedBtn;
 
     @FXML
     public void initialize() {
@@ -135,6 +137,12 @@ public class MainController {
         dataTransferService.exportJson(getStage());
     }
 
+    @FXML
+    private void toggleRented() {
+        Vehicle selected = vehicleTableView.getSelectionModel().getSelectedItem();
+        vehicleService.toggleIsRented(selected);
+        vehicleTableView.refresh();
+    }
     @FXML
     private void onExit(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
@@ -233,6 +241,10 @@ public class MainController {
 
         acquisitionDate.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFormattedAcquisitionDate()));
+
+        isRentedColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getIsRentedAsString())
+        );
     }
 
     private void setupDealersTable() {
@@ -277,6 +289,12 @@ public class MainController {
             refreshVehiclesTable(id);
             refreshDealersTable(id);
         });
+
+        // To disable the Toggle Rented button if the selected vehicle is a sports car
+        vehicleTableView.getSelectionModel().selectedItemProperty().addListener(((observableValue, v1, v2) -> {
+            toggleRentedBtn.setDisable(v2 == null || v2.getType().equalsIgnoreCase("sports car"));
+            toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null ||v2.getType().equalsIgnoreCase("sports car")) ? "#2a2a2a" : "#3c3c3c"));
+        }));
     }
 
     public void goToDealersView(ActionEvent actionEvent) {

@@ -255,4 +255,9 @@ public class DatabaseContext implements IDatabaseContext {
             }
         }
     }
+
+    @Override
+    public void toggleIsRented(Vehicle vehicle){
+        vehicle.toggleIsRented();
+    }
 }

@@ -25,4 +25,6 @@ public class VehicleService {
     public List<Vehicle> getVehicles() {
         return repository.getVehicles();
     }
+
+    public void toggleIsRented(Vehicle vehicle) { repository.toggleIsRented(vehicle);}
 }

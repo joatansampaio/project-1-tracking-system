@@ -25,4 +25,6 @@ public interface IDatabaseContext {
 
     void importJson(List<Vehicle> data);
     void importXML(DealersXMLModel model);
+
+    void toggleIsRented(Vehicle vehicle);
 }
