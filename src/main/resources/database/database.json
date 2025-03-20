@@ -5,7 +5,7 @@
       "vehicle_manufacturer": "Land Rover",
       "vehicle_model": "Range Rover",
       "vehicle_type": "suv",
-      "acquisition_date": 0,
+      "acquisition_date": 1742435367641,
       "price": {
         "price": 17000.0,
         "currency": "pounds"
@@ -17,7 +17,7 @@
       "vehicle_manufacturer": "Toyota",
       "vehicle_model": "Tundra",
       "vehicle_type": "pickup",
-      "acquisition_date": 0,
+      "acquisition_date": 1742435367641,
       "price": {
         "price": 22600.0,
         "currency": "dollars"
@@ -29,7 +29,7 @@
       "vehicle_manufacturer": "Genesis",
       "vehicle_model": "G70",
       "vehicle_type": "sedan",
-      "acquisition_date": 0,
+      "acquisition_date": 1742435367641,
       "price": {
         "price": 36600.0,
         "currency": "dollars"
@@ -41,7 +41,7 @@
       "vehicle_manufacturer": "Mazda",
       "vehicle_model": "Miata",
       "vehicle_type": "sports car",
-      "acquisition_date": 0,
+      "acquisition_date": 1742435367641,
       "price": {
         "price": 22330.0,
         "currency": "dollars"
