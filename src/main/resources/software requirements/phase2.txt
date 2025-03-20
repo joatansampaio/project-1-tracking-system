@@ -1,13 +1,10 @@
-1. The software shall have an automated unit test suite ensuring critical business logic is tested.
-
-
-
-The software shall allow the user to toggle if a vehicle is rented.
-
-The software shall update the display to show if a vehicle is being rented.
-
-The software shall disable the "Toggle rent" button if the selected vehicle is a sports car.
-
-Feature 3 -
-The software shall import XML.
-The software shall update the dealer inventory when an existing dealer has new imported data. (reword maybe)
+01. The software shall allow the user to toggle if a vehicle is rented.
+02. The software shall update the display to show if a vehicle is being rented.
+03. The software shall disable the "Toggle rent" button if the selected vehicle is a sports car.
+04. The software shall import XML.
+05. The software shall update the dealer inventory when an existing dealer has new imported data. (reword maybe)
+06. The software shall allow dealers' names to be edited.
+07. The software shall provide an option to delete dealers.
+08. The software shall display the number of vehicles a dealer has in the Dealers tab.
+09. The software shall have a dropdown box to filter vehicles by dealership ID.
+10. The software shall provide options to "Exit Without Saving" and "Exit & Save," defaulting to "Exit & Save" when closing with the native closing button.

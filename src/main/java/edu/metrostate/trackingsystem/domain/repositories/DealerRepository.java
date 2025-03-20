@@ -2,6 +2,8 @@ package edu.metrostate.trackingsystem.domain.repositories;
 
 import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
+import edu.metrostate.trackingsystem.infrastructure.database.Result;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -21,7 +23,11 @@ public class DealerRepository {
         databaseContext.toggleAcquisition(dealershipId);
     }
 
-    public List<Dealer> getDealers() {
+    public ObservableList<Dealer> getDealers() {
         return databaseContext.getDealers();
+    }
+
+    public Result<Boolean> deleteDealer(String dealershipId) {
+        return databaseContext.deleteDealer(dealershipId);
     }
 }

@@ -60,7 +60,7 @@ public class AddVehicleController {
             var response = vehicleService.addVehicle(vehicle);
             if (response.isSuccess()) {
                 notificationHandler.notify("Vehicle added.");
-                mainController.refreshVehiclesTable();
+//                mainController.updateVehicleTable();
                 closeStage(event);
             } else {
                 notificationHandler.notifyError(response.getErrorMessage());

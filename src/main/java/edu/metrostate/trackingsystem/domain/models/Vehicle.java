@@ -1,8 +1,10 @@
 package edu.metrostate.trackingsystem.domain.models;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import edu.metrostate.trackingsystem.application.exceptions.ValidationException;
+import edu.metrostate.trackingsystem.infrastructure.utils.PriceDeserializer;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -35,11 +37,12 @@ public class Vehicle {
 	@SerializedName("vehicle_type")
 	private String type;
 
+	@JacksonXmlProperty(localName = "AcquisitionDate")
 	@SerializedName("acquisition_date")
-	private long acquisitionDate;
+	private Long acquisitionDate;
 
 	@JacksonXmlProperty(localName = "Price")
-	@SerializedName("price")
+	@JsonAdapter(PriceDeserializer.class)
 	private Price price;
 
 	@SerializedName("dealership_id")
@@ -50,7 +53,7 @@ public class Vehicle {
 
 	public Vehicle() { }
 
-	public Vehicle(String vehicleId, String manufacturer, String model, long acquisitionDate,
+	public Vehicle(String vehicleId, String manufacturer, String model, Long acquisitionDate,
 				   Price price, String dealershipId, String type) {
 
 		this.vehicleId = vehicleId;
@@ -59,7 +62,7 @@ public class Vehicle {
 		this.acquisitionDate = acquisitionDate;
 		this.price = price;
 		this.dealershipId = dealershipId;
-		this.type = type;
+		this.type = type.toUpperCase();
 	}
 
 	/**
@@ -123,8 +126,8 @@ public class Vehicle {
 			throw new ValidationException(errors);
 		}
 
-		long epochMillis = acquisitionDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		return new Vehicle(vehicleId, manufacturer, model, epochMillis, new Price(price, "dollars"), dealershipId, vehicleType);
+		Long epochMillis = acquisitionDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		return new Vehicle(vehicleId, manufacturer, model, epochMillis, new Price(price, "dollars"), dealershipId, vehicleType.toUpperCase());
 	}
 
 	public void setVehicleId(String vehicleId) {
@@ -155,7 +158,7 @@ public class Vehicle {
 		return acquisitionDate;
 	}
 
-	public void setAcquisitionDate(long acquisitionDate) {
+	public void setAcquisitionDate(Long acquisitionDate) {
 		this.acquisitionDate = acquisitionDate;
 	}
 
@@ -184,7 +187,7 @@ public class Vehicle {
 	}
 
 	public void setType(String type) {
-		this.type = type;
+		this.type = type.toUpperCase();
 	}
 
 	public boolean getIsRented() { return isRented;}
@@ -211,6 +214,9 @@ public class Vehicle {
 	}
 
 	public String getFormattedAcquisitionDate() {
+		if (acquisitionDate == null) {
+			return "Unknown";
+		}
 		return DateTimeFormatter
 			.ofPattern("MM/dd/yyyy HH:mm")
 			.format(Instant.ofEpochMilli(acquisitionDate).atZone(ZoneId.systemDefault()));

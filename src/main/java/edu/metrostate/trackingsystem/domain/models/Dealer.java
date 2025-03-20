@@ -1,8 +1,11 @@
 
 package edu.metrostate.trackingsystem.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +23,12 @@ public class Dealer {
 	@JacksonXmlProperty(localName = "Name")
 	private String name;
 
+	@JsonIgnore  // Ignore this field during serialization
+	private final ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
+
 	public Dealer() {
 		this.enabledForAcquisition = true;
-		this.vehicles = new ArrayList<>();
+		this.vehicles = FXCollections.observableArrayList();
 	}
 
 	public Dealer(String dealershipId) {
@@ -42,8 +48,20 @@ public class Dealer {
 	 * @param vehicle The vehicle to add.
 	 */
 	
-	public void addVehicle(Vehicle vehicle) {
-	vehicles.add(vehicle);
+	public boolean addVehicle(Vehicle vehicle) {
+		var exists = vehicles.stream().anyMatch(v -> v.getVehicleId().equals(vehicle.getVehicleId()));
+		vehicle.setType(vehicle.getType()); // To maintain upper-case consistency
+		if (!exists) {
+			vehicles.add(vehicle);
+			vehicleList.add(vehicle); // Keep both lists in sync
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeVehicle(String id) {
+		vehicleList.removeIf(v -> v.getVehicleId().equals(id));
+		return vehicles.removeIf(v -> v.getVehicleId().equals(id));
 	}
 
 	public boolean getEnabledForAcquisition() {
@@ -54,7 +72,6 @@ public class Dealer {
 		this.enabledForAcquisition = isEnabledForAcquisition;
 	}
 
-	// Getters & Setters from here.
 	public String getDealershipId() {
 		return dealershipId;
 	}
@@ -64,11 +81,17 @@ public class Dealer {
 	}
 
 	public List<Vehicle> getVehicles() {
-		return vehicles;
+		return vehicleList;
+	}
+
+	@JsonIgnore  // Ignore during serialization
+	public ObservableList<Vehicle> getObservableVehicles() {
+		return vehicleList;
 	}
 
 	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
+		this.vehicleList.setAll(vehicles); // Convert List to ObservableList
 	}
 
 	public String getName() {

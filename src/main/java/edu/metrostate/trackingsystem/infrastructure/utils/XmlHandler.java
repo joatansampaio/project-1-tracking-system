@@ -8,18 +8,14 @@ import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
 import java.io.File;
 
 public class XmlHandler implements IFileHandler {
-    private static Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger();
     private static XmlHandler instance;
-    private static IDatabaseContext databaseContext;
-
 
     private XmlHandler() { }
 
     public static XmlHandler getInstance() {
         if (instance == null) {
             instance = new XmlHandler();
-            logger = Logger.getLogger();
-            databaseContext = DatabaseContext.getInstance();
         }
         return instance;
     }

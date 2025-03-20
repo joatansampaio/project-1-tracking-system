@@ -30,13 +30,30 @@
             </MenuBar>
             <!-- Filter ComboBox inside an HBox -->
             <HBox styleClass="main-view-actions" spacing="10.0" alignment="CENTER_LEFT">
-                <ComboBox fx:id="dealershipIdMainCombo" promptText="Dealership ID" style="-fx-min-width: 150px"/>
-                <Button text="Add Vehicle" onAction="#onAddVehicle"/>
-                <Button fx:id="toggleAcquisitionBtn" text="Toggle Acquisition" onAction="#toggleVehicleAcquisition" visible="false"/>
-                <Button fx:id="deleteVehicleBtn" text="Delete Vehicle" onAction="#onDeleteVehicle"
+                <ComboBox fx:id="dealershipIdCombo" promptText="Dealership ID" style="-fx-min-width: 150px"/>
+                <Button fx:id="addVehicleBtn" text="Add Vehicle" onAction="#onAddVehicle"/>
+                <Button fx:id="toggleAcquisitionBtn"
+                        text="Toggle Acquisition"
+                        onAction="#toggleVehicleAcquisition"
+                        style="-fx-background-color:#2a2a2a"
+                        disable="true"
+                        visible="false"/>
+                <Button fx:id="deleteVehicleBtn"
+                        text="Delete Vehicle"
+                        onAction="#onDeleteVehicle"
                         style="-fx-background-color:#2a2a2a"
                         disable="true"/>
-                <Button fx:id="toggleRentedBtn" text="Toggle Rented" onAction="#toggleRented" style="-fx-background-color:#2a2a2a" disable="true"/>
+                <Button fx:id="deleteDealerBtn"
+                        text="Delete Dealer"
+                        onAction="#onDeleteDealer"
+                        style="-fx-background-color:#2a2a2a"
+                        visible="false"
+                        disable="true"/>
+                <Button fx:id="toggleRentedBtn"
+                        text="Toggle Rented"
+                        onAction="#toggleRented"
+                        style="-fx-background-color:#2a2a2a"
+                        disable="true"/>
             </HBox>
         </VBox>
     </top>
@@ -44,19 +61,19 @@
     <!-- Tables -->
     <center>
         <StackPane>
-            <TableView fx:id="vehicleTableView">
+            <TableView fx:id="vehicleTable">
                 <columns>
                     <TableColumn fx:id="vehicleIdColumn" text="Vehicle ID" prefWidth="100"/>
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="150"/>
                     <TableColumn fx:id="manufacturerColumn" text="Manufacturer" prefWidth="120"/>
                     <TableColumn fx:id="modelColumn" text="Model" prefWidth="140"/>
                     <TableColumn fx:id="vehicleTypeColumn" text="Type" prefWidth="140"/>
                     <TableColumn fx:id="dealershipIdColumn" text="Dealership ID" prefWidth="100"/>
                     <TableColumn fx:id="acquisitionDate" text="Acquisition Date" prefWidth="140"/>
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="150"/>
                     <TableColumn fx:id="isRentedColumn" text="Rented" prefWidth="60"/>
                 </columns>
             </TableView>
-            <TableView fx:id="dealerTableView" visible="false">
+            <TableView fx:id="dealerTable" visible="false">
                 <columns>
                     <TableColumn fx:id="dealerIdColumn" text="Dealer ID" prefWidth="100"/>
                     <TableColumn fx:id="dealerNameColumn" text="Name" prefWidth="200"/>

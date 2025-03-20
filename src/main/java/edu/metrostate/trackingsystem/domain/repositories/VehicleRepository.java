@@ -3,6 +3,7 @@ package edu.metrostate.trackingsystem.domain.repositories;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.database.Result;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class VehicleRepository {
         return databaseContext.addVehicle(vehicle);
     }
 
-    public List<Vehicle> getVehicles() {
+    public ObservableList<Vehicle> getVehicles() {
         return databaseContext.getVehicles();
     }
 

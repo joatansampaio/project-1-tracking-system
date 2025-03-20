@@ -4,8 +4,8 @@ module edu.metrostate.trackingsystem {
     requires com.google.gson;
     requires org.controlsfx.controls;
     requires javafx.controls;
-    requires java.logging;
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.fasterxml.jackson.databind;
 
     opens edu.metrostate.trackingsystem to javafx.fxml;
     opens edu.metrostate.trackingsystem.presentation.controllers to javafx.fxml;

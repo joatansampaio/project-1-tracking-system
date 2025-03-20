@@ -10,6 +10,7 @@ import edu.metrostate.trackingsystem.infrastructure.utils.JsonHandler;
 import edu.metrostate.trackingsystem.infrastructure.utils.NotificationHandler;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,6 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -36,7 +38,7 @@ public class MainController {
     private JsonHandler jsonHandler;
     private NotificationHandler notificationHandler;
 
-    @FXML private TableView<Vehicle> vehicleTableView;
+    @FXML private TableView<Vehicle> vehicleTable;
     @FXML private TableColumn<Vehicle, String> vehicleIdColumn;
     @FXML private TableColumn<Vehicle, String> manufacturerColumn;
     @FXML private TableColumn<Vehicle, String> vehicleTypeColumn;
@@ -46,14 +48,17 @@ public class MainController {
     @FXML private TableColumn<Vehicle, String> acquisitionDate;
     @FXML private TableColumn<Vehicle, String> isRentedColumn;
 
-    @FXML private TableView<Dealer> dealerTableView;
+    @FXML private TableView<Dealer> dealerTable;
     @FXML private TableColumn<Dealer, String> dealerIdColumn;
     @FXML private TableColumn<Dealer, String> dealerNameColumn;
     @FXML private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
 
-    @FXML private ComboBox<String> dealershipIdMainCombo;
+    @FXML private ComboBox<String> dealershipIdCombo;
+
     @FXML private Button toggleAcquisitionBtn;
+    @FXML private Button addVehicleBtn;
     @FXML private Button deleteVehicleBtn;
+    @FXML private Button deleteDealerBtn;
     @FXML private Button goToVehiclesViewBtn;
     @FXML private Button goToDealersViewBtn;
     @FXML private Button toggleRentedBtn;
@@ -97,13 +102,30 @@ public class MainController {
         }
     }
 
+    private void updateAllVehicles() {
+        vehicleService.getVehicles().setAll(dealerService.getDealers().stream()
+                   .flatMap(dealer -> dealer.getVehicles().stream())
+                   .collect(Collectors.toList()));
+    }
+
     @FXML
     private void onDeleteVehicle() {
-        var selected = vehicleTableView.getSelectionModel().getSelectedItem();
+        var selected = vehicleTable.getSelectionModel().getSelectedItem();
         var response = vehicleService.deleteVehicle(selected.getVehicleId(), selected.getDealershipId());
         if (response.isSuccess()) {
             notificationHandler.notify("Vehicle deleted.");
-            vehicleTableView.getItems().remove(selected);
+            vehicleTable.getItems().remove(selected);
+            return;
+        }
+        notificationHandler.notifyError(response.getErrorMessage());
+    }
+
+    @FXML
+    private void onDeleteDealer() {
+        var selected = dealerTable.getSelectionModel().getSelectedItem();
+        var response = dealerService.deleteDealer(selected.getDealershipId());
+        if (response.isSuccess()) {
+            notificationHandler.notify("Dealer deleted.");
             return;
         }
         notificationHandler.notifyError(response.getErrorMessage());
@@ -111,25 +133,24 @@ public class MainController {
 
     @FXML
     private void toggleVehicleAcquisition() {
-        var dealer = dealerTableView.getSelectionModel().getSelectedItem();
+        var dealer = dealerTable.getSelectionModel().getSelectedItem();
         if (dealer != null) {
             dealerService.toggleAcquisition(dealer.getDealershipId());
             notificationHandler.notify("Success");
-            dealerTableView.refresh();
+            dealerTable.refresh();
         }
     }
 
     @FXML
     private void onImportJson() {
         dataTransferService.importJson(getStage());
-        refreshVehiclesTable();
+        updateAllVehicles();
     }
 
     @FXML
     private void onImportXml() {
         dataTransferService.importXml(getStage());
-        refreshVehiclesTable();
-        refreshDealersTable();
+        updateAllVehicles();
     }
 
     @FXML
@@ -139,10 +160,11 @@ public class MainController {
 
     @FXML
     private void toggleRented() {
-        Vehicle selected = vehicleTableView.getSelectionModel().getSelectedItem();
+        Vehicle selected = vehicleTable.getSelectionModel().getSelectedItem();
         vehicleService.toggleIsRented(selected);
-        vehicleTableView.refresh();
+        vehicleTable.refresh();
     }
+
     @FXML
     private void onExit(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
@@ -157,58 +179,44 @@ public class MainController {
         // To avoid the situation where dependency injection hasn't occurred
         Platform.runLater(() -> {
             initializeFromPreviousState();
-            refreshVehiclesTable();
-            refreshDealersTable();
 
-            ObservableList<String> dealerIds = FXCollections.observableArrayList();
-            dealerIds.add("All");
-            dealerIds.addAll(dealerService.getDealershipIDs());
+            updateDealershipIds();
 
-            dealershipIdMainCombo.setItems(dealerIds);
+            dealerService.getDealers().addListener((ListChangeListener<Dealer>) change -> {
+                updateAllVehicles();
+                while (change.next()) {
+                    if (change.wasAdded()) {
+                        for (Dealer dealer : change.getAddedSubList()) {
+                            dealer.getObservableVehicles().addListener((ListChangeListener<Vehicle>) vc -> updateAllVehicles());
+                        }
+                    }
+                }
+                updateDealershipIds();
+            });
 
-            System.out.println(dealerService.getDealers().get(0).getName());
+            dealerTable.setItems(dealerService.getDealers());
+            vehicleTable.setItems(vehicleService.getVehicles());
         });
     }
 
+    private void updateDealershipIds() {
+        ObservableList<String> dealerIds = FXCollections.observableArrayList();
+        dealerIds.add("All");
+        dealerIds.addAll(dealerService.getDealershipIDs());
+
+        dealershipIdCombo.setItems(dealerIds);
+    }
+
     private void setupOtherProperties() {
-        // That will make the button not take the space when hidden
+        // That will make the buttons not take the space when hidden
         toggleAcquisitionBtn.managedProperty().bind(toggleAcquisitionBtn.visibleProperty());
+        deleteDealerBtn.managedProperty().bind(deleteDealerBtn.visibleProperty());
+        deleteVehicleBtn.managedProperty().bind(deleteVehicleBtn.visibleProperty());
+        addVehicleBtn.managedProperty().bind(addVehicleBtn.visibleProperty());
+        dealershipIdCombo.managedProperty().bind(dealershipIdCombo.visibleProperty());
+        toggleRentedBtn.managedProperty().bind(toggleRentedBtn.visibleProperty());
         goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color: #212121");
         goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color: #343434");
-    }
-
-    public void refreshVehiclesTable() {
-        refreshVehiclesTable(null);
-    }
-
-    public void refreshVehiclesTable(String dealershipIdFilter) {
-        if (dealershipIdFilter == null || dealershipIdFilter.isEmpty()) {
-            vehicleTableView.setItems(FXCollections.observableArrayList(vehicleService.getVehicles()));
-        } else {
-            vehicleTableView.setItems(FXCollections.observableArrayList(
-                    vehicleService.getVehicles()
-                            .stream()
-                            .filter(vehicle -> dealershipIdFilter.equals(vehicle.getDealershipId()))
-                            .toList()
-            ));
-        }
-    }
-
-    public void refreshDealersTable() {
-        refreshDealersTable(null);
-    }
-
-    public void refreshDealersTable(String dealershipIdFilter) {
-        if (dealershipIdFilter == null || dealershipIdFilter.isEmpty()) {
-            dealerTableView.setItems(FXCollections.observableArrayList(dealerService.getDealers()));
-        } else {
-            dealerTableView.setItems(FXCollections.observableArrayList(
-                    dealerService.getDealers()
-                            .stream()
-                            .filter(vehicle -> dealershipIdFilter.equals(vehicle.getDealershipId()))
-                            .toList()
-            ));
-        }
     }
 
     private void initializeFromPreviousState() {
@@ -219,11 +227,13 @@ public class MainController {
             return;
         }
 
-        if (!jsonHandler.importFile(dbFile)) {
-            logger.error("Failed to load previous database state.");
-        } else {
+        if (jsonHandler.importFile(dbFile)) {
             logger.info("Successfully restored previous session.");
+            updateAllVehicles();
+            return;
         }
+
+        logger.error("Failed to load previous database state.");
     }
 
     private void setupVehiclesTable() {
@@ -235,16 +245,32 @@ public class MainController {
         dealershipIdColumn.setCellValueFactory(new PropertyValueFactory<>("dealershipId"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        priceColumn.setCellValueFactory(cellData -> {
-            return new SimpleStringProperty(cellData.getValue().getPriceAsString());
-        });
+        priceColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPriceAsString()));
 
         acquisitionDate.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFormattedAcquisitionDate()));
 
         isRentedColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getIsRentedAsString())
-        );
+                new SimpleStringProperty(cellData.getValue().getIsRentedAsString()));
+
+        isRentedColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if ("Yes".equals(item)) {
+                        setStyle("-fx-text-fill: #FFA07A; -fx-font-weight: bold;");
+                    } else if ("No".equals(item)) {
+                        setStyle("-fx-text-fill: #90EE90; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
     }
 
     private void setupDealersTable() {
@@ -265,33 +291,48 @@ public class MainController {
     private void setupListeners() {
         logger.info("Configuring listeners.");
         // To enable/disable the delete button based on if a row is selected.
-        vehicleTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        vehicleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             deleteVehicleBtn.setDisable(newSelection == null);
             deleteVehicleBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#f54444"));
         });
+        dealerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            toggleAcquisitionBtn.setDisable(newSelection == null);
+            toggleAcquisitionBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#3399ff"));
+            deleteDealerBtn.setDisable(newSelection == null);
+            deleteDealerBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#f54444"));
+        });
 
         // Let's clear the selection when clicking in an empty row because that seems right.
-        vehicleTableView.setRowFactory(tv -> {
+        vehicleTable.setRowFactory(tv -> {
             TableRow<Vehicle> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (row.isEmpty()) {
-                    vehicleTableView.getSelectionModel().clearSelection();
-                }
+                if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection();
+            });
+            return row;
+        });
+        dealerTable.setRowFactory(tv -> {
+            TableRow<Dealer> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty())  dealerTable.getSelectionModel().clearSelection();
             });
             return row;
         });
 
-        dealershipIdMainCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            String id = newValue;
-            if (newValue.equals("All")) {
-                id = null;
+        dealershipIdCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.equals("All")) {
+                updateAllVehicles();
+                return;
             }
-            refreshVehiclesTable(id);
-            refreshDealersTable(id);
+            vehicleService.getVehicles().setAll(
+                    dealerService.getDealers()
+                                 .stream()
+                                 .filter(d -> d.getDealershipId().equals(newValue))
+                                 .flatMap(dealer -> dealer.getVehicles().stream())
+                                 .collect(Collectors.toList()));
         });
 
         // To disable the Toggle Rented button if the selected vehicle is a sports car
-        vehicleTableView.getSelectionModel().selectedItemProperty().addListener(((observableValue, v1, v2) -> {
+        vehicleTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, v1, v2) -> {
             toggleRentedBtn.setDisable(v2 == null || v2.getType().equalsIgnoreCase("sports car"));
             toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null ||v2.getType().equalsIgnoreCase("sports car")) ? "#2a2a2a" : "#3c3c3c"));
         }));
@@ -306,22 +347,24 @@ public class MainController {
     }
 
     private void toggleView(boolean b) {
-        dealerTableView.setVisible(b);
-        vehicleTableView.setVisible(!b);
+        // Vehicle Tab
+        vehicleTable.setVisible(!b);
         deleteVehicleBtn.setVisible(!b);
+        addVehicleBtn.setVisible(!b);
+        dealershipIdCombo.setVisible(!b);
+        toggleRentedBtn.setVisible(!b);
+
+        // Dealer Tab
+        dealerTable.setVisible(b);
+        deleteDealerBtn.setVisible(b);
         toggleAcquisitionBtn.setVisible(b);
+
         goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (!b ? "#212121": "#343434"));
         goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (b ? "#212121": "#343434"));
     }
 
-    public void onShowAll() {
-        refreshDealersTable();
-        refreshVehiclesTable();
-        dealershipIdMainCombo.getSelectionModel().clearSelection();
-    }
-
     private Stage getStage() {
-        return (Stage) vehicleTableView.getScene().getWindow();
+        return (Stage) vehicleTable.getScene().getWindow();
     }
 
     // I couldn't make it happen through the constructor with JavaFX
