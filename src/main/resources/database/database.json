@@ -1,54 +1,6 @@
 {
   "car_inventory": [
     {
-      "vehicle_id": "848432",
-      "vehicle_manufacturer": "Land Rover",
-      "vehicle_model": "Range Rover",
-      "vehicle_type": "SUV",
-      "price": {
-        "price": 17000.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "485",
-      "is_rented": false
-    },
-    {
-      "vehicle_id": "52523",
-      "vehicle_manufacturer": "Toyota",
-      "vehicle_model": "Tundra",
-      "vehicle_type": "PICKUP",
-      "price": {
-        "price": 22600.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "485",
-      "is_rented": true
-    },
-    {
-      "vehicle_id": "151e5dde",
-      "vehicle_manufacturer": "Genesis",
-      "vehicle_model": "G70",
-      "vehicle_type": "SEDAN",
-      "price": {
-        "price": 36600.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "485",
-      "is_rented": false
-    },
-    {
-      "vehicle_id": "ern222",
-      "vehicle_manufacturer": "Mazda",
-      "vehicle_model": "Miata",
-      "vehicle_type": "SPORTS CAR",
-      "price": {
-        "price": 22330.0,
-        "currency": "dollars"
-      },
-      "dealership_id": "485",
-      "is_rented": false
-    },
-    {
       "vehicle_id": "48934j",
       "vehicle_manufacturer": "Ford",
       "vehicle_model": "Explorer",
@@ -59,7 +11,7 @@
         "currency": "dollars"
       },
       "dealership_id": "12513",
-      "is_rented": false
+      "is_rented": true
     },
     {
       "vehicle_id": "83883",
@@ -85,7 +37,7 @@
         "currency": "dollars"
       },
       "dealership_id": "12513",
-      "is_rented": true
+      "is_rented": false
     },
     {
       "vehicle_id": "229393",
@@ -98,6 +50,54 @@
         "currency": "dollars"
       },
       "dealership_id": "77338",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "848432",
+      "vehicle_manufacturer": "Land Rover",
+      "vehicle_model": "Range Rover",
+      "vehicle_type": "SUV",
+      "price": {
+        "price": 17000.0,
+        "currency": "pounds"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "52523",
+      "vehicle_manufacturer": "Toyota",
+      "vehicle_model": "Tundra",
+      "vehicle_type": "PICKUP",
+      "price": {
+        "price": 22600.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "151e5dde",
+      "vehicle_manufacturer": "Genesis",
+      "vehicle_model": "G70",
+      "vehicle_type": "SEDAN",
+      "price": {
+        "price": 36600.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "ern222",
+      "vehicle_manufacturer": "Mazda",
+      "vehicle_model": "Miata",
+      "vehicle_type": "SPORTS CAR",
+      "price": {
+        "price": 22330.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
       "is_rented": false
     }
   ]

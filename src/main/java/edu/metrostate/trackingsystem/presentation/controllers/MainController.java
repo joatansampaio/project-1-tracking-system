@@ -102,7 +102,7 @@ public class MainController {
         }
     }
 
-    private void updateAllVehicles() {
+    public void updateAllVehicles() {
         vehicleService.getVehicles().setAll(dealerService.getDealers().stream()
                    .flatMap(dealer -> dealer.getVehicles().stream())
                    .collect(Collectors.toList()));
@@ -144,13 +144,11 @@ public class MainController {
     @FXML
     private void onImportJson() {
         dataTransferService.importJson(getStage());
-        updateAllVehicles();
     }
 
     @FXML
     private void onImportXml() {
         dataTransferService.importXml(getStage());
-        updateAllVehicles();
     }
 
     @FXML
@@ -187,13 +185,14 @@ public class MainController {
                 while (change.next()) {
                     if (change.wasAdded()) {
                         for (Dealer dealer : change.getAddedSubList()) {
-                            dealer.getObservableVehicles().addListener((ListChangeListener<Vehicle>) vc -> updateAllVehicles());
+                            dealer.getObservableVehicles().addListener((ListChangeListener<Vehicle>) v -> updateAllVehicles());
                         }
                     }
                 }
                 updateDealershipIds();
             });
 
+            dealerService.getDealers().forEach(d -> d.getObservableVehicles().addListener((ListChangeListener<Vehicle>) v -> updateAllVehicles()));
             dealerTable.setItems(dealerService.getDealers());
             vehicleTable.setItems(vehicleService.getVehicles());
         });

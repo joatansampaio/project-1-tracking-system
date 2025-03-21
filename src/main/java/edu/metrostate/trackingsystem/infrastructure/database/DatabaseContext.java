@@ -99,32 +99,22 @@ public class DatabaseContext implements IDatabaseContext {
 
     @Override
     public Result<Boolean> addVehicle(Vehicle vehicle) {
-        Dealer dealer;
-
-        var getDealerResult = getDealerByID(vehicle.getDealershipId());
-        if (getDealerResult.isSuccess()) {
-            dealer = getDealerResult.getData();
-        } else {
-            return Result.failure(getDealerResult.getErrorMessage());
-        }
-
-        if (!dealer.getEnabledForAcquisition()) {
-            return Result.failure("Dealer is not enabled for acquisition.");
-        }
-
-        var vehicles = dealer.getObservableVehicles();
-        var existingVehicleWithSameId = vehicles
+        var dealer =  dealers
                 .stream()
-                .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
+                .filter(d -> d.getDealershipId().equals(vehicle.getDealershipId()))
                 .findFirst()
                 .orElse(null);
 
-        // ID is being used already.
-        if (existingVehicleWithSameId != null) {
-            return Result.failure("Vehicle ID already exists...");
+        if (dealer == null) {
+            return Result.failure("Dealer ID not found...");
+        }
+        if (!dealer.getEnabledForAcquisition()) {
+            return Result.failure("Dealer is not enabled for acquisition.");
+        }
+        if (!dealer.addVehicle(vehicle)) {
+            return Result.failure("A Vehicle with ID " + vehicle.getVehicleId() + " already exists.");
         }
 
-        vehicles.add(vehicle);
         return Result.success();
     }
 
