@@ -141,20 +141,9 @@ public class MainController {
         }
     }
 
-    @FXML
-    private void onImportJson() {
-        dataTransferService.importJson(getStage());
-    }
-
-    @FXML
-    private void onImportXml() {
-        dataTransferService.importXml(getStage());
-    }
-
-    @FXML
-    private void onExportJson() {
-        dataTransferService.exportJson(getStage());
-    }
+    @FXML private void onImportJson() { dataTransferService.importJson(getStage()); }
+    @FXML private void onImportXml() { dataTransferService.importXml(getStage()); }
+    @FXML private void onExportJson() { dataTransferService.exportJson(getStage()); }
 
     @FXML
     private void toggleRented() {
@@ -167,9 +156,8 @@ public class MainController {
     private void onExit(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
         boolean shouldSave = Boolean.parseBoolean(item.getUserData().toString());
-        if (shouldSave) {
-            jsonHandler.saveSession();
-        }
+        if (shouldSave) jsonHandler.saveSession();
+
         System.exit(0);
     }
 
@@ -177,7 +165,6 @@ public class MainController {
         // To avoid the situation where dependency injection hasn't occurred
         Platform.runLater(() -> {
             initializeFromPreviousState();
-
             updateDealershipIds();
 
             dealerService.getDealers().addListener((ListChangeListener<Dealer>) change -> {
@@ -225,13 +212,11 @@ public class MainController {
             logger.info("No previous state found. Starting fresh.");
             return;
         }
-
         if (jsonHandler.importFile(dbFile)) {
             logger.info("Successfully restored previous session.");
             updateAllVehicles();
             return;
         }
-
         logger.error("Failed to load previous database state.");
     }
 
@@ -278,13 +263,9 @@ public class MainController {
         dealerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         isEnabledForAcquisitionColumn.setCellValueFactory(new PropertyValueFactory<>("enabledForAcquisition"));
         // Set up the checkbox column for Acquisition Status
-        isEnabledForAcquisitionColumn.setCellValueFactory(cellData -> {
-            Dealer dealer = cellData.getValue();
-            if( dealer.getEnabledForAcquisition()) {
-                return new SimpleStringProperty("Enabled");
-            }
-            return new SimpleStringProperty("Disabled");
-        });
+        isEnabledForAcquisitionColumn.setCellValueFactory(cellData -> cellData.getValue().getEnabledForAcquisition()
+                ? new SimpleStringProperty("Enabled")
+                : new SimpleStringProperty("Disabled"));
     }
 
     private void setupListeners() {
@@ -304,16 +285,12 @@ public class MainController {
         // Let's clear the selection when clicking in an empty row because that seems right.
         vehicleTable.setRowFactory(tv -> {
             TableRow<Vehicle> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection();
-            });
+            row.setOnMouseClicked(event -> { if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection(); });
             return row;
         });
         dealerTable.setRowFactory(tv -> {
             TableRow<Dealer> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (row.isEmpty())  dealerTable.getSelectionModel().clearSelection();
-            });
+            row.setOnMouseClicked(event -> { if (row.isEmpty())  dealerTable.getSelectionModel().clearSelection(); });
             return row;
         });
 
@@ -333,38 +310,31 @@ public class MainController {
         // To disable the Toggle Rented button if the selected vehicle is a sports car
         vehicleTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, v1, v2) -> {
             toggleRentedBtn.setDisable(v2 == null || v2.getType().equalsIgnoreCase("sports car"));
-            toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null ||v2.getType().equalsIgnoreCase("sports car")) ? "#2a2a2a" : "#3c3c3c"));
+            toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null || v2.getType().equalsIgnoreCase("sports car")) ? "#2a2a2a" : "#3c3c3c"));
         }));
     }
 
-    public void goToDealersView(ActionEvent actionEvent) {
-        toggleView(true);
-    }
-
-    public void goToVehiclesView(ActionEvent actionEvent) {
-        toggleView(false);
-    }
-
-    private void toggleView(boolean b) {
+    private void toggleTabView(boolean isDealerTab) {
         // Vehicle Tab
-        vehicleTable.setVisible(!b);
-        deleteVehicleBtn.setVisible(!b);
-        addVehicleBtn.setVisible(!b);
-        dealershipIdCombo.setVisible(!b);
-        toggleRentedBtn.setVisible(!b);
+        vehicleTable.setVisible(!isDealerTab);
+        deleteVehicleBtn.setVisible(!isDealerTab);
+        addVehicleBtn.setVisible(!isDealerTab);
+        dealershipIdCombo.setVisible(!isDealerTab);
+        toggleRentedBtn.setVisible(!isDealerTab);
 
         // Dealer Tab
-        dealerTable.setVisible(b);
-        deleteDealerBtn.setVisible(b);
-        toggleAcquisitionBtn.setVisible(b);
+        dealerTable.setVisible(isDealerTab);
+        deleteDealerBtn.setVisible(isDealerTab);
+        toggleAcquisitionBtn.setVisible(isDealerTab);
 
-        goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (!b ? "#212121": "#343434"));
-        goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (b ? "#212121": "#343434"));
+        goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (!isDealerTab ? "#212121": "#343434"));
+        goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (isDealerTab ? "#212121": "#343434"));
     }
 
-    private Stage getStage() {
-        return (Stage) vehicleTable.getScene().getWindow();
-    }
+    public void goToDealersView() { toggleTabView(true); }
+    public void goToVehiclesView() { toggleTabView(false); }
+
+    private Stage getStage() { return (Stage) vehicleTable.getScene().getWindow(); }
 
     // I couldn't make it happen through the constructor with JavaFX
     // apparently there are libs that can use @autowire.
