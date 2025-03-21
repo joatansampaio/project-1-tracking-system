@@ -14,6 +14,10 @@ public interface IDatabaseContext {
     ObservableList<Vehicle> getVehicles();
     Result<Dealer> getDealerByID(String dealershipId);
     void toggleAcquisition(String dealershipId);
+
+
+
+
     Result<Boolean> addVehicle(Vehicle vehicle);
     Result<Boolean> deleteVehicle(String id, String dealerId);
     Vehicle getVehicle(String id, String dealerId);
@@ -21,4 +25,12 @@ public interface IDatabaseContext {
     void importXML(DealersXMLModel model);
 
     void toggleIsRented(Vehicle vehicle);
+    
+    //TODO: Add a method to update the dealer's information
+    // which right now should only allow name
+    boolean updateDealer(Dealer dealer, String name);
+
+    boolean updateDealer(String dealershipId, String name);
+
+    boolean updateDealer(Dealer dealer);
 }

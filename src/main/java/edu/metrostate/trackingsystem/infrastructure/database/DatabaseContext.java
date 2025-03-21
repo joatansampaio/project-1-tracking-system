@@ -6,7 +6,6 @@ import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLMo
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,6 +96,35 @@ public class DatabaseContext implements IDatabaseContext {
     //TODO: Add a method to update the dealer's information
     // which right now should only allow name
 
+    @Override
+    public boolean updateDealer(Dealer dealer) {
+        return false;
+    }
+
+    @Override
+    public boolean updateDealer(Dealer dealer, String name){
+        if (dealer != null && name != null && !name.isEmpty()) {
+            var dealerToUpdate = getDealerByID(dealer.getDealershipId());
+            if (dealerToUpdate.isSuccess()) {
+                dealerToUpdate.getData().setName(name);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean updateDealer(String dealershipId, String name){
+        var dealer = getDealerByID(dealershipId);
+        if (dealer.isSuccess()){
+            if (name != null && !name.isEmpty())
+                dealer.getData().setName(name);
+           return true;
+        }
+        return false;
+    }
+    
     @Override
     public Result<Boolean> addVehicle(Vehicle vehicle) {
         var dealer =  dealers

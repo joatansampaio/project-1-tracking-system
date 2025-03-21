@@ -30,4 +30,11 @@ public class DealerRepository {
     public Result<Boolean> deleteDealer(String dealershipId) {
         return databaseContext.deleteDealer(dealershipId);
     }
+
+    public boolean updateDealer(String dealershipId, String name) { return databaseContext.updateDealer(dealershipId, name); }
+
+    public boolean updateDealer(Dealer dealer, String name) { return databaseContext.updateDealer(dealer, name); }
+
+    public boolean updateDealer(Dealer dealer) { return databaseContext.updateDealer(dealer); }
+
 }
