@@ -93,33 +93,17 @@ public class DatabaseContext implements IDatabaseContext {
         }
     }
 
-    //TODO: Add a method to update the dealer's information
-    // which right now should only allow name
-
-    @Override
-    public boolean updateDealer(Dealer dealer) {
-        return false;
-    }
-
-    @Override
-    public boolean updateDealer(Dealer dealer, String name){
-        if (dealer != null && name != null && !name.isEmpty()) {
-            var dealerToUpdate = getDealerByID(dealer.getDealershipId());
-            if (dealerToUpdate.isSuccess()) {
-                dealerToUpdate.getData().setName(name);
-            }
-            return true;
-        }
-        return false;
-    }
-
-
     @Override
     public boolean updateDealer(String dealershipId, String name){
-        var dealer = getDealerByID(dealershipId);
-        if (dealer.isSuccess()){
+        var dealer =  dealers
+                .stream()
+                .filter(d -> d.getDealershipId().equals(dealershipId))
+                .findFirst()
+                .orElse(null);
+
+        if (dealer != null){
             if (name != null && !name.isEmpty())
-                dealer.getData().setName(name);
+                dealer.setName(name);
            return true;
         }
         return false;

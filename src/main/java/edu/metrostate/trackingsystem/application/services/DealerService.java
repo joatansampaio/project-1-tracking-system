@@ -31,10 +31,8 @@ public class DealerService {
         return repository.deleteDealer(dealershipId);
     }
 
-    public boolean updateDealer(Dealer dealer, String name) { return repository.updateDealer(dealer, name); }
-
     public boolean updateDealer(String dealershipId, String name) { return repository.updateDealer(dealershipId, name); }
 
-    public boolean updateDealer(Dealer dealer) { return repository.updateDealer(dealer); }
+
 
 }

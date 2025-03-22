@@ -113,9 +113,4 @@ public class Dealer {
 						vehicles -> new ArrayList<>(vehicles.values())
 				)));
 	}
-
-	public boolean updateDealer(Dealer dealer, String name) {
-		return false;
-	}
-
 }

@@ -25,12 +25,8 @@ public interface IDatabaseContext {
     void importXML(DealersXMLModel model);
 
     void toggleIsRented(Vehicle vehicle);
-    
-    //TODO: Add a method to update the dealer's information
-    // which right now should only allow name
-    boolean updateDealer(Dealer dealer, String name);
 
     boolean updateDealer(String dealershipId, String name);
 
-    boolean updateDealer(Dealer dealer);
+
 }

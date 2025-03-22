@@ -28,3 +28,5 @@ replay_pid*
 out/
 target/
 *.odt#
+
+src/main/resources/database/database.json
