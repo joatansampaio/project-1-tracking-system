@@ -254,6 +254,7 @@ public class DatabaseContext implements IDatabaseContext {
                 }
             } else {
                 //The dealer is not in the database so add the dealer
+                dealers.forEach(Dealer::cleanDuplicates);
                 dealers.add(incomingDealer);
             }
         }

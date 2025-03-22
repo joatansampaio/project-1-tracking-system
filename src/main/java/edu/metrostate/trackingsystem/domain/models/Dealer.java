@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Dealer {
 
@@ -100,6 +101,21 @@ public class Dealer {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void cleanDuplicates() {
+		setVehicles(vehicleList.stream()
+				.collect(Collectors.collectingAndThen(
+						Collectors.toMap(
+								Vehicle::getVehicleId,
+								v -> v,
+								(v1,v2) -> v1),
+						vehicles -> new ArrayList<>(vehicles.values())
+				)));
+	}
+
+	public boolean updateDealer(Dealer dealer, String name) {
+		return false;
 	}
 
 }
