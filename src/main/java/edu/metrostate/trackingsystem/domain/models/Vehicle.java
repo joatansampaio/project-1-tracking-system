@@ -48,6 +48,9 @@ public class Vehicle {
 	@SerializedName("dealership_id")
 	private String dealershipId;
 
+	@SerializedName("dealership_name")
+	private String dealershipName;
+
 	@SerializedName("is_rented")
 	private boolean isRented = false;
 
@@ -182,6 +185,14 @@ public class Vehicle {
 		this.dealershipId = dealershipId;
 	}
 
+	public String getDealershipName() {
+		return dealershipName;
+	}
+
+	public void setDealershipName(String dealershipId) {
+		this.dealershipName = dealershipName;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -220,6 +231,13 @@ public class Vehicle {
 		return DateTimeFormatter
 			.ofPattern("MM/dd/yyyy HH:mm")
 			.format(Instant.ofEpochMilli(acquisitionDate).atZone(ZoneId.systemDefault()));
+	}
+
+	// I just want to ensure consistency of UpperCase types
+	// maybe an enum would be a better choice.
+	// We can probably change that later.
+	public void normalize() {
+		setType(type.toUpperCase());
 	}
 
 	@Override

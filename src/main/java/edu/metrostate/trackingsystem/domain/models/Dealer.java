@@ -43,6 +43,13 @@ public class Dealer {
 		this.name = name;
 	}
 
+	public Dealer(String dealershipId, List<Vehicle> vehicles, String name) {
+		this();
+		setVehicles(vehicles);
+		this.dealershipId = dealershipId;
+		this.name = name;
+	}
+
 	/**
 	 * Only dealers with acquisition enabled should be able to add a vehicle.
 	 * 
@@ -96,21 +103,10 @@ public class Dealer {
 	}
 
 	public String getName() {
-		return name;
+		return name != null ? name : "Not Configured.";
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void cleanDuplicates() {
-		setVehicles(vehicleList.stream()
-				.collect(Collectors.collectingAndThen(
-						Collectors.toMap(
-								Vehicle::getVehicleId,
-								v -> v,
-								(v1,v2) -> v1),
-						vehicles -> new ArrayList<>(vehicles.values())
-				)));
 	}
 }

@@ -2,9 +2,9 @@ package edu.metrostate.trackingsystem.infrastructure.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
@@ -14,9 +14,10 @@ import edu.metrostate.trackingsystem.infrastructure.database.models.DealershipDa
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JsonHandler implements IFileHandler {
 
@@ -49,7 +50,21 @@ public class JsonHandler implements IFileHandler {
 
             var listType = new TypeToken<List<Vehicle>>() {}.getType();
             List<Vehicle> data = new Gson().fromJson(jsonObject.get("car_inventory"), listType);
-            databaseContext.importJson(data);
+
+            // Group by dealers
+            Map<String, List<Vehicle>> groupByDealershipId = data.stream()
+                    .collect(Collectors.groupingBy(Vehicle::getDealershipId));
+
+            // Build a list of dealers
+            List<Dealer> dealers = groupByDealershipId.entrySet().stream()
+                    .map(e -> {
+                        List<Vehicle> vehicles = e.getValue();
+                        vehicles.forEach(Vehicle::normalize);
+                        return new Dealer(e.getKey(), vehicles, vehicles.get(0).getDealershipName());
+                    })
+                    .toList();
+
+            databaseContext.importJSON(dealers);
             logger.info("Imported successfully.");
             return true;
         } catch (Exception e) {

@@ -95,7 +95,7 @@ public class MainController {
             dialogStage.setY(ownerStage.getY() + (ownerStage.getHeight() - dialogStage.getHeight()) / 2);
 
             AddVehicleController addVehicleController = loader.getController();
-            addVehicleController.injectDependencies(this, vehicleService, notificationHandler);
+            addVehicleController.injectDependencies(vehicleService, notificationHandler);
         } catch (Exception e) {
             notificationHandler.notifyError("Error loading the add vehicles screen. Check the logs for more info.");
             logger.error("An error occurred: " + e);
@@ -111,10 +111,19 @@ public class MainController {
     @FXML
     private void onDeleteVehicle() {
         var selected = vehicleTable.getSelectionModel().getSelectedItem();
+        int selectedIndex = vehicleTable.getSelectionModel().getSelectedIndex();
         var response = vehicleService.deleteVehicle(selected.getVehicleId(), selected.getDealershipId());
         if (response.isSuccess()) {
             notificationHandler.notify("Vehicle deleted.");
             vehicleTable.getItems().remove(selected);
+
+            // Select the next available item
+            int itemCount = vehicleTable.getItems().size();
+            if (itemCount > 0) {
+                int newIndex = Math.min(selectedIndex, itemCount - 1);
+                vehicleTable.getSelectionModel().select(newIndex);
+            }
+
             return;
         }
         notificationHandler.notifyError(response.getErrorMessage());

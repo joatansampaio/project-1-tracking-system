@@ -2,11 +2,10 @@ package edu.metrostate.trackingsystem.infrastructure.database;
 
 import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
-import edu.metrostate.trackingsystem.infrastructure.database.models.DealersXMLModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -72,35 +71,25 @@ public class DatabaseContext implements IDatabaseContext {
      * @return the dealer for dealershipId or an error message
      */
     @Override
-    public Result<Dealer> getDealerByID(String dealershipId) {
-        var dealer = dealers
+    public Dealer getDealerByID(String dealershipId) {
+        return dealers
                 .stream()
                 .filter(d -> d.getDealershipId().equals(dealershipId))
                 .findFirst()
                 .orElse(null);
-
-        if (dealer != null) {
-            return Result.success(dealer);
-        }
-        return Result.failure("Dealership ID not found...");
     }
 
     @Override
     public void toggleAcquisition(String dealershipId) {
-        var dealer = getDealerByID(dealershipId);
-        if (dealer.isSuccess()) {
-            dealer.getData().setEnabledForAcquisition(!dealer.getData().getEnabledForAcquisition());
-        }
+        dealers.stream()
+               .filter(d -> d.getDealershipId().equals(dealershipId))
+               .findFirst()
+               .ifPresent(dealer -> dealer.setEnabledForAcquisition(!dealer.getEnabledForAcquisition()));
     }
 
     @Override
     public boolean updateDealer(String dealershipId, String name){
-        var dealer =  dealers
-                .stream()
-                .filter(d -> d.getDealershipId().equals(dealershipId))
-                .findFirst()
-                .orElse(null);
-
+        var dealer =  getDealerByID(dealershipId);
         if (dealer != null){
             if (name != null && !name.isEmpty())
                 dealer.setName(name);
@@ -111,11 +100,7 @@ public class DatabaseContext implements IDatabaseContext {
     
     @Override
     public Result<Boolean> addVehicle(Vehicle vehicle) {
-        var dealer =  dealers
-                .stream()
-                .filter(d -> d.getDealershipId().equals(vehicle.getDealershipId()))
-                .findFirst()
-                .orElse(null);
+        var dealer =  getDealerByID(vehicle.getDealershipId());
 
         if (dealer == null) {
             return Result.failure("Dealer ID not found...");
@@ -123,122 +108,101 @@ public class DatabaseContext implements IDatabaseContext {
         if (!dealer.getEnabledForAcquisition()) {
             return Result.failure("Dealer is not enabled for acquisition.");
         }
-        if (!dealer.addVehicle(vehicle)) {
+        if (vehicles.stream().anyMatch(v -> v.getVehicleId().equals(vehicle.getVehicleId()))) {
             return Result.failure("A Vehicle with ID " + vehicle.getVehicleId() + " already exists.");
         }
 
+        dealer.addVehicle(vehicle);
         return Result.success();
     }
 
     @Override
-    public Result<Boolean> deleteVehicle(String id, String dealerId) {
-        var result = getDealerByID(dealerId);
-        if (result.isSuccess()) {
-            if (result.getData().removeVehicle(id)) {
+    public Result<Boolean> deleteVehicle(String id, String dealershipId) {
+        var dealer = getDealerByID(dealershipId);
+        if (dealer != null) {
+            if (dealer.removeVehicle(id)) {
                 return Result.success();
             }
             return Result.failure("Vehicle ID not found.");
         }
-        return Result.failure(result.getErrorMessage());
+        return Result.failure("Dealer ID not found...");
     }
 
     @Override
-    public Vehicle getVehicle(String id, String dealershipId) {
-        var dealer =  dealers
-                .stream()
-                .filter(d -> d.getDealershipId().equals(dealershipId))
-                .findFirst()
-                .orElse(null);
-
-        if (dealer == null) {
-            return null;
-        }
-
-        return dealer
-                .getVehicles()
-                .stream()
-                .filter(v -> v.getVehicleId().equals((id)))
-                .findFirst()
-                .orElse(null);
+    public void importJSON(List<Dealer> incomingDealers) {
+        ImportInner(incomingDealers);
     }
 
     @Override
-    public void importJson(List<Vehicle> incomingVehicles) {
-        for (var incomingVehicle : incomingVehicles) {
-            var dealer = dealers
-                    .stream()
-                    .filter(d -> d.getDealershipId().equals(incomingVehicle.getDealershipId()))
-                    .findFirst()
-                    .orElse(null);
-
-            // create a dealer if one with the same ID does not exist.
-            if (dealer == null) {
-                dealer = new Dealer(incomingVehicle.getDealershipId());
-                dealers.add((dealer));
-            }
-
-            if (!dealer.addVehicle(incomingVehicle)) {
-                var vehicle = dealer
-                        .getVehicles()
-                        .stream()
-                        .filter(v -> v.getVehicleId().equals(incomingVehicle.getVehicleId()))
-                        .findFirst()
-                        .orElse(null);
-
-                assert vehicle != null;
-                vehicle.setManufacturer(incomingVehicle.getManufacturer());
-                vehicle.setModel(incomingVehicle.getModel());
-                vehicle.setType(incomingVehicle.getType());
-                vehicle.setPrice(incomingVehicle.getPrice());
-                vehicle.setAcquisitionDate(incomingVehicle.getAcquisitionDate());
-            }
-        }
+    public void importXML(List<Dealer> incomingDealers) {
+        ImportInner(incomingDealers);
     }
 
+    private void ImportInner(List<Dealer> incomingDealers) {
+        // I want a map with <vehicleID, dealershipId> here.
+        // That will be used as a prevention against duplicates in the system
+        // If we had an actual database, none of that would be necessary.
+        // We could also ignore duplicate vehicle IDs, but because we chose to de-duplicate
+        // them by appending the dealer ID prefix, this ends up being necessary.
+        Map<String, String> systemVehicleIdsMap = dealers.stream()
+            .flatMap(dealer -> dealer.getVehicles().stream()
+                    .map(vehicle -> new AbstractMap.SimpleEntry<>(vehicle.getVehicleId(), dealer.getDealershipId()))                ).collect(Collectors.toMap(
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue));
 
-    //Current problem is that dealer name is not showing or not getting added to database correctly
-    public void importXML(DealersXMLModel model) {
-        var incomingDealers = model.getDealers();
-
-        // TODO: validate before pushing it into dealers
-        // Make sure to deal with non-existent fields
         for (Dealer incomingDealer : incomingDealers) {
-
+            if (incomingDealer.getDealershipId() == null) {
+                continue;
+            }
             var dealer = dealers
                     .stream()
                     .filter(d -> d.getDealershipId().equals(incomingDealer.getDealershipId()))
                     .findFirst()
                     .orElse(null);
 
+            // ################################
+            // ##  Updating existing dealer  ##
+            // ################################
             if (dealer != null) {
-                //Set name if it is not set by using the new XML data
+                // Set name if it is not set by using the new XML data
                 String currentName = dealer.getName();
                 if (currentName == null || currentName.isEmpty()) {
                     dealer.setName(incomingDealer.getName());
                 }
 
-                //Check the existing dealer for vehicle ID conflicts with the incoming XML data
-                for (Vehicle vehicle : incomingDealer.getVehicles()) {
-                    // see if the vehicle id is already added
-
-                    //If there is no matching vehicle ID for the dealer, add the vehicle
-                    if (!dealer.addVehicle(vehicle)) {
-                        var existingVehicle = incomingDealer.getVehicles()
-                                .stream()
-                                .filter(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
-                                .findFirst()
-                                .orElse(null);
-
-                        assert existingVehicle != null;
-                        existingVehicle.setManufacturer(vehicle.getManufacturer());
-                        existingVehicle.setModel(vehicle.getModel());
-                        existingVehicle.setType(vehicle.getType());
-                        existingVehicle.setPrice(vehicle.getPrice());
+                for (Vehicle incomingVehicle : incomingDealer.getVehicles()) {
+                    var id = incomingVehicle.getVehicleId();
+                    if (systemVehicleIdsMap.containsKey(incomingVehicle.getVehicleId())) {
+                        if (!systemVehicleIdsMap.get(incomingVehicle.getVehicleId()).equals(dealer.getDealershipId())) {
+                            // De-duplication
+                            id = dealer.getDealershipId() + "_" + incomingVehicle.getVehicleId();
+                            incomingVehicle.setVehicleId(id);
+                            dealer.addVehicle(incomingVehicle);
+                            systemVehicleIdsMap.put(id, dealer.getDealershipId());
+                        }
+                    } else {
+                        dealer.addVehicle(incomingVehicle);
+                        systemVehicleIdsMap.put(id, dealer.getDealershipId());
                     }
                 }
+            // ############################
+            // ##  Inserting new dealer  ##
+            // ############################
             } else {
-                //The dealer is not in the database so add the dealer
-                dealers.forEach(Dealer::cleanDuplicates);
+                var uniqueVehicles = new ArrayList<Vehicle>();
+                for (Vehicle incomingVehicle : incomingDealer.getVehicles()) {
+                    var id = incomingVehicle.getVehicleId();
+                    if (systemVehicleIdsMap.containsKey(incomingVehicle.getVehicleId())) {
+                        // De-duplication
+                        id = incomingDealer.getDealershipId() + "_" + incomingVehicle.getVehicleId();
+                        incomingVehicle.setVehicleId(id);
+                        uniqueVehicles.add(incomingVehicle);
+                    } else {
+                        uniqueVehicles.add(incomingVehicle);
+                    }
+                    systemVehicleIdsMap.put(id, incomingDealer.getDealershipId());
+                }
+                incomingDealer.setVehicles(uniqueVehicles);
                 dealers.add(incomingDealer);
             }
         }

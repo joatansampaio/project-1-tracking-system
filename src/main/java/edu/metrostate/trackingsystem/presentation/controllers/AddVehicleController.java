@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 public class AddVehicleController {
 
-    private MainController mainController;
     private VehicleService vehicleService;
     private NotificationHandler notificationHandler;
 
@@ -42,7 +41,6 @@ public class AddVehicleController {
         dealershipIdCombo.setItems(FXCollections.observableArrayList(
                 DatabaseContext.getInstance().getDealershipIDs()
         ));
-
         setupFields();
     }
 
@@ -60,7 +58,6 @@ public class AddVehicleController {
             var response = vehicleService.addVehicle(vehicle);
             if (response.isSuccess()) {
                 notificationHandler.notify("Vehicle added.");
-//                mainController.updateAllVehicles();
                 closeStage(event);
             } else {
                 notificationHandler.notifyError(response.getErrorMessage());
@@ -135,12 +132,9 @@ public class AddVehicleController {
 
     /**
      * Injects the required dependencies into the AddVehicleController.
-     *
-     * @param mainController The main controller instance to be used within this controller.
      * @param notificationHandler The notification handler responsible for managing notifications.
      */
-    public void injectDependencies(MainController mainController, VehicleService vehicleService, NotificationHandler notificationHandler) {
-        this.mainController = mainController;
+    public void injectDependencies(VehicleService vehicleService, NotificationHandler notificationHandler) {
         this.notificationHandler = notificationHandler;
         this.vehicleService = vehicleService;
     }
