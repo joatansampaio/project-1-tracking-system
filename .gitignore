@@ -30,3 +30,6 @@ target/
 *.odt#
 
 src/main/resources/database/database.json
+*.DS_Store
+.DS_Store
+.vscode
