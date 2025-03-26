@@ -6,8 +6,6 @@ import edu.metrostate.trackingsystem.infrastructure.database.IDatabaseContext;
 import edu.metrostate.trackingsystem.infrastructure.database.Result;
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
 public class VehicleRepository {
 
     private final IDatabaseContext databaseContext;

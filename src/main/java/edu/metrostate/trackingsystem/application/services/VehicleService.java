@@ -6,8 +6,6 @@ import edu.metrostate.trackingsystem.domain.repositories.VehicleRepository;
 import edu.metrostate.trackingsystem.infrastructure.database.Result;
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
 public class VehicleService {
 
     private final VehicleRepository repository;

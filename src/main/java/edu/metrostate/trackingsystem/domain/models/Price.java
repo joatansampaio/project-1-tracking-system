@@ -3,9 +3,6 @@ package edu.metrostate.trackingsystem.domain.models;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
-import com.google.gson.*;
-
-import java.lang.reflect.Type;
 
 public class Price {
 
