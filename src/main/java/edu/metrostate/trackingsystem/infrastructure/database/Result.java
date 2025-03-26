@@ -1,6 +1,7 @@
+// Just a helper to encapsulate a result that needs a boolean + a message.
 package edu.metrostate.trackingsystem.infrastructure.database;
 
-// Just a helper to encapsulate a result that needs a boolean + a message.
+
 public class Result<T> {
 
     private final boolean success;

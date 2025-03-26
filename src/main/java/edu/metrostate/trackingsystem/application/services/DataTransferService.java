@@ -1,3 +1,4 @@
+// This class is part of the UI code for handling import of json/XML files
 package edu.metrostate.trackingsystem.application.services;
 
 import edu.metrostate.trackingsystem.infrastructure.logging.Logger;
@@ -14,11 +15,8 @@ public class DataTransferService {
     private static final Logger logger = Logger.getLogger();
     private final NotificationHandler notificationHandler;
     private final JsonHandler jsonHandler;
-
-    //Note #1 - When using this I get an uninitialized error for xmlHandler AND jsonHandler
     private final XmlHandler xmlHandler;
-    //Which can be fixed in the DataTransferService constructor by adding , XmlHandler xmlHandler , but, I'm not sure if I should
-    //var dataTransferService = new DataTransferService(notificationHandler, jsonHandler); In main
+
 
     public DataTransferService(NotificationHandler notificationHandler, JsonHandler jsonHandler, XmlHandler xmlHandler) {
         this.notificationHandler = notificationHandler;
@@ -70,7 +68,6 @@ public class DataTransferService {
 
     public void importXml(Stage stage) {
         // Adapted from importJson()
-        // see Note #1 in this file
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import XML File");

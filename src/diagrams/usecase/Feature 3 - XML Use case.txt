@@ -2,12 +2,12 @@ Use Case For XML Import Feature:
 The definition of the system is our software program for tracking vehicle inventory across many dealerships.
 A newly acquired business (stakeholder) has a different format (XML) for their data. They would like to be able to import their data to our system without complications.
 Their data format includes additional data from our own that will need to be imported.
-Our system needs to allow administrator (actor) from these businesses the ability to import their data to our tracking system.
-Actors include the tracking software system (secondary actor) and the administrator (primary actor).
-The administrator will select an XML file using the user interface menu system, when the file is selected the tracking system program will process and import the data.
+Our system needs to allow the manager (actor) from these businesses the ability to import their data to our tracking system.
+Actors include the tracking software system (secondary actor) and the manager (primary actor).
+The manager will select an XML file using the user interface menu system, when the file is selected the tracking system program will process and import the data.
 The goal is to have the XML data import successfully with any conflicting data being handled by the tracking system software.
-Common use case: The administrator loads the tracking software, the administrator selects the menu drop down, the administrator selects import XML which opens an interface for selecting a .XML file.
-The XML file is selected and the system will process the data, add it to the database, update the user interface, display a notification to the administrator and allows for continued operation.
-In event of a failure in the XML import process a notification is displayed to the administrator so they may review it and decide how to proceed.
+Common use case: The manager loads the tracking software, the manager selects the menu drop down, the manager selects import XML which opens an interface for selecting a .XML file.
+The XML file is selected and the system will process the data, add it to the database, update the user interface, display a notification to the manager and allows for continued operation.
+In event of a failure in the XML import process a notification is displayed to the manager so they may review it and decide how to proceed.
 After the XMl file import process completes the user is able to continue operating the tracking system with the new data included in the user interface.
-The administrator will review the data and then either exit the system through the user interface menu to not save persisting data or the administrator will exit with persisting data changes by using the save and exit menu option or the close window icon.
+The manager will review the data and then either exit the system through the user interface menu to not save persisting data or the manager will exit with persisting data changes by using the save and exit menu option or the close window icon.

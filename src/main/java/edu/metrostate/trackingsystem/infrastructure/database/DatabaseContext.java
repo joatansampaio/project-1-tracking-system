@@ -46,6 +46,11 @@ public class DatabaseContext implements IDatabaseContext {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * In the context of the database, remove or delete a dealer
+     * @param dealershipId - The dealership ID  of the dealer to be removed
+     * @return a result of success if operation completed, otherwise return a result failure message.
+     */
     @Override
     public Result<Boolean> deleteDealer(String dealershipId) {
         if (dealers.removeIf(d -> d.getDealershipId().equals(dealershipId))) {
@@ -66,7 +71,7 @@ public class DatabaseContext implements IDatabaseContext {
     }
 
     /**
-     * Gets a dealer by ID
+     * Gets a dealer by ID in the context of the database
      * @param dealershipId the dealer ID
      * @return the dealer for dealershipId or an error message
      */
@@ -79,11 +84,19 @@ public class DatabaseContext implements IDatabaseContext {
                 .orElse(null);
     }
 
+    /**
+     * In the context of the database, set the dealers as a list of dealers
+     * @param dealers A list of dealers
+     */
     @Override
     public void setDealers(List<Dealer> dealers) {
         this.dealers.setAll(dealers); // This works since `this.dealers` is an ObservableList
     }
 
+    /**
+     * Toggles the acquisition of vehicles for a dealer in the context of the database
+     * @param dealershipId - A dealership identification code
+     */
     @Override
     public void toggleAcquisition(String dealershipId) {
         dealers.stream()
@@ -92,6 +105,12 @@ public class DatabaseContext implements IDatabaseContext {
                .ifPresent(dealer -> dealer.setEnabledForAcquisition(!dealer.getEnabledForAcquisition()));
     }
 
+    /**
+     * Update the information of a dealer, currently limited to name. Does this in the context of the database
+     * @param dealershipId - A dealership identification code
+     * @param name - The name to set as the dealer name
+     * @return true if dealer name was set, otherwise return false
+     */
     @Override
     public boolean updateDealer(String dealershipId, String name){
         var dealer =  getDealerByID(dealershipId);
@@ -102,7 +121,12 @@ public class DatabaseContext implements IDatabaseContext {
         }
         return false;
     }
-    
+
+    /**
+     * Adds a vehicle object to a dealer by using the vehicle's dealer ID. In the context of the database
+     * @param vehicle - A vehicle object to add
+     * @return a result of success if operation completed, otherwise return a result failure message.
+     */
     @Override
     public Result<Boolean> addVehicle(Vehicle vehicle) {
         var dealer =  getDealerByID(vehicle.getDealershipId());
@@ -123,6 +147,12 @@ public class DatabaseContext implements IDatabaseContext {
         return Result.success();
     }
 
+    /**
+     * In the context of the database, removes or deletes a vehicle from a dealer
+     * @param id - The vehicle ID of the vehicle to be removed
+     * @param dealershipId - The dealer ID of the dealer that may contain the vehicle.
+     * @return A result of success on completed operation or a result of failure with an errorMessage if unsuccessful.
+     */
     @Override
     public Result<Boolean> deleteVehicle(String id, String dealershipId) {
         var dealer = getDealerByID(dealershipId);
@@ -135,16 +165,28 @@ public class DatabaseContext implements IDatabaseContext {
         return Result.failure("Dealer ID not found...");
     }
 
+    /**
+     * Passes a list of dealers to ImportInner function for handling
+     * @param incomingDealers - A list of dealers to be processed (imported)
+     */
     @Override
     public void importJSON(List<Dealer> incomingDealers) {
         ImportInner(incomingDealers);
     }
 
+    /**
+     * Passes a list of dealers to ImportInner function for handling
+     * @param incomingDealers - A list of dealers to be processed (imported)
+     */
     @Override
     public void importXML(List<Dealer> incomingDealers) {
         ImportInner(incomingDealers);
     }
 
+    /**
+     * Processes (imports) a list of dealers to the database
+     * @param incomingDealers - A list of dealers to be processed (imported)
+     */
     private void ImportInner(List<Dealer> incomingDealers) {
         // I want a map with <vehicleID, dealershipId> here.
         // That will be used as a prevention against duplicates in the system
@@ -215,6 +257,10 @@ public class DatabaseContext implements IDatabaseContext {
         }
     }
 
+    /**
+     * Toggle the state of renting for a vehicle
+     * @param vehicle - A vehicle object
+     */
     @Override
     public void toggleIsRented(Vehicle vehicle){
         vehicle.toggleIsRented();

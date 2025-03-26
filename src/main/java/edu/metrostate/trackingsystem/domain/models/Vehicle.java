@@ -1,3 +1,4 @@
+//This is the Vehicle object which should be stored in a dealer
 package edu.metrostate.trackingsystem.domain.models;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

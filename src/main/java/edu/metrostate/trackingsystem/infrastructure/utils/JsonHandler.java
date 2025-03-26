@@ -1,3 +1,4 @@
+//Handles reading of a JSON formatted data file
 package edu.metrostate.trackingsystem.infrastructure.utils;
 
 import com.google.gson.Gson;

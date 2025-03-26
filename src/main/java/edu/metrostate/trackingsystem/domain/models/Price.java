@@ -1,3 +1,4 @@
+// This is the Price object used to store price information of a vehicle object
 package edu.metrostate.trackingsystem.domain.models;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

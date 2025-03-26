@@ -1,4 +1,4 @@
-
+// This is the Dealer object used to store vehicles
 package edu.metrostate.trackingsystem.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

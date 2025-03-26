@@ -1,3 +1,16 @@
+/*
+	Phase 2 of our implementation of an inventory system for use by a company that tracks
+	vehicle inventories across multiple dealerships.
+
+	Implemented by (in random order chosen by the website wheel of names):
+	GitHub ID: @joatansampaio
+	GitHub ID: @dragostego
+	GitHub ID: @hcxmed
+	GitHub ID: @Bit2ByteGitHype
+	GitHub ID: @yoyoeyes
+
+	For the Metro State University ICS 372-02 Spring 2025 Semester taught by Timmothy Carlson
+ */
 package edu.metrostate.trackingsystem;
 
 import edu.metrostate.trackingsystem.application.services.DataTransferService;

@@ -1,3 +1,4 @@
+//Handles reading of an XML formatted data file to an object
 package edu.metrostate.trackingsystem.infrastructure.utils;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -19,6 +20,11 @@ public class XmlHandler implements IFileHandler {
         return instance;
     }
 
+    /**
+     * Imports an XML formatted file using the jackson library
+     * @param file - The file to be imported
+     * @return true if operation completed otherwise log and error and return false
+     */
         @Override
     public boolean importFile(File file) {
 
@@ -34,6 +40,7 @@ public class XmlHandler implements IFileHandler {
 
         return false;
     }
+
 
     @Override
     public boolean exportFile(File file) {

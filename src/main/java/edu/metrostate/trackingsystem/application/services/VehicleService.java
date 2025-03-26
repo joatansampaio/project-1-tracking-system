@@ -1,3 +1,4 @@
+//This class is used for transferring data through application layers from the database
 package edu.metrostate.trackingsystem.application.services;
 
 import edu.metrostate.trackingsystem.domain.models.Vehicle;

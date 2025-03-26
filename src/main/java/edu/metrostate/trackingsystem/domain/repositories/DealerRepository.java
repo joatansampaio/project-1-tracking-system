@@ -1,3 +1,4 @@
+//Used for transferring data between application layers from the database (domain layer) to the services layer
 package edu.metrostate.trackingsystem.domain.repositories;
 
 import edu.metrostate.trackingsystem.domain.models.Dealer;
