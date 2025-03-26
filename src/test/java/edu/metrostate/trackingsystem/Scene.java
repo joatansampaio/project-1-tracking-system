@@ -3,7 +3,9 @@ package edu.metrostate.trackingsystem;
 import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Price;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
+import edu.metrostate.trackingsystem.infrastructure.utils.XmlHandler;
 
+import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +43,11 @@ public class Scene {
         return this;
     }
 
+    public boolean addVehicle(String vehicle, int overrideLastVehicleIndex) {
+        lastVehicleIndex = overrideLastVehicleIndex;
+        return addVehicle(vehicle);
+    }
+
     public boolean addVehicle(String vehicle) {
         var vehicleId = "#" + ++lastVehicleIndex;
 
@@ -72,5 +79,15 @@ public class Scene {
 
     public Dealer getDealer(String dealershipId) {
         return dp.database().getDealerByID(dealershipId);
+    }
+
+    public boolean importJson() {
+        File file = new File("src/test/jsonTest.json");
+        return dp.jsonHandler().importFile(file);
+    }
+
+    public boolean importXml() {
+        File file = new File("src/test/xmlTest.xml");
+        return XmlHandler.getInstance().importFile(file);
     }
 }

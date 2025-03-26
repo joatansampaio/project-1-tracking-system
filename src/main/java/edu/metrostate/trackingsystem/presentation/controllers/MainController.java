@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -37,6 +38,7 @@ public class MainController {
     private DataTransferService dataTransferService;
     private JsonHandler jsonHandler;
     private NotificationHandler notificationHandler;
+    private boolean hasVisitedDealersTab = false;
 
     @FXML private TableView<Vehicle> vehicleTable;
     @FXML private TableColumn<Vehicle, String> vehicleIdColumn;
@@ -52,6 +54,7 @@ public class MainController {
     @FXML private TableColumn<Dealer, String> dealerIdColumn;
     @FXML private TableColumn<Dealer, String> dealerNameColumn;
     @FXML private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
+    @FXML private TableColumn<Dealer, String> numberOfVehiclesForDealer;
 
     @FXML private ComboBox<String> dealershipIdCombo;
 
@@ -270,11 +273,37 @@ public class MainController {
         logger.info("Configuring Dealer TableView columns.");
         dealerIdColumn.setCellValueFactory(new PropertyValueFactory<>("dealershipId"));
         dealerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        isEnabledForAcquisitionColumn.setCellValueFactory(new PropertyValueFactory<>("enabledForAcquisition"));
         // Set up the checkbox column for Acquisition Status
         isEnabledForAcquisitionColumn.setCellValueFactory(cellData -> cellData.getValue().getEnabledForAcquisition()
                 ? new SimpleStringProperty("Enabled")
                 : new SimpleStringProperty("Disabled"));
+        isEnabledForAcquisitionColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if ("Disabled".equals(item)) {
+                        setStyle("-fx-text-fill: #FFA07A; -fx-font-weight: bold;");
+                    } else if ("Enabled".equals(item)) {
+                        setStyle("-fx-text-fill: #90EE90; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
+        numberOfVehiclesForDealer.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getVehicles().size() + ""));
+
+        dealerTable.setEditable(true);
+        dealerNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        dealerNameColumn.setOnEditCommit(event -> {
+            Dealer dealer = event.getRowValue();
+            dealer.setName(event.getNewValue());
+            notificationHandler.notify("Dealer Updated");
+        });
     }
 
     private void setupListeners() {
@@ -340,7 +369,13 @@ public class MainController {
         goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (isDealerTab ? "#212121": "#343434"));
     }
 
-    public void goToDealersView() { toggleTabView(true); }
+    public void goToDealersView() {
+        toggleTabView(true);
+        if (!hasVisitedDealersTab) {
+            hasVisitedDealersTab = true;
+            notificationHandler.tip("Double-click Name cell to edit the dealer's name.");
+        }
+    }
     public void goToVehiclesView() { toggleTabView(false); }
 
     private Stage getStage() { return (Stage) vehicleTable.getScene().getWindow(); }

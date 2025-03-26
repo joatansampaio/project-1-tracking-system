@@ -78,6 +78,7 @@
                     <TableColumn fx:id="dealerIdColumn" text="Dealer ID" prefWidth="100"/>
                     <TableColumn fx:id="dealerNameColumn" text="Name" prefWidth="200"/>
                     <TableColumn fx:id="isEnabledForAcquisitionColumn" text="Acquisition Status" prefWidth="200"/>
+                    <TableColumn fx:id="numberOfVehiclesForDealer" text="Vehicles Count" prefWidth="130"/>
                 </columns>
             </TableView>
         </StackPane>

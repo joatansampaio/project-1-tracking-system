@@ -113,7 +113,9 @@ public class DatabaseContext implements IDatabaseContext {
         if (!dealer.getEnabledForAcquisition()) {
             return Result.failure("Dealer is not enabled for acquisition.");
         }
-        if (vehicles.stream().anyMatch(v -> v.getVehicleId().equals(vehicle.getVehicleId()))) {
+        // Double check because of the unit tests that do not keep 'vehicles' updated as the UI does.
+        if (dealer.getVehicles().stream().anyMatch(v -> v.getVehicleId().equals(vehicle.getVehicleId()))
+                || vehicles.stream().anyMatch(v -> v.getVehicleId().equals(vehicle.getVehicleId()))) {
             return Result.failure("A Vehicle with ID " + vehicle.getVehicleId() + " already exists.");
         }
 
