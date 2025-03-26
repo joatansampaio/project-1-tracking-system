@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PriceTest {
 
     @Test
-    public void emptyConstructor() {
+    public void createPrice() {
         var price = new Price();
         assertNotNull(price);
     }
@@ -46,6 +46,7 @@ class PriceTest {
         assertPrice("euros", "€ 50.00 euros");
         assertPrice("yen", "¥ 50.00 yen");
         assertPrice("rupees", "₹ 50.00 rupees");
+        assertPrice("whatever", "50.00 whatever");
     }
 
     void assertPrice(String currency, String expected) {

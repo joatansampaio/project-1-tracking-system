@@ -49,7 +49,7 @@ public class JsonHandler implements IFileHandler {
                 .getAsJsonObject();
 
             var listType = new TypeToken<List<Vehicle>>() {}.getType();
-            List<Vehicle> data = new Gson().fromJson(jsonObject.get("car_inventory"), listType);
+            List<Vehicle> data = GsonConfig.getGson().fromJson(jsonObject.get("car_inventory"), listType);
 
             // Group by dealers
             Map<String, List<Vehicle>> groupByDealershipId = data.stream()

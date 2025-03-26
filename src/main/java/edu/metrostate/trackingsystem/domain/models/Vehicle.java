@@ -192,7 +192,7 @@ public class Vehicle {
 		return dealershipName;
 	}
 
-	public void setDealershipName(String dealershipId) {
+	public void setDealershipName(String dealershipName) {
 		this.dealershipName = dealershipName;
 	}
 
@@ -206,7 +206,12 @@ public class Vehicle {
 
 	public boolean getIsRented() { return isRented;}
 
-	public void setIsRented(boolean rented) {this.isRented = rented;}
+	public void setIsRented(boolean rented) {
+		if (type.equals("SPORTS CAR") && rented) {
+			return;
+		}
+		this.isRented = rented;
+	}
 
 	public void toggleIsRented(){
 		if(this.getType().equalsIgnoreCase("sports car")){
@@ -236,9 +241,10 @@ public class Vehicle {
 			.format(Instant.ofEpochMilli(acquisitionDate).atZone(ZoneId.systemDefault()));
 	}
 
-	// I just want to ensure consistency of UpperCase types
+	// This is used when in the import process
+	// We want to ensure consistency of UpperCase types
 	// maybe an enum would be a better choice.
-	// We can probably change that later.
+	// We can always probably change that later.
 	public void normalize() {
 		setType(type.toUpperCase());
 	}

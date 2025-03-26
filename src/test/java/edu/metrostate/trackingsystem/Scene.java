@@ -5,20 +5,22 @@ import edu.metrostate.trackingsystem.domain.models.Price;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class Scene {
 
     private final Main.DependencyPackage dp = Main.getDependencies(null);
+    private static final HashMap<String, String> vehicleDealerMap = new HashMap<>();
 
-    private int lastDealerIndex = 0;
-    private int lastVehicleIndex = 0;
+    private static int lastDealerIndex = 0;
+    private static int lastVehicleIndex = 0;
 
     public Scene setup() {
         dp.database().getDealers().clear();
+        vehicleDealerMap.clear();
+        lastVehicleIndex = 0;
+        lastDealerIndex = 0;
         return this;
     }
 
@@ -51,21 +53,17 @@ public class Scene {
         long acquisitionDate = Instant.now().toEpochMilli();
 
         var newVehicle = new Vehicle(vehicleId, manufacturer, model, acquisitionDate, new Price(price, "dollars"), dealershipId, type);
-        return dp.vehicleService().addVehicle(newVehicle).isSuccess();
+        var isSuccess = dp.vehicleService().addVehicle(newVehicle).isSuccess();
+        if (isSuccess) {
+            vehicleDealerMap.put(vehicleId, dealershipId);
+        }
+        return isSuccess;
     }
 
     public boolean deleteVehicle(String vehicleId) {
-        var effectiveId = vehicleId.replace("vehicle", "");
-
-        var vehicle = dp.vehicleService()
-                .getVehicles()
-                .stream()
-                .filter(v -> Objects.equals(v.getVehicleId(), effectiveId)) // Filter the matching vehicle
-                .findFirst()
-                .orElse(null);
-
-        assertNotNull(vehicle);
-        return dp.vehicleService().deleteVehicle(effectiveId, vehicle.getDealershipId()).isSuccess();
+        var effectiveVehicleId = vehicleId.replace("vehicle", "");
+        var effectiveDealerId = vehicleDealerMap.get(effectiveVehicleId);
+        return dp.vehicleService().deleteVehicle(effectiveVehicleId, effectiveDealerId).isSuccess();
     }
 
     public List<Dealer> getDealers() {

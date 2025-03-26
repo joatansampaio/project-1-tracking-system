@@ -103,7 +103,7 @@ public class Dealer {
 	}
 
 	public String getName() {
-		return name != null ? name : "Not Configured.";
+		return name != null ? name : "Not Configured";
 	}
 
 	public void setName(String name) {

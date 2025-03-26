@@ -40,14 +40,14 @@ public class Price {
     @Override
     public String toString() {
         String symbol = switch (currency.toLowerCase()) {
-            case "dollars" -> "$";  // US Dollar
-            case "pounds" -> "£";  // British Pound
-            case "euros" -> "€";  // Euro
-            case "yen" -> "¥";  // Japanese Yen
-            case "rupees" -> "₹";  // Indian Rupee
+            case "dollars" -> "$ ";  // US Dollar
+            case "pounds" -> "£ ";  // British Pound
+            case "euros" -> "€ ";  // Euro
+            case "yen" -> "¥ ";  // Japanese Yen
+            case "rupees" -> "₹ ";  // Indian Rupee
             default -> ""; // Fallback to the original string if unknown
         };
 
-        return String.format("%s%.2f %s", (symbol + " "), price, currency);
+        return String.format("%s%.2f %s", (symbol), price, currency);
     }
 }
