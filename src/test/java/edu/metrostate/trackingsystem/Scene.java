@@ -73,6 +73,6 @@ public class Scene {
     }
 
     public Dealer getDealer(String dealershipId) {
-        return dp.database().getDealerByID(dealershipId).getData();
+        return dp.database().getDealerByID(dealershipId);
     }
 }

@@ -80,6 +80,11 @@ public class DatabaseContext implements IDatabaseContext {
     }
 
     @Override
+    public void setDealers(List<Dealer> dealers) {
+        this.dealers.setAll(dealers); // This works since `this.dealers` is an ObservableList
+    }
+
+    @Override
     public void toggleAcquisition(String dealershipId) {
         dealers.stream()
                .filter(d -> d.getDealershipId().equals(dealershipId))

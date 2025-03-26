@@ -5,6 +5,8 @@ package edu.metrostate.trackingsystem.infrastructure.logging;
  */
 public class Logger {
 
+    private static final Logger instance = new Logger();
+
     private final String className;
 
     private Logger() {
@@ -12,7 +14,7 @@ public class Logger {
     }
 
     public static Logger getLogger() {
-        return new Logger();
+        return instance;
     }
 
     public void info(String msg) {

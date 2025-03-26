@@ -12,7 +12,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Vehicle {
 
 	/**
@@ -158,8 +160,9 @@ public class Vehicle {
 	}
 
 	public long getAcquisitionDate() {
-		return acquisitionDate;
+		return acquisitionDate != null ? acquisitionDate : 0L;
 	}
+
 
 	public void setAcquisitionDate(Long acquisitionDate) {
 		this.acquisitionDate = acquisitionDate;
@@ -170,7 +173,7 @@ public class Vehicle {
 	}
 
 	public String getPriceAsString() {
-		return price.toString();
+		return price != null ? price.toString() : "Unknown";
 	}
 
 	public void setPrice(Price price) {

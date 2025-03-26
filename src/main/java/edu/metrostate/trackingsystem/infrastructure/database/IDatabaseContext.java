@@ -18,7 +18,7 @@ public interface IDatabaseContext {
     boolean updateDealer(String dealershipId, String name);
     void toggleAcquisition(String dealershipId);
     void toggleIsRented(Vehicle vehicle);
-
+    void setDealers(List<Dealer> dealers);
     void importJSON(List<Dealer> data);
     void importXML(List<Dealer> data);
 
