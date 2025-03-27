@@ -217,7 +217,7 @@ public class Vehicle {
 	public void toggleIsRented(){
 		if(this.getType().equalsIgnoreCase("sports car")){
 			isRented = false;
-			System.out.println("bad");
+			System.out.println("bad"); //Should probably be an error message
 		}
 		else{
 			isRented = !isRented;
