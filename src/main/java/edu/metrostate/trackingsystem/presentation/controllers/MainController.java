@@ -225,7 +225,7 @@ public class MainController {
             logger.info("No previous state found. Starting fresh.");
             return;
         }
-        if (jsonHandler.importFile(dbFile)) {
+        if (jsonHandler.loadSession(dbFile)) {
             logger.info("Successfully restored previous session.");
             updateAllVehicles();
             return;

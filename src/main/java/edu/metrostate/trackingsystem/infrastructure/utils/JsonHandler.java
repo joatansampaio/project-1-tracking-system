@@ -79,7 +79,7 @@ public class JsonHandler implements IFileHandler {
         var gson = new GsonBuilder()
             .setPrettyPrinting()
             .create();
-        var data = databaseContext.getVehicles();
+        var data = databaseContext.getDealers();
         var wrapper = new DealershipDatabase(data);
         var json = gson.toJson(wrapper);
         var path = file.getAbsolutePath();
@@ -106,7 +106,7 @@ public class JsonHandler implements IFileHandler {
             .setPrettyPrinting()
             .create();
 
-        var data = databaseContext.getVehicles();
+        var data = databaseContext.getDealers();
         var wrapper = new DealershipDatabase(data);
         var json = gson.toJson(wrapper);
 
@@ -123,6 +123,21 @@ public class JsonHandler implements IFileHandler {
     }
 
     public boolean loadSession(File file) {
-        return true;
+        try {
+            var json = Files.readString(file.toPath());
+            var jsonObject = JsonParser
+                    .parseString(json)
+                    .getAsJsonObject();
+
+            var listType = new TypeToken<List<Dealer>>() {}.getType();
+            List<Dealer> data = GsonConfig.getGson().fromJson(jsonObject.get("database"), listType);
+
+            databaseContext.importJSON(data);
+            logger.info("Imported successfully.");
+            return true;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return false;
+        }
     }
 }

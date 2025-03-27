@@ -23,7 +23,7 @@ public class Dealer {
 	private String name;
 
 	@JsonIgnore  // Ignore this field during serialization
-	private final ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
+	private transient ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
 
 	public Dealer() {
 		this.enabledForAcquisition = true;
@@ -87,7 +87,7 @@ public class Dealer {
 	}
 
 	public List<Vehicle> getVehicles() {
-		return vehicleList;
+		return vehicles;
 	}
 
 	@JsonIgnore  // Ignore during serialization

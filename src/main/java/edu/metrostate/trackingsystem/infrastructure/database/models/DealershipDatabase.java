@@ -1,21 +1,22 @@
 package edu.metrostate.trackingsystem.infrastructure.database.models;
 
+import edu.metrostate.trackingsystem.domain.models.Dealer;
 import edu.metrostate.trackingsystem.domain.models.Vehicle;
 
 import java.util.List;
 
 public class DealershipDatabase {
-    private List<Vehicle> car_inventory;
+    private List<Dealer> database;
 
-    public DealershipDatabase(List<Vehicle> vehicles) {
-        this.car_inventory = vehicles;
+    public DealershipDatabase(List<Dealer> dealers) {
+        this.database = dealers;
     }
 
-    public List<Vehicle> getCar_inventory() {
-        return car_inventory;
+    public List<Dealer> getDatabase() {
+        return database;
     }
 
-    public void setCar_inventory(List<Vehicle> car_inventory) {
-        this.car_inventory = car_inventory;
+    public void setDatabase(List<Dealer> database) {
+        this.database = database;
     }
 }

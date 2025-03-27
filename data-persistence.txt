@@ -1,0 +1,68 @@
+Dealership ID: 485
+Dealership Name: Not Configured
+  Vehicle ID: 848432
+  Manufacturer: null
+  Model: null
+  Type: SUV
+  Price: Unknown
+  Acquisition Date: Unknown
+  Rented: No
+
+  Vehicle ID: 52523
+  Manufacturer: Toyota
+  Model: Tundra
+  Type: PICKUP
+  Price: $ 22600.00 dollars
+  Acquisition Date: 12/31/1969 18:00
+  Rented: No
+
+  Vehicle ID: 151e5dde
+  Manufacturer: Genesis
+  Model: G70
+  Type: SEDAN
+  Price: $ 36600.00 dollars
+  Acquisition Date: 12/31/1969 18:00
+  Rented: No
+
+  Vehicle ID: ern222
+  Manufacturer: Mazda
+  Model: Miata
+  Type: SPORTS CAR
+  Price: $ 22330.00 dollars
+  Acquisition Date: 12/31/1969 18:00
+  Rented: No
+
+  Vehicle ID: 1234
+  Manufacturer: Ford
+  Model: F-150
+  Type: PICKUP
+  Price: $ 30002.00 dollars
+  Acquisition Date: 03/25/2025 00:00
+  Rented: No
+
+Dealership ID: 495
+Dealership Name: Not Configured
+  Vehicle ID: 495_848432
+  Manufacturer: Land Rover
+  Model: Range Rover
+  Type: SUV
+  Price: $ 17000.00 dollars
+  Acquisition Date: Unknown
+  Rented: No
+
+  Vehicle ID: 495_52523
+  Manufacturer: Toyota
+  Model: Tundra
+  Type: PICKUP
+  Price: $ 22600.00 dollars
+  Acquisition Date: Unknown
+  Rented: No
+
+  Vehicle ID: 21233
+  Manufacturer: BMW
+  Model: F-150
+  Type: SPORTS CAR
+  Price: $ 20000.00 dollars
+  Acquisition Date: 03/27/2025 00:00
+  Rented: No
+
