@@ -28,6 +28,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MainController {
@@ -41,31 +44,57 @@ public class MainController {
     private NotificationHandler notificationHandler;
     private boolean hasVisitedDealersTab = false;
 
-    @FXML private TableView<Vehicle> vehicleTable;
-    @FXML private TableColumn<Vehicle, String> vehicleIdColumn;
-    @FXML private TableColumn<Vehicle, String> manufacturerColumn;
-    @FXML private TableColumn<Vehicle, String> vehicleTypeColumn;
-    @FXML private TableColumn<Vehicle, String> modelColumn;
-    @FXML private TableColumn<Vehicle, String> dealershipIdColumn;
-    @FXML private TableColumn<Vehicle, String> priceColumn;
-    @FXML private TableColumn<Vehicle, String> acquisitionDate;
-    @FXML private TableColumn<Vehicle, String> isRentedColumn;
+    @FXML
+    private TableView<Vehicle> vehicleTable;
+    @FXML
+    private TableColumn<Vehicle, String> vehicleIdColumn;
+    @FXML
+    private TableColumn<Vehicle, String> manufacturerColumn;
+    @FXML
+    private TableColumn<Vehicle, String> vehicleTypeColumn;
+    @FXML
+    private TableColumn<Vehicle, String> modelColumn;
+    @FXML
+    private TableColumn<Vehicle, String> dealershipIdColumn;
+    @FXML
+    private TableColumn<Vehicle, String> priceColumn;
+    @FXML
+    private TableColumn<Vehicle, String> acquisitionDate;
+    @FXML
+    private TableColumn<Vehicle, String> isRentedColumn;
 
-    @FXML private TableView<Dealer> dealerTable;
-    @FXML private TableColumn<Dealer, String> dealerIdColumn;
-    @FXML private TableColumn<Dealer, String> dealerNameColumn;
-    @FXML private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
-    @FXML private TableColumn<Dealer, String> numberOfVehiclesForDealer;
+    @FXML
+    private TableView<Dealer> dealerTable;
+    @FXML
+    private TableColumn<Dealer, String> dealerIdColumn;
+    @FXML
+    private TableColumn<Dealer, String> dealerNameColumn;
+    @FXML
+    private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
+    @FXML
+    private TableColumn<Dealer, String> numberOfVehiclesForDealer;
 
-    @FXML private ComboBox<String> dealershipIdCombo;
+    @FXML
+    private ComboBox<String> dealershipIdCombo;
 
-    @FXML private Button toggleAcquisitionBtn;
-    @FXML private Button addVehicleBtn;
-    @FXML private Button deleteVehicleBtn;
-    @FXML private Button deleteDealerBtn;
-    @FXML private Button goToVehiclesViewBtn;
-    @FXML private Button goToDealersViewBtn;
-    @FXML private Button toggleRentedBtn;
+    @FXML
+    private Button toggleAcquisitionBtn;
+    @FXML
+    private Button addVehicleBtn;
+    @FXML
+    private Button deleteVehicleBtn;
+    @FXML
+    private Button deleteDealerBtn;
+    @FXML
+    private Button goToVehiclesViewBtn;
+    @FXML
+    private Button goToDealersViewBtn;
+    @FXML
+    private Button toggleRentedBtn;
+    @FXML
+    private Button toggleTransferBtn;
+    @FXML
+    public Button transferVehicleBtn;
 
     @FXML
     public void initialize() {
@@ -78,6 +107,7 @@ public class MainController {
 
     @FXML
     private void onAddVehicle() {
+        System.out.println("onAddVehicle");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/metrostate/trackingsystem/add-vehicle.fxml"));
             Parent root = loader.load();
@@ -107,9 +137,10 @@ public class MainController {
     }
 
     public void updateAllVehicles() {
+        System.out.println("updateAllVehicles");
         vehicleService.getVehicles().setAll(dealerService.getDealers().stream()
-                   .flatMap(dealer -> dealer.getVehicles().stream())
-                   .collect(Collectors.toList()));
+                .flatMap(dealer -> dealer.getVehicles().stream())
+                .collect(Collectors.toList()));
     }
 
     @FXML
@@ -154,9 +185,69 @@ public class MainController {
         }
     }
 
-    @FXML private void onImportJson() { dataTransferService.importJson(getStage()); }
-    @FXML private void onImportXml() { dataTransferService.importXml(getStage()); }
-    @FXML private void onExportJson() { dataTransferService.exportJson(getStage()); }
+    @FXML
+    private void transferDealershipInventory() {
+        //intelliJ is wrong this is used
+        var dealer2 = dealerTable.getSelectionModel().getSelectedItem();
+        if (dealer2 != null) {
+            vehicleService.getVehicles().setAll(
+                    dealerService.getDealers()
+                            .stream()
+                            .filter(d -> d.getDealershipId().equals(dealer2.getDealershipId()))
+                            .flatMap(dealer -> dealer.getVehicles().stream())
+                            .collect(Collectors.toList()));
+            transferVehicleBtn.setVisible(true);
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Transfer to which dealer");
+            Optional<String> b = dialog.showAndWait();
+            String g;
+            g = b.orElse("Dealer Error");
+            Dealer dealer1 = dealerService.getDealers()
+                    .stream()
+                    .filter(d -> d.getDealershipId().equals(g)).findFirst().get();
+            if (!g.equals("Dealer Error")) {
+                dealer2.getVehicles().forEach(vehicle -> {
+                    vehicle.setDealershipId(g);
+                   vehicle.setVehicleId(fixID(vehicle.getVehicleId(), vehicle.getDealershipId()));
+                   dealer1.addVehicle(vehicle);
+                   // vehicleService.addVehicle(vehicle);
+                   // vehicleService.deleteVehicle();
+                });
+                dealer2.setVehicles(new ArrayList<Vehicle>());
+                updateDealershipIds();
+                updateAllVehicles();
+            }
+
+            vehicleTable.refresh();
+            dealerTable.refresh();
+            //notificationHandler.notify("Success");
+
+        }
+
+        updateAllVehicles();
+    }
+
+public String fixID(String vehicleID, String dealershipId) {
+    String[] c = vehicleID.split("_");
+    if (c.length == 2) {
+        return dealershipId + "_" + c[1];
+    } else
+        return dealershipId + "_" + c[0];
+}
+    @FXML
+    private void onImportJson() {
+        dataTransferService.importJson(getStage());
+    }
+
+    @FXML
+    private void onImportXml() {
+        dataTransferService.importXml(getStage());
+    }
+
+    @FXML
+    private void onExportJson() {
+        dataTransferService.exportJson(getStage());
+    }
 
     @FXML
     private void toggleRented() {
@@ -210,6 +301,7 @@ public class MainController {
         // That will make the buttons not take the space when hidden
         toggleAcquisitionBtn.managedProperty().bind(toggleAcquisitionBtn.visibleProperty());
         deleteDealerBtn.managedProperty().bind(deleteDealerBtn.visibleProperty());
+        toggleTransferBtn.managedProperty().bind(toggleTransferBtn.visibleProperty());
         deleteVehicleBtn.managedProperty().bind(deleteVehicleBtn.visibleProperty());
         addVehicleBtn.managedProperty().bind(addVehicleBtn.visibleProperty());
         dealershipIdCombo.managedProperty().bind(dealershipIdCombo.visibleProperty());
@@ -311,39 +403,56 @@ public class MainController {
         logger.info("Configuring listeners.");
         // To enable/disable the delete button based on if a row is selected.
         vehicleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            System.out.println("flag1");
             deleteVehicleBtn.setDisable(newSelection == null);
-            deleteVehicleBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#f54444"));
+            deleteVehicleBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#f54444"));
         });
         dealerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            System.out.println("flag2");
             toggleAcquisitionBtn.setDisable(newSelection == null);
-            toggleAcquisitionBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#3399ff"));
+            toggleAcquisitionBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#3399ff"));
+            toggleTransferBtn.setDisable(newSelection == null);
+            toggleTransferBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#3399ff"));
             deleteDealerBtn.setDisable(newSelection == null);
-            deleteDealerBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a": "#f54444"));
+            deleteDealerBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#f54444"));
         });
 
         // Let's clear the selection when clicking in an empty row because that seems right.
         vehicleTable.setRowFactory(tv -> {
+            System.out.println("flag3");
             TableRow<Vehicle> row = new TableRow<>();
-            row.setOnMouseClicked(event -> { if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection(); });
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection();
+            });
             return row;
         });
         dealerTable.setRowFactory(tv -> {
+            System.out.println("flag4");
             TableRow<Dealer> row = new TableRow<>();
-            row.setOnMouseClicked(event -> { if (row.isEmpty())  dealerTable.getSelectionModel().clearSelection(); });
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) dealerTable.getSelectionModel().clearSelection();
+            });
             return row;
         });
 
         dealershipIdCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("flag5");
             if (newValue == null || newValue.equals("All")) {
                 updateAllVehicles();
                 return;
             }
+            List<Vehicle> k = dealerService.getDealers()
+                    .stream()
+                    .filter(d -> d.getDealershipId().equals(newValue))
+                    .flatMap(dealer -> dealer.getVehicles().stream())
+                    .collect(Collectors.toList());
+            System.out.println(k.size());
             vehicleService.getVehicles().setAll(
                     dealerService.getDealers()
-                                 .stream()
-                                 .filter(d -> d.getDealershipId().equals(newValue))
-                                 .flatMap(dealer -> dealer.getVehicles().stream())
-                                 .collect(Collectors.toList()));
+                            .stream()
+                            .filter(d -> d.getDealershipId().equals(newValue))
+                            .flatMap(dealer -> dealer.getVehicles().stream())
+                            .collect(Collectors.toList()));
         });
 
         // To disable the Toggle Rented button if the selected vehicle is a sports car
@@ -365,9 +474,10 @@ public class MainController {
         dealerTable.setVisible(isDealerTab);
         deleteDealerBtn.setVisible(isDealerTab);
         toggleAcquisitionBtn.setVisible(isDealerTab);
+        toggleTransferBtn.setVisible(isDealerTab);
 
-        goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (!isDealerTab ? "#212121": "#343434"));
-        goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (isDealerTab ? "#212121": "#343434"));
+        goToDealersViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (!isDealerTab ? "#212121" : "#343434"));
+        goToVehiclesViewBtn.setStyle("--fx-min-width: 100px; -fx-background-color:" + (isDealerTab ? "#212121" : "#343434"));
     }
 
     public void goToDealersView() {
@@ -377,9 +487,14 @@ public class MainController {
             notificationHandler.tip("Double-click Name cell to edit the dealer's name.");
         }
     }
-    public void goToVehiclesView() { toggleTabView(false); }
 
-    private Stage getStage() { return (Stage) vehicleTable.getScene().getWindow(); }
+    public void goToVehiclesView() {
+        toggleTabView(false);
+    }
+
+    private Stage getStage() {
+        return (Stage) vehicleTable.getScene().getWindow();
+    }
 
     // I couldn't make it happen through the constructor with JavaFX
     // apparently there are libs that can use @autowire.
@@ -394,5 +509,10 @@ public class MainController {
         this.dealerService = dealerService;
         this.dataTransferService = dataTransferService;
         this.notificationHandler = notificationHandler;
+    }
+
+    @FXML
+    public void transferVehicle() {
+
     }
 }

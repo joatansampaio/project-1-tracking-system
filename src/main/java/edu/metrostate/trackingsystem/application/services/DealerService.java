@@ -23,7 +23,7 @@ public class DealerService {
     public void toggleAcquisition(String dealershipId) {
         repository.toggleAcquisition(dealershipId);
     }
-
+    public void transferInventory(){}
     public ObservableList<Dealer> getDealers() {
         return repository.getDealers();
     }

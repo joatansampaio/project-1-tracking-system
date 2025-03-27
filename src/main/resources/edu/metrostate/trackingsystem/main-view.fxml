@@ -54,6 +54,10 @@
                         onAction="#toggleRented"
                         style="-fx-background-color:#2a2a2a"
                         disable="true"/>
+                <Button fx:id="toggleTransferBtn" disable="true" onAction="#transferDealershipInventory"
+                        style="-fx-background-color:#2a2a2a" text="Transfer Dealer Inventory" visible="false"/>
+                <Button fx:id="transferVehicleBtn" disable="true" onAction="#transferVehicle"
+                        style="-fx-background-color:#2a2a2a" text="Delete Vehicle" visible="false"/>
             </HBox>
         </VBox>
     </top>
