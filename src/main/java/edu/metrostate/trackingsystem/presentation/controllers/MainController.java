@@ -107,7 +107,6 @@ public class MainController {
 
     @FXML
     private void onAddVehicle() {
-        System.out.println("onAddVehicle");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/metrostate/trackingsystem/add-vehicle.fxml"));
             Parent root = loader.load();
@@ -403,12 +402,10 @@ public String fixID(String vehicleID, String dealershipId) {
         logger.info("Configuring listeners.");
         // To enable/disable the delete button based on if a row is selected.
         vehicleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            System.out.println("flag1");
             deleteVehicleBtn.setDisable(newSelection == null);
             deleteVehicleBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#f54444"));
         });
         dealerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            System.out.println("flag2");
             toggleAcquisitionBtn.setDisable(newSelection == null);
             toggleAcquisitionBtn.setStyle("-fx-background-color:" + (newSelection == null ? "#2a2a2a" : "#3399ff"));
             toggleTransferBtn.setDisable(newSelection == null);
@@ -419,7 +416,6 @@ public String fixID(String vehicleID, String dealershipId) {
 
         // Let's clear the selection when clicking in an empty row because that seems right.
         vehicleTable.setRowFactory(tv -> {
-            System.out.println("flag3");
             TableRow<Vehicle> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (row.isEmpty()) vehicleTable.getSelectionModel().clearSelection();
@@ -427,7 +423,6 @@ public String fixID(String vehicleID, String dealershipId) {
             return row;
         });
         dealerTable.setRowFactory(tv -> {
-            System.out.println("flag4");
             TableRow<Dealer> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (row.isEmpty()) dealerTable.getSelectionModel().clearSelection();
@@ -436,7 +431,6 @@ public String fixID(String vehicleID, String dealershipId) {
         });
 
         dealershipIdCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("flag5");
             if (newValue == null || newValue.equals("All")) {
                 updateAllVehicles();
                 return;
