@@ -14,6 +14,12 @@ class Logger private constructor() {
         System.err.println("[$className] : $msg")
     }
 
+    fun warn(msg: String) {
+        val yellow = "\u001B[33m"
+        val reset = "\u001B[0m"
+        println("$yellow[$className] : $msg$reset")
+    }
+
     companion object {
         val logger: Logger = Logger()
     }

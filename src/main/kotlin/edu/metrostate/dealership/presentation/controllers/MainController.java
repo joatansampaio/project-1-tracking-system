@@ -5,13 +5,13 @@ import edu.metrostate.dealership.application.services.DataTransferService;
 import edu.metrostate.dealership.application.services.DealerService;
 import edu.metrostate.dealership.application.services.VehicleService;
 import edu.metrostate.dealership.domain.models.Dealer;
+import edu.metrostate.dealership.domain.models.VehicleType;
 import edu.metrostate.dealership.infrastructure.logging.Logger;
 import edu.metrostate.dealership.domain.models.Vehicle;
 import edu.metrostate.dealership.infrastructure.utils.JsonHandler;
 import edu.metrostate.dealership.infrastructure.utils.NotificationHandler;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,10 +28,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -111,17 +107,11 @@ public class MainController {
         }
     }
 
-    public void updateAllVehicles() {
-        vehicleService.getVehicles().setAll(dealerService.getDealers().stream()
-                .flatMap(dealer -> dealer.getVehicles().stream())
-                .collect(Collectors.toList()));
-    }
-
     @FXML
     private void onDeleteVehicle() {
         var selected = vehicleTable.getSelectionModel().getSelectedItem();
         int selectedIndex = vehicleTable.getSelectionModel().getSelectedIndex();
-        var response = vehicleService.deleteVehicle(selected.vehicleId, selected.dealershipId);
+        var response = vehicleService.deleteVehicle(selected.getVehicleId(), selected.getDealershipId());
             notificationHandler.notify("Vehicle deleted.");
             vehicleTable.getItems().remove(selected);
 
@@ -161,41 +151,41 @@ public class MainController {
         //intelliJ is wrong this is used
         var dealer2 = dealerTable.getSelectionModel().getSelectedItem();
         if (dealer2 != null) {
-            vehicleService.getVehicles().setAll(
-                    dealerService.getDealers()
-                            .stream()
-                            .filter(d -> d.getDealershipId().equals(dealer2.getDealershipId()))
-                            .flatMap(dealer -> dealer.getVehicles().stream())
-                            .collect(Collectors.toList()));
-            transferVehicleBtn.setVisible(true);
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Transfer to which dealer");
-            Optional<String> b = dialog.showAndWait();
-            String g;
-            g = b.orElse("Dealer Error");
-            Dealer dealer1 = dealerService.getDealers()
-                    .stream()
-                    .filter(d -> d.getDealershipId().equals(g)).findFirst().get();
-            if (!g.equals("Dealer Error")) {
-                dealer2.getVehicles().forEach(vehicle -> {
-                    vehicle.dealershipId = g;
-                   vehicle.vehicleId = fixID(vehicle.vehicleId, vehicle.dealershipId);
-                   dealer1.addVehicle(vehicle);
-                   // vehicleService.addVehicle(vehicle);
-                   // vehicleService.deleteVehicle();
-                });
-                dealer2.setVehicles(new ArrayList<Vehicle>());
-                updateDealershipIds();
-                updateAllVehicles();
-            }
-
-            vehicleTable.refresh();
-            dealerTable.refresh();
-            //notificationHandler.notify("Success");
+            // TODO: vehicles are not coming from dealer anymore
+            //  so that has to be addressed.
+//            vehicleService.getVehicles().setAll(
+//                    dealerService.getDealers()
+//                            .stream()
+//                            .filter(d -> d.getDealershipId().equals(dealer2.getDealershipId()))
+//                            .flatMap(dealer -> dealer.getVehicles().stream())
+//                            .collect(Collectors.toList()));
+//            transferVehicleBtn.setVisible(true);
+//            TextInputDialog dialog = new TextInputDialog();
+//            dialog.setTitle("Transfer to which dealer");
+//            Optional<String> b = dialog.showAndWait();
+//            String g;
+//            g = b.orElse("Dealer Error");
+//            Dealer dealer1 = dealerService.getDealers()
+//                    .stream()
+//                    .filter(d -> d.getDealershipId().equals(g)).findFirst().get();
+//            if (!g.equals("Dealer Error")) {
+//                dealer2.getVehicles().forEach(vehicle -> {
+//                    vehicle.dealershipId = g;
+//                   vehicle.vehicleId = fixID(vehicle.vehicleId, vehicle.dealershipId);
+//                   dealer1.addVehicle(vehicle);
+//                   // vehicleService.addVehicle(vehicle);
+//                   // vehicleService.deleteVehicle();
+//                });
+//                dealer2.setVehicles(new ArrayList<Vehicle>());
+//                updateDealershipIds();
+//                updateAllVehicles();
+//            }
+//
+//            vehicleTable.refresh();
+//            dealerTable.refresh();
+//            //notificationHandler.notify("Success");
 
         }
-
-        updateAllVehicles();
     }
 
 public String fixID(String vehicleID, String dealershipId) {
@@ -242,19 +232,6 @@ public String fixID(String vehicleID, String dealershipId) {
             initializeFromPreviousState();
             updateDealershipIds();
 
-            dealerService.getDealers().addListener((ListChangeListener<Dealer>) change -> {
-                updateAllVehicles();
-                while (change.next()) {
-                    if (change.wasAdded()) {
-                        for (Dealer dealer : change.getAddedSubList()) {
-                            dealer.getObservableVehicles().addListener((ListChangeListener<Vehicle>) v -> updateAllVehicles());
-                        }
-                    }
-                }
-                updateDealershipIds();
-            });
-
-            dealerService.getDealers().forEach(d -> d.getObservableVehicles().addListener((ListChangeListener<Vehicle>) v -> updateAllVehicles()));
             dealerTable.setItems(dealerService.getDealers());
             vehicleTable.setItems(vehicleService.getVehicles());
         });
@@ -290,7 +267,6 @@ public String fixID(String vehicleID, String dealershipId) {
         }
         if (jsonHandler.loadSession(dbFile)) {
             logger.info("Successfully restored previous session.");
-            updateAllVehicles();
             return;
         }
         logger.error("Failed to load previous database state.");
@@ -358,8 +334,9 @@ public String fixID(String vehicleID, String dealershipId) {
                 }
             }
         });
-        numberOfVehiclesForDealer.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getVehicles().size() + ""));
+        // TODO: Fix vehicles number calculation
+//        numberOfVehiclesForDealer.setCellValueFactory(cellData ->
+//                new SimpleStringProperty(cellData.getValue().getVehicles().size() + ""));
 
         dealerTable.setEditable(true);
         dealerNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -404,26 +381,15 @@ public String fixID(String vehicleID, String dealershipId) {
 
         dealershipIdCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.equals("All")) {
-                updateAllVehicles();
                 return;
             }
-            List<Vehicle> k = dealerService.getDealers()
-                    .stream()
-                    .filter(d -> d.getDealershipId().equals(newValue))
-                    .flatMap(dealer -> dealer.getVehicles().stream())
-                    .collect(Collectors.toList());
-            vehicleService.getVehicles().setAll(
-                    dealerService.getDealers()
-                            .stream()
-                            .filter(d -> d.getDealershipId().equals(newValue))
-                            .flatMap(dealer -> dealer.getVehicles().stream())
-                            .collect(Collectors.toList()));
+           // TODO fix filter of vehicles by dealership ID
         });
 
         // To disable the Toggle Rented button if the selected vehicle is a sports car
         vehicleTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, v1, v2) -> {
-            toggleRentedBtn.setDisable(v2 == null || v2.getType().equalsIgnoreCase("sports car"));
-            toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null || v2.getType().equalsIgnoreCase("sports car")) ? "#2a2a2a" : "#3c3c3c"));
+            toggleRentedBtn.setDisable(v2 == null || v2.getType().equals(VehicleType.SPORTS_CAR));
+            toggleRentedBtn.setStyle("-fx-background-color:" + ((v2 == null || v2.getType().equals(VehicleType.SPORTS_CAR)) ? "#2a2a2a" : "#3c3c3c"));
         }));
     }
 

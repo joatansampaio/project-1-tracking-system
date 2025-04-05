@@ -47,7 +47,7 @@ public class AddVehicleController {
     @FXML
     private void onAddVehicle(ActionEvent event) {
         try {
-            var vehicle = Vehicle.Companion.createVehicle(
+            var vehicle = Vehicle.Companion.create(
                     vehicleIdField.getText(),
                     manufacturerField.getText(),
                     modelField.getText(),

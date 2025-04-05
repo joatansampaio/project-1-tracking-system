@@ -54,3 +54,5 @@ bin/
 target/
 *.odt#
 .idea
+.database
+/export-files/*.json

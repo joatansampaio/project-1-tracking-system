@@ -1,7 +1,13 @@
 package edu.metrostate.dealership.infrastructure.database
 
+import edu.metrostate.dealership.Main.Companion.logger
 import edu.metrostate.dealership.domain.models.Dealer
 import edu.metrostate.dealership.domain.models.Vehicle
+import edu.metrostate.dealership.infrastructure.imports.mappers.toDomainDealer
+import edu.metrostate.dealership.infrastructure.imports.mappers.toDomainVehicle
+import edu.metrostate.dealership.infrastructure.imports.mappers.updateFrom
+import edu.metrostate.dealership.infrastructure.imports.models.json.DealerJson
+import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 
@@ -11,8 +17,7 @@ import javafx.collections.ObservableList
 class Database private constructor()  {
 
     var dealers: ObservableList<Dealer> = FXCollections.observableArrayList()
-
-    val vehicles: ObservableList<Vehicle> = FXCollections.observableArrayList()
+    var vehicles: ObservableList<Vehicle> = FXCollections.observableArrayList()
 
     /**
      * Gets a dealer by ID in the context of the database
@@ -36,12 +41,8 @@ class Database private constructor()  {
         }
     }
 
-    fun getDealerByID(dealershipId: String): Dealer? {
+    private fun getDealerByID(dealershipId: String): Dealer? {
         return dealers.find { it.dealershipId == dealershipId }
-    }
-
-    fun setDealers(dealers: List<Dealer>) {
-        this.dealers.setAll(dealers)
     }
 
     fun toggleAcquisition(dealershipId: String) {
@@ -59,7 +60,7 @@ class Database private constructor()  {
      */
     fun updateDealer(dealershipId: String, name: String): Boolean {
         val dealer = getDealerByID(dealershipId) ?: return false
-        if (!name.isNullOrBlank()) dealer.setName(name)
+        if (name.isNotBlank()) dealer.setName(name)
         return true
     }
 
@@ -70,20 +71,20 @@ class Database private constructor()  {
      * @return a result of success if operation completed, otherwise return a result failure message.
      */
     fun addVehicle(vehicle: Vehicle): Result<Boolean> {
-        val dealer = getDealerByID(vehicle.dealershipId!!) ?: return Result.failure("Dealer ID not found...")
+        val dealer = getDealerByID(vehicle.dealershipId) ?: return Result.failure("Dealer ID not found...")
 
         if (!dealer.enabledForAcquisition) {
             return Result.failure("Dealer is not enabled for acquisition.")
         }
 
-        val alreadyExists = dealer.getVehicles().any { it.vehicleId == vehicle.vehicleId } ||
+        val alreadyExists = vehicles.any { it.vehicleId == vehicle.vehicleId } ||
                 vehicles.any { it.vehicleId == vehicle.vehicleId }
 
         if (alreadyExists) {
             return Result.failure("A Vehicle with ID ${vehicle.vehicleId} already exists.")
         }
 
-        dealer.addVehicle(vehicle)
+        vehicles.add(vehicle);
         return Result.success()
     }
 
@@ -94,77 +95,98 @@ class Database private constructor()  {
      * @return A result of success on completed operation or a result of failure with an errorMessage if unsuccessful.
      */
     fun deleteVehicle(id: String, dealershipId: String): Result<Boolean> {
-        val dealer = getDealerByID(dealershipId) ?: return Result.failure("Dealer ID not found...")
-        return if (dealer.removeVehicle(id)) {
-            Result.success()
-        } else {
-            Result.failure("Vehicle ID not found.")
-        }
+        return Result.success();
     }
 
     /**
      * Passes a list of dealers to ImportInner function for handling
      * @param data - A list of dealers to be processed (imported)
      */
-    fun importJSON(incomingDealers: List<Dealer?>) = importInner(incomingDealers)
+    fun importJSON(incomingDealers: List<DealerJson>) = processJson(incomingDealers)
 
     /**
      * Passes a list of dealers to ImportInner function for handling
      * @param data - A list of dealers to be processed (imported)
      */
-    fun importXML(incomingDealers: List<Dealer>) = importInner(incomingDealers)
+    fun importXML(incomingDealers: List<DealerXml>) = processXml(incomingDealers)
 
-    private fun importInner(incomingDealers: List<Dealer?>) {
-        val systemVehicleIdsMap = dealers
-            .flatMap { dealer -> dealer.getVehicles().map { it.vehicleId to dealer.dealershipId } }
-            .toMap()
-            .toMutableMap()
+    private fun processJson(incomingDealers: List<DealerJson>) {
+        val dealers = incomingDealers.map { it.toDomainDealer() }
+        val vehicles = incomingDealers
+            .flatMap { dealer ->
+                dealer.vehicles.map { it.toDomainVehicle() }
+            }
 
-        for (incomingDealer in incomingDealers) {
-            val dealerId = incomingDealer?.dealershipId ?: continue
+        importInner(dealers, vehicles)
+    }
 
-            val existingDealer = dealers.find { it.dealershipId == dealerId }
+    private fun processXml(incomingDealers: List<DealerXml>) {
+        val dealers = incomingDealers.map { it.toDomainDealer() }
+        val vehicles = incomingDealers
+            .flatMap { dealer ->
+                dealer.vehicles.map { it.toDomainVehicle(dealer.dealershipId) }
+            }
 
-            if (existingDealer != null) {
-                if (existingDealer.getName().isNullOrBlank()) {
-                    if (incomingDealer != null) {
-                        existingDealer.setName(incomingDealer.getName())
-                    }
-                }
+        importInner(dealers, vehicles)
+    }
 
-                for (incomingVehicle in incomingDealer.getVehicles()) {
-                    var id = incomingVehicle.vehicleId
-                    val existingDealerId = systemVehicleIdsMap[id]
-                    if (existingDealerId != null && existingDealerId != dealerId) {
-                        id = "${dealerId}_$id"
-                        incomingVehicle.vehicleId = id
-                    }
-                    if (!existingDealer.getVehicles().any { it.vehicleId == id }) {
-                        existingDealer.addVehicle(incomingVehicle)
-                        systemVehicleIdsMap[id] = dealerId
-                    }
-                }
+    private fun importInner(incomingDealers: List<Dealer>, incomingVehicles: List<Vehicle>) {
+        for (dealer in incomingDealers) {
+            val existing = dealers.find { it.dealershipId == dealer.dealershipId }
 
+            if (existing != null) {
+                existing.setName(dealer.getName())
+                existing.enabledForAcquisition = dealer.enabledForAcquisition
             } else {
-                val uniqueVehicles = incomingDealer.getVehicles().map { vehicle ->
-                    val id = vehicle.vehicleId
-                    if (systemVehicleIdsMap.containsKey(id)) {
-                        val newId = "${dealerId}_$id"
-                        vehicle.vehicleId = newId
-                        systemVehicleIdsMap[newId] = dealerId
-                    } else {
-                        systemVehicleIdsMap[id] = dealerId
-                    }
-                    vehicle
-                }
-                incomingDealer.setVehicles(uniqueVehicles)
-                dealers.add(incomingDealer)
+                dealers.add(dealer)
             }
         }
+
+        for (vehicle in incomingVehicles) {
+            // Try to find match by dealership + vehicle ID
+            val exactMatch = vehicles.find {
+                it.vehicleId == vehicle.vehicleId && it.dealershipId == vehicle.dealershipId
+            }
+
+            if (exactMatch != null) {
+                // Update existing
+                exactMatch.updateFrom(vehicle)
+                continue
+            }
+
+            // Check if vehicle ID exists at all (any dealership)
+            val idConflict = vehicles.any { it.vehicleId == vehicle.vehicleId }
+
+            if (idConflict) {
+                // ID already used by another dealer – only dedupe once
+                val deDupedId = "${vehicle.vehicleId}-${vehicle.dealershipId}"
+                if (vehicles.none { it.vehicleId == deDupedId }) {
+                    val deDuped = vehicle.copy(vehicleId = deDupedId)
+                    vehicles.add(deDuped)
+                    logger.warn("Duplicate vehicleId '${vehicle.vehicleId}' across dealers. Added as '${deDuped.vehicleId}'")
+                } else {
+                    val existing = vehicles.find { it.vehicleId == deDupedId }
+                    existing?.updateFrom(vehicle)
+                    logger.warn("Vehicle with deDuped ID '${vehicle.vehicleId}' already exists. Updating it.")
+                }
+            } else {
+                // No conflict – add as is
+                vehicles.add(vehicle)
+            }
+        }
+        logger.info("Imported ${incomingDealers.size} dealers and ${incomingVehicles.size} vehicles.")
     }
 
     fun toggleIsRented(vehicle: Vehicle) {
         vehicle.toggleIsRented()
+    }
+
+    fun setDealers(dealers: List<Dealer>) {
+        this.dealers = FXCollections.observableArrayList(dealers);
+    }
+
+    fun setVehicles(vehicles: List<Vehicle>) {
+        this.vehicles = FXCollections.observableArrayList(vehicles);
     }
 
     companion object {
