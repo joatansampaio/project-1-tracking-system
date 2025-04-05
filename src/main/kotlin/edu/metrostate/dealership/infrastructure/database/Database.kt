@@ -8,7 +8,7 @@ import javafx.collections.ObservableList
 /**
  * In-memory singleton acting as a fake database
  */
-class DatabaseContext private constructor()  {
+class Database private constructor()  {
 
     var dealers: ObservableList<Dealer> = FXCollections.observableArrayList()
 
@@ -168,6 +168,6 @@ class DatabaseContext private constructor()  {
     }
 
     companion object {
-        val instance: DatabaseContext by lazy { DatabaseContext() }
+        val instance: Database by lazy { Database() }
     }
 }

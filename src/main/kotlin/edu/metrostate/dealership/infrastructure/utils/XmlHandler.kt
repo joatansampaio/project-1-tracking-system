@@ -2,7 +2,7 @@
 package edu.metrostate.dealership.infrastructure.utils
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import edu.metrostate.dealership.infrastructure.database.DatabaseContext
+import edu.metrostate.dealership.infrastructure.database.Database
 import edu.metrostate.dealership.infrastructure.database.models.DealersXMLModel
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import java.io.File
@@ -18,7 +18,7 @@ class XmlHandler private constructor() : IFileHandler {
 
         try {
             val data = mapper.readValue(file, DealersXMLModel::class.java)
-            data.dealers?.let { DatabaseContext.instance!!.importXML(it) }
+            data.dealers?.let { Database.instance!!.importXML(it) }
             return true
         } catch (e: Exception) {
             logger.error(e.message!!)

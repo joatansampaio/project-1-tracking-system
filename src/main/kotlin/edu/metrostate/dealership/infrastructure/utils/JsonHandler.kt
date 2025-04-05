@@ -6,7 +6,7 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import edu.metrostate.dealership.domain.models.Dealer
 import edu.metrostate.dealership.domain.models.Vehicle
-import edu.metrostate.dealership.infrastructure.database.DatabaseContext
+import edu.metrostate.dealership.infrastructure.database.Database
 import edu.metrostate.dealership.infrastructure.database.models.DealershipDatabase
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import edu.metrostate.dealership.infrastructure.utils.GsonConfig.gson
@@ -132,6 +132,6 @@ class JsonHandler private constructor() : IFileHandler {
 
         val logger: Logger = Logger.logger;
 
-        private var databaseContext: DatabaseContext = DatabaseContext.instance
+        private var databaseContext: Database = Database.instance
     }
 }

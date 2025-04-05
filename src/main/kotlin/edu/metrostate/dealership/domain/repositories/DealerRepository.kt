@@ -2,11 +2,11 @@
 package edu.metrostate.dealership.domain.repositories
 
 import edu.metrostate.dealership.domain.models.Dealer
-import edu.metrostate.dealership.infrastructure.database.DatabaseContext
+import edu.metrostate.dealership.infrastructure.database.Database
 import edu.metrostate.dealership.infrastructure.database.Result
 import javafx.collections.ObservableList
 
-class DealerRepository(private val databaseContext: DatabaseContext) {
+class DealerRepository(private val databaseContext: Database) {
     val dealershipIDs: List<String?>?
         get() = databaseContext.getDealershipIDs()
 

@@ -2,7 +2,7 @@ package edu.metrostate.dealership.presentation.controllers;
 
 import edu.metrostate.dealership.application.exceptions.ValidationException;
 import edu.metrostate.dealership.application.services.VehicleService;
-import edu.metrostate.dealership.infrastructure.database.DatabaseContext;
+import edu.metrostate.dealership.infrastructure.database.Database;
 import edu.metrostate.dealership.domain.models.Vehicle;
 import edu.metrostate.dealership.infrastructure.utils.NotificationHandler;
 import javafx.collections.FXCollections;
@@ -39,7 +39,7 @@ public class AddVehicleController {
     @FXML
     public void initialize() {
         dealershipIdCombo.setItems(FXCollections.observableArrayList(
-                DatabaseContext.Companion.getInstance().getDealershipIDs()
+                Database.Companion.getInstance().getDealershipIDs()
         ));
         setupFields();
     }

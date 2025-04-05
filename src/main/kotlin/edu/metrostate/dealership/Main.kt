@@ -5,7 +5,7 @@ import edu.metrostate.dealership.application.services.DealerService
 import edu.metrostate.dealership.application.services.VehicleService
 import edu.metrostate.dealership.domain.repositories.DealerRepository
 import edu.metrostate.dealership.domain.repositories.VehicleRepository
-import edu.metrostate.dealership.infrastructure.database.DatabaseContext
+import edu.metrostate.dealership.infrastructure.database.Database
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import edu.metrostate.dealership.infrastructure.utils.JsonHandler
 import edu.metrostate.dealership.infrastructure.utils.NotificationHandler
@@ -49,7 +49,7 @@ class Main : Application() {
     private fun getDependencies(stage: Stage): DependencyPackage {
         val jsonHandler = JsonHandler.instance
         val xmlHandler = XmlHandler.instance
-        val database = DatabaseContext.instance
+        val database = Database.instance
         val notificationHandler = NotificationHandler(stage)
 
         val vehicleRepository = VehicleRepository(database)
@@ -75,7 +75,7 @@ class Main : Application() {
         val vehicleService: VehicleService,
         val dealerService: DealerService,
         val dataTransferService: DataTransferService,
-        val database: DatabaseContext
+        val database: Database
     )
 
     companion object {
