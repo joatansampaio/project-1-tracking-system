@@ -11,12 +11,23 @@ import javafx.collections.ObservableList
 class DatabaseContext private constructor()  {
 
     var dealers: ObservableList<Dealer> = FXCollections.observableArrayList()
+
     val vehicles: ObservableList<Vehicle> = FXCollections.observableArrayList()
 
+    /**
+     * Gets a dealer by ID in the context of the database
+     * @param dealershipId the dealer ID
+     * @return the dealer for dealershipId or an error message
+     */
     fun getDealershipIDs(): List<String> {
         return dealers.map { it.dealershipId.toString() }
     }
 
+    /**
+     * In the context of the database, remove or delete a dealer
+     * @param dealershipId - The dealership ID of the dealer to be removed
+     * @return a result of success if operation completed, otherwise return a result failure message.
+     */
     fun deleteDealer(dealershipId: String): Result<Boolean> {
         return if (dealers.removeIf { it.dealershipId == dealershipId }) {
             Result.success()
@@ -39,12 +50,25 @@ class DatabaseContext private constructor()  {
         }
     }
 
+    /**
+     * Update the information of a dealer, currently limited to name.
+     * Does this in the context of the database
+     * @param dealershipId - A dealership identification code
+     * @param name - The name to set as the dealer name
+     * @return true if dealer name was set, otherwise return false
+     */
     fun updateDealer(dealershipId: String, name: String): Boolean {
         val dealer = getDealerByID(dealershipId) ?: return false
         if (!name.isNullOrBlank()) dealer.setName(name)
         return true
     }
 
+    /**
+     * Adds a vehicle object to a dealer by using the vehicle's dealer ID.
+     * In the context of the database
+     * @param vehicle - A vehicle object to add
+     * @return a result of success if operation completed, otherwise return a result failure message.
+     */
     fun addVehicle(vehicle: Vehicle): Result<Boolean> {
         val dealer = getDealerByID(vehicle.dealershipId!!) ?: return Result.failure("Dealer ID not found...")
 
@@ -63,6 +87,12 @@ class DatabaseContext private constructor()  {
         return Result.success()
     }
 
+    /**
+     * In the context of the database, removes or deletes a vehicle from a dealer
+     * @param id - The vehicle ID of the vehicle to be removed
+     * @param dealerId - The dealer ID of the dealer that may contain the vehicle.
+     * @return A result of success on completed operation or a result of failure with an errorMessage if unsuccessful.
+     */
     fun deleteVehicle(id: String, dealershipId: String): Result<Boolean> {
         val dealer = getDealerByID(dealershipId) ?: return Result.failure("Dealer ID not found...")
         return if (dealer.removeVehicle(id)) {
@@ -72,11 +102,19 @@ class DatabaseContext private constructor()  {
         }
     }
 
-    fun importJSON(incomingDealers: List<Dealer?>) = importDealers(incomingDealers)
+    /**
+     * Passes a list of dealers to ImportInner function for handling
+     * @param data - A list of dealers to be processed (imported)
+     */
+    fun importJSON(incomingDealers: List<Dealer?>) = importInner(incomingDealers)
 
-    fun importXML(incomingDealers: List<Dealer>) = importDealers(incomingDealers)
+    /**
+     * Passes a list of dealers to ImportInner function for handling
+     * @param data - A list of dealers to be processed (imported)
+     */
+    fun importXML(incomingDealers: List<Dealer>) = importInner(incomingDealers)
 
-    private fun importDealers(incomingDealers: List<Dealer?>) {
+    private fun importInner(incomingDealers: List<Dealer?>) {
         val systemVehicleIdsMap = dealers
             .flatMap { dealer -> dealer.getVehicles().map { it.vehicleId to dealer.dealershipId } }
             .toMap()
