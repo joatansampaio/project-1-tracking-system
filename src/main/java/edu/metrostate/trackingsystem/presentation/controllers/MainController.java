@@ -249,6 +249,9 @@ public String fixID(String vehicleID, String dealershipId) {
     }
 
     @FXML
+    public void onExportXml() { dataTransferService.exportXml(getStage()); }
+
+    @FXML
     private void toggleRented() {
         Vehicle selected = vehicleTable.getSelectionModel().getSelectedItem();
         vehicleService.toggleIsRented(selected);

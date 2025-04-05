@@ -90,4 +90,22 @@ public class DataTransferService {
             logger.info("File selection cancelled.");
         }
    }
+
+    public void exportXml(Stage stage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Database XML");
+        fileChooser.setInitialFileName("export.xml");
+        fileChooser.setInitialDirectory(new File("src/main/resources/files"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
+
+        File selectedFile = fileChooser.showSaveDialog(stage);
+
+        if (selectedFile != null) {
+            if (XmlHandler.getInstance().exportFile(selectedFile)) {
+                notificationHandler.notify("Exported Successfully!");
+            } else {
+                notificationHandler.notifyError("Couldn't export the file.");
+            }
+        }
+    }
 }

@@ -24,6 +24,7 @@
                     <MenuItem text="Import JSON" onAction="#onImportJson"/>
                     <MenuItem text="Import XML" onAction="#onImportXml"/>
                     <MenuItem text="Export JSON" onAction="#onExportJson"/>
+                    <MenuItem text="Export XML" onAction="#onExportXml"/>
                     <MenuItem text="Save &amp; Exit" onAction="#onExit" userData="true"/>
                     <MenuItem text="Exit" onAction="#onExit" userData="false"/>
                 </Menu>

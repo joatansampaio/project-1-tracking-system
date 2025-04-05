@@ -1,11 +1,15 @@
 package edu.metrostate.trackingsystem.infrastructure.database.models;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import edu.metrostate.trackingsystem.domain.models.Dealer;
-import edu.metrostate.trackingsystem.domain.models.Vehicle;
-
 import java.util.List;
 
+@JacksonXmlRootElement(localName = "Dealers")
 public class DealershipDatabase {
+    @JacksonXmlProperty(localName = "Dealer")
+    @JacksonXmlElementWrapper(useWrapping = false)
     private List<Dealer> database;
 
     public DealershipDatabase(List<Dealer> dealers) {
