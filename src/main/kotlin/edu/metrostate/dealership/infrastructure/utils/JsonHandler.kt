@@ -92,8 +92,7 @@ class JsonHandler private constructor() : IFileHandler {
         val wrapper = DealershipDatabase(data)
         val json = gson.toJson(wrapper)
 
-        val folder = File("src/main/resources/database")
-        val file = File(folder, "database.json")
+        val file = File("database.json")
 
         try {
             FileWriter(file).use { writer ->

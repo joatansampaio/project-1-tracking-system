@@ -1,0 +1,54 @@
+{
+  "database": [
+    {
+      "dealershipId": "12513",
+      "enabledForAcquisition": true,
+      "vehicles": [
+        {
+          "vehicle_id": "48934j",
+          "vehicle_manufacturer": "Ford",
+          "vehicle_model": "Explorer",
+          "vehicle_type": "SUV",
+          "acquisition_date": 1515354694451,
+          "price": {
+            "price": 20123.0,
+            "currency": "dollars"
+          },
+          "dealership_id": "12513",
+          "is_rented": false
+        },
+        {
+          "vehicle_id": "83883",
+          "vehicle_manufacturer": "Tesla",
+          "vehicle_model": "Model 3",
+          "vehicle_type": "SEDAN",
+          "acquisition_date": 1515354694451,
+          "price": {
+            "price": 50444.0,
+            "currency": "dollars"
+          },
+          "dealership_id": "12513",
+          "is_rented": false
+        },
+        {
+          "vehicle_id": "89343883",
+          "vehicle_manufacturer": "Chevy",
+          "vehicle_model": "Silverado",
+          "vehicle_type": "PICKUP",
+          "acquisition_date": 1515354694451,
+          "price": {
+            "price": 70444.0,
+            "currency": "dollars"
+          },
+          "dealership_id": "12513",
+          "is_rented": false
+        }
+      ]
+    },
+    {
+      "dealershipId": "77338",
+      "enabledForAcquisition": true,
+      "vehicles": []
+    }
+  ]
+}

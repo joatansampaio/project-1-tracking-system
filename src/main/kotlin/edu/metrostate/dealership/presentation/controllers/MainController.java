@@ -44,57 +44,33 @@ public class MainController {
     private NotificationHandler notificationHandler;
     private boolean hasVisitedDealersTab = false;
 
-    @FXML
-    private TableView<Vehicle> vehicleTable;
-    @FXML
-    private TableColumn<Vehicle, String> vehicleIdColumn;
-    @FXML
-    private TableColumn<Vehicle, String> manufacturerColumn;
-    @FXML
-    private TableColumn<Vehicle, String> vehicleTypeColumn;
-    @FXML
-    private TableColumn<Vehicle, String> modelColumn;
-    @FXML
-    private TableColumn<Vehicle, String> dealershipIdColumn;
-    @FXML
-    private TableColumn<Vehicle, String> priceColumn;
-    @FXML
-    private TableColumn<Vehicle, String> acquisitionDate;
-    @FXML
-    private TableColumn<Vehicle, String> isRentedColumn;
+    @FXML private TableView<Vehicle> vehicleTable;
+    @FXML private TableColumn<Vehicle, String> vehicleIdColumn;
+    @FXML private TableColumn<Vehicle, String> manufacturerColumn;
+    @FXML private TableColumn<Vehicle, String> vehicleTypeColumn;
+    @FXML private TableColumn<Vehicle, String> modelColumn;
+    @FXML private TableColumn<Vehicle, String> dealershipIdColumn;
+    @FXML private TableColumn<Vehicle, String> priceColumn;
+    @FXML private TableColumn<Vehicle, String> acquisitionDate;
+    @FXML private TableColumn<Vehicle, String> isRentedColumn;
 
-    @FXML
-    private TableView<Dealer> dealerTable;
-    @FXML
-    private TableColumn<Dealer, String> dealerIdColumn;
-    @FXML
-    private TableColumn<Dealer, String> dealerNameColumn;
-    @FXML
-    private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
-    @FXML
-    private TableColumn<Dealer, String> numberOfVehiclesForDealer;
+    @FXML private TableView<Dealer> dealerTable;
+    @FXML private TableColumn<Dealer, String> dealerIdColumn;
+    @FXML private TableColumn<Dealer, String> dealerNameColumn;
+    @FXML private TableColumn<Dealer, String> isEnabledForAcquisitionColumn;
+    @FXML private TableColumn<Dealer, String> numberOfVehiclesForDealer;
 
-    @FXML
-    private ComboBox<String> dealershipIdCombo;
+    @FXML private ComboBox<String> dealershipIdCombo;
 
-    @FXML
-    private Button toggleAcquisitionBtn;
-    @FXML
-    private Button addVehicleBtn;
-    @FXML
-    private Button deleteVehicleBtn;
-    @FXML
-    private Button deleteDealerBtn;
-    @FXML
-    private Button goToVehiclesViewBtn;
-    @FXML
-    private Button goToDealersViewBtn;
-    @FXML
-    private Button toggleRentedBtn;
-    @FXML
-    private Button toggleTransferBtn;
-    @FXML
-    public Button transferVehicleBtn;
+    @FXML private Button toggleAcquisitionBtn;
+    @FXML private Button addVehicleBtn;
+    @FXML private Button deleteVehicleBtn;
+    @FXML private Button deleteDealerBtn;
+    @FXML private Button goToVehiclesViewBtn;
+    @FXML private Button goToDealersViewBtn;
+    @FXML private Button toggleRentedBtn;
+    @FXML private Button toggleTransferBtn;
+    @FXML public Button transferVehicleBtn;
 
     @FXML
     public void initialize() {
@@ -136,7 +112,6 @@ public class MainController {
     }
 
     public void updateAllVehicles() {
-        System.out.println("updateAllVehicles");
         vehicleService.getVehicles().setAll(dealerService.getDealers().stream()
                 .flatMap(dealer -> dealer.getVehicles().stream())
                 .collect(Collectors.toList()));
@@ -308,7 +283,7 @@ public String fixID(String vehicleID, String dealershipId) {
 
     private void initializeFromPreviousState() {
         this.jsonHandler = JsonHandler.Companion.getInstance();
-        File dbFile = new File("src/main/resources/database/database.json");
+        File dbFile = new File("database.json");
         if (!dbFile.exists()) {
             logger.info("No previous state found. Starting fresh.");
             return;
@@ -437,7 +412,6 @@ public String fixID(String vehicleID, String dealershipId) {
                     .filter(d -> d.getDealershipId().equals(newValue))
                     .flatMap(dealer -> dealer.getVehicles().stream())
                     .collect(Collectors.toList());
-            System.out.println(k.size());
             vehicleService.getVehicles().setAll(
                     dealerService.getDealers()
                             .stream()

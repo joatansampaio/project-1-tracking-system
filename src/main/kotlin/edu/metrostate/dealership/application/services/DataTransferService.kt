@@ -21,7 +21,7 @@ class DataTransferService(
         val extFilter = FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json")
         fileChooser.extensionFilters.add(extFilter)
 
-        val initialDir = File("src/main/resources/files")
+        val initialDir = File("import-files")
         if (initialDir.exists() && initialDir.isDirectory) {
             fileChooser.initialDirectory = initialDir
         }
@@ -40,7 +40,7 @@ class DataTransferService(
         val fileChooser = FileChooser()
         fileChooser.title = "Export Database JSON"
         fileChooser.initialFileName = "export.json"
-        fileChooser.initialDirectory = File("src/main/resources/files")
+        fileChooser.initialDirectory = File("export-files")
         fileChooser.extensionFilters.add(FileChooser.ExtensionFilter("JSON Files", "*.json"))
 
         val selectedFile = fileChooser.showSaveDialog(stage)
@@ -65,7 +65,7 @@ class DataTransferService(
         val extFilter = FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml")
         fileChooser.extensionFilters.add(extFilter)
 
-        val initialDir = File("src/main/resources/files")
+        val initialDir = File("import-files")
         if (initialDir.exists() && initialDir.isDirectory) {
             fileChooser.initialDirectory = initialDir
         }
