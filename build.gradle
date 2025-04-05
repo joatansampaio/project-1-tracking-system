@@ -24,7 +24,9 @@ application {
 }
 
 kotlin {
-  jvmToolchain( 20 )
+  jvmToolchain {
+    languageVersion = JavaLanguageVersion.of(20) // or whatever minimum
+  }
 }
 
 sourceSets {
