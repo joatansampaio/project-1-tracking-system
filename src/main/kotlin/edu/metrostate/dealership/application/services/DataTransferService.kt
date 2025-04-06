@@ -80,6 +80,24 @@ class DataTransferService(
         }
     }
 
+    fun exportXml(stage: Stage?) {
+        val fileChooser = FileChooser()
+        fileChooser.title = "Export Database XML"
+        fileChooser.initialFileName = "export.xml"
+        fileChooser.initialDirectory = File("export-files")
+        fileChooser.extensionFilters.add(FileChooser.ExtensionFilter("XML Files", "*.xml"))
+
+        val selectedFile = fileChooser.showSaveDialog(stage)
+
+        if (selectedFile != null) {
+            if (XmlHandler.instance!!.exportFile(selectedFile)) {
+                notificationHandler.notify("Exported Successfully!")
+            } else {
+                notificationHandler.notifyError("Couldn't export the file.")
+            }
+        }
+    }
+
     companion object {
         private val logger: Logger = Logger.logger
     }

@@ -2,8 +2,13 @@
 package edu.metrostate.dealership.infrastructure.utils
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import edu.metrostate.dealership.domain.models.Dealer
+import edu.metrostate.dealership.domain.models.Vehicle
 import edu.metrostate.dealership.infrastructure.database.Database
+import edu.metrostate.dealership.infrastructure.imports.mappers.toXmlVehicle
+import edu.metrostate.dealership.infrastructure.imports.models.DatabaseWrapperXml
 import edu.metrostate.dealership.infrastructure.imports.models.DealersXMLModel
+import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import java.io.File
 
@@ -29,11 +34,42 @@ class XmlHandler private constructor() : IFileHandler {
 
 
     override fun exportFile(file: File): Boolean {
+        try {
+            val xmlMapper = XmlMapper()
+            val data = extractCurrentStateAsXml()
+            xmlMapper.writeValue(file, data)
+            return true
+        } catch (e: Exception) {
+            logger.error(e.message!!)
+        }
         return false
     }
 
+    private fun extractCurrentStateAsXml(): DatabaseWrapperXml {
+        
+        val dealers: List<Dealer> = databaseContext.dealers
+        val vehicles: List<Vehicle> = databaseContext.vehicles
+
+        // Group vehicles by dealershipId
+        val groupedVehicles = vehicles.groupBy { it.dealershipId }
+
+        // Build DealerXml list
+        val dealerXmlList = dealers.map { dealer ->
+            DealerXml(
+                dealershipId = dealer.dealershipId,
+                name = dealer.getName(),
+                enabledForAcquisition = dealer.enabledForAcquisition,
+                vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toXmlVehicle() }
+            )
+        }
+
+        val wrapper = DatabaseWrapperXml(dealerXmlList)
+        return wrapper
+    }
+
     companion object {
-        private val logger: Logger = Logger.logger;
+        private val logger: Logger = Logger.logger
+        private var databaseContext: Database = Database.instance
         var instance: XmlHandler? = null
             get() {
                 if (field == null) {

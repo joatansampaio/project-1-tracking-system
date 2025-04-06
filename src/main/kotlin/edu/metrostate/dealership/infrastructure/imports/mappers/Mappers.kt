@@ -24,6 +24,18 @@ fun VehicleXml.toDomainVehicle(dealershipId: String): Vehicle {
         acquisitionDate = acquisitionDate
     )
 }
+fun Vehicle.toXmlVehicle(): VehicleXml =
+    VehicleXml(
+        //dealershipId = dealershipId,
+        //dealershipName = "",
+        vehicleType = type.toString(),
+        //vehicleManufacturer = manufacturer,
+        model = model,
+        vehicleId = vehicleId,
+        //price = price,
+        acquisitionDate = acquisitionDate,
+        //isRented = isRented
+    )
 
 fun Vehicle.toJsonVehicle(): VehicleJson =
     VehicleJson(

@@ -205,12 +205,13 @@ class MainController {
     @FXML fun onImportJson() { dataTransferService.importJson(stage) }
     @FXML fun onImportXml() { dataTransferService.importXml(stage) }
     @FXML fun onExportJson() { dataTransferService.exportJson(stage) }
+    @FXML fun onExportXml() { dataTransferService.exportXml(stage) }
 
     @FXML
     fun toggleRented() {
         vehicleTable.selectionModel.selectedItem?.let {
             vehicleService.toggleIsRented(it.vehicleId)
-            vehicleTable.refresh();
+            vehicleTable.refresh()
             notificationHandler.notify("Success!")
         }
     }
@@ -490,6 +491,7 @@ class MainController {
         this.dataTransferService = dataTransferService
         this.notificationHandler = notificationHandler
     }
+
 
     @FXML
     fun transferVehicle() {
