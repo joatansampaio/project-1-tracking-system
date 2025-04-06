@@ -15,5 +15,5 @@ data class DealerXml(
     var vehicles: List<VehicleXml> = listOf(),
 
     @JacksonXmlProperty(isAttribute = true, localName = "enabled")
-    var enabledForAcquisition: Boolean = true
+    var enabledForAcquisition: Boolean? = null
 )

@@ -121,6 +121,7 @@ class JsonHandler private constructor() : IFileHandler {
         val wrapper = DatabaseWrapper(dealerJsonList)
         return gson.toJson(wrapper)
     }
+
     fun loadSession(file: File): Boolean {
         return try {
             val json = Files.readString(file.toPath())

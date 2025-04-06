@@ -11,7 +11,7 @@ import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
 import edu.metrostate.dealership.infrastructure.imports.models.xml.VehicleXml
 
 fun DealerXml.toDomainDealer(): Dealer =
-    Dealer(dealershipId, name, enabledForAcquisition)
+    Dealer(dealershipId, name, enabledForAcquisition ?: true)
 
 fun VehicleXml.toDomainVehicle(dealershipId: String): Vehicle {
     return Vehicle(

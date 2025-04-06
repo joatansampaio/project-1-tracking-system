@@ -91,11 +91,9 @@ class Database private constructor()  {
     /**
      * In the context of the database, removes or deletes a vehicle from a dealer
      * @param id - The vehicle ID of the vehicle to be removed
-     * @param dealerId - The dealer ID of the dealer that may contain the vehicle.
-     * @return A result of success on completed operation or a result of failure with an errorMessage if unsuccessful.
      */
-    fun deleteVehicle(id: String, dealershipId: String): Result<Boolean> {
-        return Result.success();
+    fun deleteVehicle(id: String) {
+        vehicles.removeIf { it.vehicleId == id }
     }
 
     /**
@@ -177,8 +175,8 @@ class Database private constructor()  {
         logger.info("Imported ${incomingDealers.size} dealers and ${incomingVehicles.size} vehicles.")
     }
 
-    fun toggleIsRented(vehicle: Vehicle) {
-        vehicle.toggleIsRented()
+    fun toggleIsRented(vehicleId: String) {
+        vehicles.first { it.vehicleId == vehicleId }.toggleIsRented()
     }
 
     fun setDealers(dealers: List<Dealer>) {

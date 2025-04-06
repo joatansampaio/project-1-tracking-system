@@ -1,0 +1,497 @@
+//Main UI code
+package edu.metrostate.dealership.presentation.controllers
+
+import edu.metrostate.dealership.Main.Companion.setTheme
+import edu.metrostate.dealership.application.services.DataTransferService
+import edu.metrostate.dealership.application.services.DealerService
+import edu.metrostate.dealership.application.services.VehicleService
+import edu.metrostate.dealership.domain.models.Dealer
+import edu.metrostate.dealership.domain.models.Vehicle
+import edu.metrostate.dealership.domain.models.VehicleType
+import edu.metrostate.dealership.infrastructure.logging.Logger
+import edu.metrostate.dealership.infrastructure.utils.JsonHandler
+import edu.metrostate.dealership.infrastructure.utils.JsonHandler.Companion.instance
+import edu.metrostate.dealership.infrastructure.utils.NotificationHandler
+import javafx.application.Platform
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
+import javafx.collections.transformation.FilteredList
+import javafx.collections.transformation.SortedList
+import javafx.event.ActionEvent
+import javafx.event.EventHandler
+import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.control.cell.TextFieldTableCell
+import javafx.stage.Modality
+import javafx.stage.Stage
+import javafx.util.Callback
+import java.io.File
+import kotlin.math.min
+import kotlin.system.exitProcess
+
+class MainController {
+    private val logger = Logger.logger
+
+    private lateinit var dealerService: DealerService
+    private lateinit var vehicleService: VehicleService
+    private lateinit var dataTransferService: DataTransferService
+    private lateinit var jsonHandler: JsonHandler
+    private lateinit var notificationHandler: NotificationHandler
+    private var hasVisitedDealersTab = false
+
+    // Vehicle Table
+    @FXML lateinit var vehicleTable: TableView<Vehicle>
+    @FXML lateinit var vehicleIdColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var manufacturerColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var vehicleTypeColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var modelColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var dealershipIdColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var priceColumn: TableColumn<Vehicle, String>
+    @FXML lateinit var acquisitionDate: TableColumn<Vehicle, String?>
+    @FXML lateinit var isRentedColumn: TableColumn<Vehicle, String?>
+
+    private lateinit var filteredVehicles: FilteredList<Vehicle>
+
+    // Dealer Table
+    @FXML lateinit var dealerTable: TableView<Dealer>
+    @FXML lateinit var dealerIdColumn: TableColumn<Dealer, String>
+    @FXML lateinit var dealerNameColumn: TableColumn<Dealer, String>
+    @FXML lateinit var isEnabledForAcquisitionColumn: TableColumn<Dealer, String?>
+    @FXML lateinit var numberOfVehiclesForDealer: TableColumn<Dealer?, String?>
+    @FXML lateinit var dealershipIdCombo: ComboBox<String?>
+    @FXML lateinit var toggleAcquisitionBtn: Button
+
+    // Actions
+    @FXML lateinit var addVehicleBtn: Button
+    @FXML lateinit var deleteVehicleBtn: Button
+    @FXML lateinit var deleteDealerBtn: Button
+    @FXML lateinit var goToVehiclesViewBtn: Button
+    @FXML lateinit var goToDealersViewBtn: Button
+    @FXML lateinit var toggleRentedBtn: Button
+    @FXML lateinit var toggleTransferBtn: Button
+
+    @FXML lateinit var transferVehicleBtn: Button
+
+    @FXML
+    fun initialize() {
+        setupVehiclesTable()
+        setupDealersTable()
+        setupListeners()
+        setupOtherProperties()
+        initializeDataAsync()
+    }
+
+    @FXML
+    fun onAddVehicle() {
+        try {
+            val loader = FXMLLoader(javaClass.getResource("/edu/metrostate/dealership/add-vehicle.fxml"))
+            val root = loader.load<Parent>()
+
+            val scene = Scene(root)
+            setTheme(scene, javaClass) // Apply our theme
+
+            val dialogStage = Stage()
+            val ownerStage = stage
+
+            dialogStage.scene = scene
+            dialogStage.title = "Add Vehicle"
+            dialogStage.initModality(Modality.WINDOW_MODAL) // Make the dialog modal
+            dialogStage.initOwner(ownerStage) // Set the owner of the dialog
+            dialogStage.isResizable = false
+            dialogStage.show()
+            // Center it based on main-view's table
+            dialogStage.x = ownerStage.x + (ownerStage.width - dialogStage.width) / 2
+            dialogStage.y = ownerStage.y + (ownerStage.height - dialogStage.height) / 2
+
+            val addVehicleController = loader.getController<AddVehicleController>()
+            addVehicleController.injectDependencies(vehicleService, notificationHandler)
+        } catch (e: Exception) {
+            notificationHandler.notifyError("Error loading the add vehicles screen. Check the logs for more info.")
+            logger.error("An error occurred: $e")
+        }
+    }
+
+    @FXML
+    fun onDeleteVehicle() {
+        val selected = vehicleTable.selectionModel.selectedItem
+        val selectedIndex = vehicleTable.selectionModel.selectedIndex
+
+        vehicleService.deleteVehicle(selected.vehicleId)
+        notificationHandler.notify("Vehicle deleted.")
+        vehicleTable.items.remove(selected)
+
+        // Select the next available item
+        val itemCount = vehicleTable.items.size
+        if (itemCount > 0) {
+            val newIndex = min(selectedIndex.toDouble(), (itemCount - 1).toDouble()).toInt()
+            vehicleTable.selectionModel.select(newIndex)
+        }
+    }
+
+    @FXML
+    fun onDeleteDealer() {
+        val selected = dealerTable.selectionModel.selectedItem
+        val response = dealerService.deleteDealer(selected.dealershipId)
+        if (response!!.isSuccess) {
+            notificationHandler.notify("Dealer deleted.")
+            return
+        }
+        notificationHandler.notifyError(response.errorMessage)
+    }
+
+    @FXML
+    fun toggleVehicleAcquisition() {
+        val dealer = dealerTable.selectionModel.selectedItem
+        dealerService.toggleAcquisition(dealer.dealershipId)
+        dealerTable.refresh()
+        notificationHandler.notify("Success")
+    }
+
+    @FXML
+    fun transferDealershipInventory() {
+        //intelliJ is wrong this is used
+        val dealer2 = dealerTable.selectionModel.selectedItem
+        if (dealer2 != null) {
+            // TODO: vehicles are not coming from dealer anymore
+            //  so that has to be addressed.
+//            vehicleService.getVehicles().setAll(
+//                    dealerService.getDealers()
+//                            .stream()
+//                            .filter(d -> d.getDealershipId().equals(dealer2.getDealershipId()))
+//                            .flatMap(dealer -> dealer.getVehicles().stream())
+//                            .collect(Collectors.toList()));
+//            transferVehicleBtn.setVisible(true);
+//            TextInputDialog dialog = new TextInputDialog();
+//            dialog.setTitle("Transfer to which dealer");
+//            Optional<String> b = dialog.showAndWait();
+//            String g;
+//            g = b.orElse("Dealer Error");
+//            Dealer dealer1 = dealerService.getDealers()
+//                    .stream()
+//                    .filter(d -> d.getDealershipId().equals(g)).findFirst().get();
+//            if (!g.equals("Dealer Error")) {
+//                dealer2.getVehicles().forEach(vehicle -> {
+//                    vehicle.dealershipId = g;
+//                   vehicle.vehicleId = fixID(vehicle.vehicleId, vehicle.dealershipId);
+//                   dealer1.addVehicle(vehicle);
+//                   // vehicleService.addVehicle(vehicle);
+//                   // vehicleService.deleteVehicle();
+//                });
+//                dealer2.setVehicles(new ArrayList<Vehicle>());
+//                updateDealershipIds();
+//                updateAllVehicles();
+//            }
+//
+//            vehicleTable.refresh();
+//            dealerTable.refresh();
+//            //notificationHandler.notify("Success");
+        }
+    }
+
+    fun fixID(vehicleID: String, dealershipId: String): String {
+        val c = vehicleID.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        return if (c.size == 2) {
+            dealershipId + "_" + c[1]
+        } else dealershipId + "_" + c[0]
+    }
+
+    @FXML fun onImportJson() { dataTransferService.importJson(stage) }
+    @FXML fun onImportXml() { dataTransferService.importXml(stage) }
+    @FXML fun onExportJson() { dataTransferService.exportJson(stage) }
+
+    @FXML
+    fun toggleRented() {
+        vehicleTable.selectionModel.selectedItem?.let {
+            vehicleService.toggleIsRented(it.vehicleId)
+            vehicleTable.refresh();
+            notificationHandler.notify("Success!")
+        }
+    }
+
+    @FXML
+    fun onExit(event: ActionEvent) {
+        val item = event.source as MenuItem
+        val shouldSave = item.userData.toString().toBoolean()
+        if (shouldSave) jsonHandler.saveSession()
+
+        exitProcess(0)
+    }
+
+    /**
+     * Initializes application state on the JavaFX thread after the UI is rendered.
+     *
+     * This method performs the following:
+     * - Loads any previously saved session data from disk.
+     * - Populates the dealership ComboBox with dealer IDs.
+     * - Binds the dealer and vehicle data to their respective tables.
+     * - Adds listeners to the tables
+     */
+    private fun initializeDataAsync() {
+        Platform.runLater {
+            initializeFromPreviousState()
+            updateDealershipIds()
+
+            dealerTable.items = dealerService.dealers
+            filteredVehicles = FilteredList(vehicleService.vehicles)
+            val sortedVehicles = SortedList(filteredVehicles)
+            sortedVehicles.comparatorProperty().bind(vehicleTable.comparatorProperty())
+            vehicleTable.items = sortedVehicles
+
+            // When a dealer is removed, removed the vehicles too.
+            dealerService.dealers.addListener(ListChangeListener { change ->
+                while (change.next()) {
+                    if (change.wasRemoved()) {
+                        val removedDealers = change.removed
+                        val removedIds = removedDealers.map { it.dealershipId }
+
+                        vehicleService.vehicles.removeIf { it.dealershipId in removedIds }
+                        vehicleTable.refresh()
+                    }
+                }
+            })
+
+            // To update the vehicle count correctly when adding a vehicle.
+            vehicleService.vehicles.addListener(ListChangeListener {
+                applyVehicleFilter(dealershipIdCombo.value)
+                dealerTable.refresh()
+            })
+        }
+    }
+
+    private fun updateDealershipIds() {
+        val dealerIds = FXCollections.observableArrayList<String?>()
+        dealerIds.add("All")
+        dealerIds.addAll(dealerService.dealershipIDs)
+
+        dealershipIdCombo.items = dealerIds
+    }
+
+    private fun setupOtherProperties() {
+        // That will make the buttons not take the space when hidden
+        toggleAcquisitionBtn.managedProperty().bind(toggleAcquisitionBtn.visibleProperty())
+        deleteDealerBtn.managedProperty().bind(deleteDealerBtn.visibleProperty())
+        toggleTransferBtn.managedProperty().bind(toggleTransferBtn.visibleProperty())
+        deleteVehicleBtn.managedProperty().bind(deleteVehicleBtn.visibleProperty())
+        addVehicleBtn.managedProperty().bind(addVehicleBtn.visibleProperty())
+        dealershipIdCombo.managedProperty().bind(dealershipIdCombo.visibleProperty())
+        toggleRentedBtn.managedProperty().bind(toggleRentedBtn.visibleProperty())
+        goToDealersViewBtn.style = "--fx-min-width: 100px; -fx-background-color: #212121"
+        goToVehiclesViewBtn.style = "--fx-min-width: 100px; -fx-background-color: #343434"
+    }
+
+    private fun initializeFromPreviousState() {
+        this.jsonHandler = instance
+        val dbFile = File("database.json")
+        if (!dbFile.exists()) {
+            logger.info("No previous state found. Starting fresh.")
+            return
+        }
+        if (jsonHandler.loadSession(dbFile)) {
+            logger.info("Successfully restored previous session.")
+            return
+        }
+        logger.error("Failed to load previous database state.")
+    }
+
+    private fun setupVehiclesTable() {
+        logger.info("Configuring Vehicle TableView columns.")
+        vehicleIdColumn.cellValueFactory = PropertyValueFactory("vehicleId")
+        manufacturerColumn.cellValueFactory = PropertyValueFactory("manufacturer")
+        modelColumn.cellValueFactory = PropertyValueFactory("model")
+        vehicleTypeColumn.setCellValueFactory { cellData ->
+            SimpleStringProperty(
+                when (cellData.value.type) {
+                    VehicleType.SUV -> "SUV"
+                    VehicleType.SEDAN -> "Sedan"
+                    VehicleType.SPORTS_CAR -> "Sports Car"
+                    VehicleType.PICKUP -> "Pickup"
+                    VehicleType.UNKNOWN -> "Unknown Type"
+                }
+            )
+        }
+        dealershipIdColumn.cellValueFactory = PropertyValueFactory("dealershipId")
+        priceColumn.cellValueFactory = PropertyValueFactory("price")
+
+        priceColumn.cellValueFactory =
+            Callback { cellData: TableColumn.CellDataFeatures<Vehicle, String> -> SimpleStringProperty(cellData.value.priceAsString) }
+
+        acquisitionDate.cellValueFactory =
+            Callback { cellData: TableColumn.CellDataFeatures<Vehicle, String?> -> SimpleStringProperty(cellData.value.formattedAcquisitionDate) }
+
+        isRentedColumn.cellValueFactory =
+            Callback { cellData: TableColumn.CellDataFeatures<Vehicle, String?> -> SimpleStringProperty(cellData.value.isRentedAsString) }
+
+        isRentedColumn.setCellFactory {
+            object : TableCell<Vehicle?, String?>() {
+                override fun updateItem(item: String?, empty: Boolean) {
+                    super.updateItem(item, empty)
+                    if (empty) {
+                        text = null
+                        style = ""
+                    } else {
+                        text = item
+                        if ("Yes" == item) {
+                            style = "-fx-text-fill: #FFA07A; -fx-font-weight: bold;"
+                        } else if ("No" == item) {
+                            style = "-fx-text-fill: #90EE90; -fx-font-weight: bold;"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupDealersTable() {
+        logger.info("Configuring Dealer TableView columns.")
+        dealerIdColumn.cellValueFactory = PropertyValueFactory("dealershipId")
+        dealerNameColumn.cellValueFactory = PropertyValueFactory("name")
+        // Set up the checkbox column for Acquisition Status
+        isEnabledForAcquisitionColumn.setCellValueFactory { cellData: TableColumn.CellDataFeatures<Dealer, String?> ->
+            if (cellData.value.enabledForAcquisition)
+                SimpleStringProperty("Enabled")
+            else
+                SimpleStringProperty("Disabled")
+        }
+        isEnabledForAcquisitionColumn.setCellFactory {
+            object : TableCell<Dealer?, String?>() {
+                override fun updateItem(item: String?, empty: Boolean) {
+                    super.updateItem(item, empty)
+                    if (empty) {
+                        text = null
+                        style = ""
+                    } else {
+                        text = item
+                        if ("Disabled" == item) {
+                            style = "-fx-text-fill: #FFA07A; -fx-font-weight: bold;"
+                        } else if ("Enabled" == item) {
+                            style = "-fx-text-fill: #90EE90; -fx-font-weight: bold;"
+                        }
+                    }
+                }
+            }
+        }
+
+        numberOfVehiclesForDealer.setCellValueFactory { cellData: TableColumn.CellDataFeatures<Dealer?, String?>? ->
+            val count = vehicleService.vehicles.count { v -> v.dealershipId == cellData?.value?.dealershipId }
+            SimpleStringProperty(count.toString())
+        }
+
+        dealerTable.isEditable = true
+        dealerNameColumn.cellFactory = TextFieldTableCell.forTableColumn()
+        dealerNameColumn.setOnEditCommit { event: TableColumn.CellEditEvent<Dealer, String> ->
+            val dealer = event.rowValue
+            dealer.setName(event.newValue)
+            notificationHandler.notify("Dealer Updated")
+        }
+    }
+
+    private fun setupListeners() {
+        logger.info("Configuring listeners.")
+        // To enable/disable the delete button based on if a row is selected.
+        vehicleTable.selectionModel.selectedItemProperty()
+            .addListener { _: ObservableValue<out Vehicle>?, _: Vehicle?, newSelection: Vehicle? ->
+                deleteVehicleBtn.isDisable =
+                    newSelection == null
+                deleteVehicleBtn.style = "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#f54444")
+            }
+        dealerTable.selectionModel.selectedItemProperty()
+            .addListener { _: ObservableValue<out Dealer>?, _: Dealer?, newSelection: Dealer? ->
+                toggleAcquisitionBtn.isDisable =
+                    newSelection == null
+                toggleAcquisitionBtn.style =
+                    "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#3399ff")
+                toggleTransferBtn.isDisable = newSelection == null
+                toggleTransferBtn.style = "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#3399ff")
+                deleteDealerBtn.isDisable = newSelection == null
+                deleteDealerBtn.style = "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#f54444")
+            }
+
+        // Clearing selection when clicking on an empty row.
+        vehicleTable.setRowFactory {
+            TableRow<Vehicle>().apply {
+                onMouseClicked = EventHandler {
+                    if (isEmpty) vehicleTable.selectionModel.clearSelection()
+                }
+            }
+        }
+        // Clearing selection when clicking on an empty row.
+        dealerTable.setRowFactory {
+            TableRow<Dealer>().apply {
+                onMouseClicked = EventHandler {
+                    if (isEmpty) dealerTable.selectionModel.clearSelection()
+                }
+            }
+        }
+
+        dealershipIdCombo.valueProperty().addListener { _, _, newValue ->
+            applyVehicleFilter(newValue)
+        }
+
+        // To disable the Toggle Rented button if the selected vehicle is a sports car
+        vehicleTable.selectionModel.selectedItemProperty()
+            .addListener((ChangeListener { _: ObservableValue<out Vehicle>?, _: Vehicle?, v2: Vehicle? ->
+                toggleRentedBtn.isDisable =
+                    v2 == null || v2.type == VehicleType.SPORTS_CAR
+                toggleRentedBtn.style =
+                    "-fx-background-color:" + (if (v2 == null || v2.type == VehicleType.SPORTS_CAR) "#2a2a2a" else "#3c3c3c")
+            }))
+    }
+
+    private fun toggleTabView(isDealerTab: Boolean) {
+        listOf(vehicleTable, deleteVehicleBtn, addVehicleBtn, dealershipIdCombo, toggleRentedBtn)
+            .forEach { it.isVisible = !isDealerTab }
+
+        listOf(dealerTable, deleteDealerBtn, toggleAcquisitionBtn, toggleTransferBtn)
+            .forEach { it.isVisible = isDealerTab }
+
+        goToDealersViewBtn.style = "--fx-min-width: 100px; -fx-background-color:" +
+                if (!isDealerTab) "#212121" else "#343434"
+
+        goToVehiclesViewBtn.style = "--fx-min-width: 100px; -fx-background-color:" +
+                if (isDealerTab) "#212121" else "#343434"
+    }
+
+    fun goToDealersView() {
+        toggleTabView(true)
+        if (!hasVisitedDealersTab) {
+            hasVisitedDealersTab = true
+            notificationHandler.tip("Double-click Name cell to edit the dealer's name.")
+        }
+    }
+
+    fun goToVehiclesView() {
+        toggleTabView(false)
+    }
+
+    private fun applyVehicleFilter(dealershipId: String?) {
+        filteredVehicles.setPredicate { vehicle ->
+            dealershipId == null || dealershipId == "All" || vehicle.dealershipId == dealershipId
+        }
+    }
+
+    private val stage: Stage
+        get() = vehicleTable.scene.window as Stage
+
+    fun injectDependencies(
+        vehicleService: VehicleService,
+        dealerService: DealerService,
+        dataTransferService: DataTransferService,
+        notificationHandler: NotificationHandler
+    ) {
+        this.vehicleService = vehicleService
+        this.dealerService = dealerService
+        this.dataTransferService = dataTransferService
+        this.notificationHandler = notificationHandler
+    }
+
+    @FXML
+    fun transferVehicle() {
+    }
+}

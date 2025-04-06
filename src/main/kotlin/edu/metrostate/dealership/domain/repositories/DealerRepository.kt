@@ -7,7 +7,7 @@ import edu.metrostate.dealership.infrastructure.database.Result
 import javafx.collections.ObservableList
 
 class DealerRepository(private val databaseContext: Database) {
-    val dealershipIDs: List<String?>?
+    val dealershipIDs: List<String>
         get() = databaseContext.getDealershipIDs()
 
     fun toggleAcquisition(dealershipId: String?) {
