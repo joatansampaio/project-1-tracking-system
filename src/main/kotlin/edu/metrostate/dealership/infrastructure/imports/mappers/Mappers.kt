@@ -8,6 +8,7 @@ import edu.metrostate.dealership.domain.models.VehicleType
 import edu.metrostate.dealership.infrastructure.imports.models.json.DealerJson
 import edu.metrostate.dealership.infrastructure.imports.models.json.VehicleJson
 import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
+import edu.metrostate.dealership.infrastructure.imports.models.xml.VehicleExportXml
 import edu.metrostate.dealership.infrastructure.imports.models.xml.VehicleXml
 
 fun DealerXml.toDomainDealer(): Dealer =
@@ -24,8 +25,8 @@ fun VehicleXml.toDomainVehicle(dealershipId: String): Vehicle {
         acquisitionDate = acquisitionDate
     )
 }
-fun Vehicle.toXmlVehicle(): VehicleXml =
-    VehicleXml(
+fun Vehicle.toXmlExportVehicle(): VehicleExportXml =
+    VehicleExportXml(
         //dealershipId = dealershipId,
         //dealershipName = "",
         vehicleType = type.toString(),

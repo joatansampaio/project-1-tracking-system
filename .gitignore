@@ -56,3 +56,4 @@ target/
 .idea
 .database
 /export-files/*.json
+/export-file/*.xml

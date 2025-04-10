@@ -1,0 +1,133 @@
+{
+  "car_inventory": [
+    {
+      "vehicle_id": "848432",
+      "vehicle_manufacturer": "Land Rover",
+      "vehicle_model": "Range Rover",
+      "vehicle_type": "SUV",
+      "price": {
+        "price": 17000.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "151e5dde",
+      "vehicle_manufacturer": "Genesis",
+      "vehicle_model": "G70",
+      "vehicle_type": "SEDAN",
+      "price": {
+        "price": 36600.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "ern222",
+      "vehicle_manufacturer": "Mazda",
+      "vehicle_model": "Miata",
+      "vehicle_type": "SPORTS CAR",
+      "price": {
+        "price": 22330.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "485",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "89343883",
+      "vehicle_manufacturer": "Chevy",
+      "vehicle_model": "Silverado",
+      "vehicle_type": "PICKUP",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 70444.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "400",
+      "dealership_name": "Only Pickups Auto Mall",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "48934j",
+      "vehicle_manufacturer": "Ford",
+      "vehicle_model": "Explorer",
+      "vehicle_type": "SUV",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 20123.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "555",
+      "dealership_name": "Bob Cars",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "229393",
+      "vehicle_manufacturer": "Toyota",
+      "vehicle_model": "Supra",
+      "vehicle_type": "SPORTS CAR",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 49889.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "123bb2",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "77338_229393",
+      "vehicle_manufacturer": "Toyota",
+      "vehicle_model": "Supra",
+      "vehicle_type": "SPORTS CAR",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 49889.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "77338",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "12513_48934j",
+      "vehicle_manufacturer": "Ford",
+      "vehicle_model": "Explorer",
+      "vehicle_type": "SUV",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 20123.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "12513",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "12513_83883",
+      "vehicle_manufacturer": "Tesla",
+      "vehicle_model": "Model 3",
+      "vehicle_type": "SEDAN",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 50444.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "12513",
+      "is_rented": false
+    },
+    {
+      "vehicle_id": "12513_89343883",
+      "vehicle_manufacturer": "Chevy",
+      "vehicle_model": "Silverado",
+      "vehicle_type": "PICKUP",
+      "acquisition_date": 1515354694451,
+      "price": {
+        "price": 70444.0,
+        "currency": "dollars"
+      },
+      "dealership_id": "12513",
+      "is_rented": false
+    }
+  ]
+}

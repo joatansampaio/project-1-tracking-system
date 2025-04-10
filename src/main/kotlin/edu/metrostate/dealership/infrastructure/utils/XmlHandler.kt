@@ -2,13 +2,14 @@
 package edu.metrostate.dealership.infrastructure.utils
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import edu.metrostate.dealership.domain.models.Dealer
 import edu.metrostate.dealership.domain.models.Vehicle
 import edu.metrostate.dealership.infrastructure.database.Database
-import edu.metrostate.dealership.infrastructure.imports.mappers.toXmlVehicle
+import edu.metrostate.dealership.infrastructure.imports.mappers.toXmlExportVehicle
 import edu.metrostate.dealership.infrastructure.imports.models.DatabaseWrapperXml
 import edu.metrostate.dealership.infrastructure.imports.models.DealersXMLModel
-import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
+import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerExportXml
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import java.io.File
 
@@ -36,6 +37,7 @@ class XmlHandler private constructor() : IFileHandler {
     override fun exportFile(file: File): Boolean {
         try {
             val xmlMapper = XmlMapper()
+            xmlMapper.registerKotlinModule();
             val data = extractCurrentStateAsXml()
             xmlMapper.writeValue(file, data)
             return true
@@ -55,11 +57,11 @@ class XmlHandler private constructor() : IFileHandler {
 
         // Build DealerXml list
         val dealerXmlList = dealers.map { dealer ->
-            DealerXml(
+            DealerExportXml(
                 dealershipId = dealer.dealershipId,
                 name = dealer.getName(),
                 enabledForAcquisition = dealer.enabledForAcquisition,
-                vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toXmlVehicle() }
+                vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toXmlExportVehicle() }
             )
         }
 

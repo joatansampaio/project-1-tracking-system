@@ -1,10 +1,11 @@
 module edu.metrostate.dealership {
     requires javafx.controls;
     requires javafx.fxml;
-    requires kotlin.stdlib;
     requires com.google.gson;
     requires org.controlsfx.controls;
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.fasterxml.jackson.kotlin;
+    requires kotlin.stdlib;
     requires com.fasterxml.jackson.databind;
 
     exports edu.metrostate.dealership;
