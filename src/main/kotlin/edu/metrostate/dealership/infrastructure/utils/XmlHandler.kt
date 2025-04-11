@@ -1,6 +1,7 @@
 //Handles reading of an XML formatted data file to an object
 package edu.metrostate.dealership.infrastructure.utils
 
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import edu.metrostate.dealership.domain.models.Dealer
@@ -38,6 +39,7 @@ class XmlHandler private constructor() : IFileHandler {
         try {
             val xmlMapper = XmlMapper()
             xmlMapper.registerKotlinModule();
+            xmlMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
             val data = extractCurrentStateAsXml()
             xmlMapper.writeValue(file, data)
             return true
