@@ -55,8 +55,10 @@ class XmlHandler private constructor() : IFileHandler {
         // Group vehicles by dealershipId
         val groupedVehicles = vehicles.groupBy { it.dealershipId }
 
+        val validDealers = dealers.filter { d -> vehicles.any { v -> v.dealershipId == d.dealershipId } }
+
         // Build DealerXml list
-        val dealerXmlList = dealers.map { dealer ->
+        val dealerXmlList = validDealers.map { dealer ->
             DealerExportXml(
                 dealershipId = dealer.dealershipId,
                 name = dealer.getName(),

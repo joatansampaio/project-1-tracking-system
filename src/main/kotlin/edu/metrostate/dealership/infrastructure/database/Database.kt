@@ -122,7 +122,7 @@ class Database private constructor()  {
         val dealers = incomingDealers.map { it.toDomainDealer() }
         val vehicles = incomingDealers
             .flatMap { dealer ->
-                dealer.vehicles.map { it.toDomainVehicle(dealer.dealershipId) }
+                dealer.vehicles!!.map { it.toDomainVehicle(dealer.dealershipId) }
             }
 
         importInner(dealers, vehicles)

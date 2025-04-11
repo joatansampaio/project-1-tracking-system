@@ -10,8 +10,8 @@ data class DealerExportXml(
     @JacksonXmlProperty(localName = "Name")
     var name: String = "Not Configured",
 
-    @JacksonXmlElementWrapper(localName = "Vehicles") // wrapper tag
-    @JacksonXmlProperty(localName = "Vehicle")        // each item tag
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlProperty(localName = "Vehicle")
     var vehicles: List<VehicleExportXml> = listOf(),
 
     @JacksonXmlProperty(isAttribute = true, localName = "enabled")

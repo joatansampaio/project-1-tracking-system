@@ -8,6 +8,7 @@ import edu.metrostate.dealership.domain.models.VehicleType
 import edu.metrostate.dealership.infrastructure.imports.models.json.DealerJson
 import edu.metrostate.dealership.infrastructure.imports.models.json.VehicleJson
 import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
+import edu.metrostate.dealership.infrastructure.imports.models.xml.PriceXml
 import edu.metrostate.dealership.infrastructure.imports.models.xml.VehicleExportXml
 import edu.metrostate.dealership.infrastructure.imports.models.xml.VehicleXml
 
@@ -30,10 +31,10 @@ fun Vehicle.toXmlExportVehicle(): VehicleExportXml =
         //dealershipId = dealershipId,
         //dealershipName = "",
         vehicleType = type.toString(),
-        //vehicleManufacturer = manufacturer,
+        //vehicleManufacturer = manufactuxrer,
         model = model,
         vehicleId = vehicleId,
-        //price = price,
+        price = PriceXml(price.price, price.currency),
         acquisitionDate = acquisitionDate,
         //isRented = isRented
     )
