@@ -45,7 +45,7 @@ class IntegrationTest {
         val allVehicles = scene.vehicles
 
         Assertions.assertEquals(8, allVehicles.size)
-        allVehicles.sort(Comparator.comparing(Vehicle::vehicleId))
+        allVehicles.sortedBy { v -> v.vehicleId }
 
         Assertions.assertAll(
             "Ensuring that there's no duplicated vehicle IDS...",
@@ -53,10 +53,10 @@ class IntegrationTest {
             Executable { Assertions.assertEquals("2", allVehicles[1].vehicleId) },
             Executable { Assertions.assertEquals("3", allVehicles[2].vehicleId) },
             Executable { Assertions.assertEquals("4", allVehicles[3].vehicleId) },
-            Executable { Assertions.assertEquals("800_4", allVehicles[4].vehicleId) },  //de-duplicated '4'
-            Executable { Assertions.assertEquals("900_1", allVehicles[5].vehicleId) },  //de-duplicated '1'
-            Executable { Assertions.assertEquals("900_2", allVehicles[6].vehicleId) },  //de-duplicated '2'
-            Executable { Assertions.assertEquals("900_3", allVehicles[7].vehicleId) } //de-duplicated '3'
+            Executable { Assertions.assertEquals("1-100", allVehicles[4].vehicleId) },  //de-duplicated '4'
+            Executable { Assertions.assertEquals("2-200", allVehicles[5].vehicleId) },  //de-duplicated '1'
+            Executable { Assertions.assertEquals("3-300", allVehicles[6].vehicleId) },  //de-duplicated '2'
+            Executable { Assertions.assertEquals("4-400", allVehicles[7].vehicleId) } //de-duplicated '3'
         )
     }
 
@@ -66,7 +66,7 @@ class IntegrationTest {
         Assertions.assertTrue(scene.setup().importXml())
         Assertions.assertAll(
             Executable { Assertions.assertEquals(1, scene.dealers.size) },
-            Executable { Assertions.assertEquals("Wacky Bob’s Automall", scene.dealers[0].getName()) },
+            Executable { Assertions.assertEquals("Wacky Bob’s Automall", scene.dealers[0].name) },
             Executable { Assertions.assertEquals("485", scene.dealers[0].dealershipId) },
             Executable { Assertions.assertEquals(4, scene.vehicles.size) }
         )

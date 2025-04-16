@@ -41,7 +41,7 @@ class Database private constructor()  {
         }
     }
 
-    private fun getDealerByID(dealershipId: String): Dealer? {
+    fun getDealerByID(dealershipId: String): Dealer? {
         return dealers.find { it.dealershipId == dealershipId }
     }
 
@@ -60,7 +60,7 @@ class Database private constructor()  {
      */
     fun updateDealer(dealershipId: String, name: String): Boolean {
         val dealer = getDealerByID(dealershipId) ?: return false
-        if (name.isNotBlank()) dealer.setName(name)
+        if (name.isNotBlank()) dealer.name = name
         return true
     }
 
@@ -92,8 +92,8 @@ class Database private constructor()  {
      * In the context of the database, removes or deletes a vehicle from a dealer
      * @param id - The vehicle ID of the vehicle to be removed
      */
-    fun deleteVehicle(id: String) {
-        vehicles.removeIf { it.vehicleId == id }
+    fun deleteVehicle(id: String): Boolean {
+        return vehicles.removeIf { it.vehicleId == id }
     }
 
     /**
@@ -133,7 +133,7 @@ class Database private constructor()  {
             val existing = dealers.find { it.dealershipId == dealer.dealershipId }
 
             if (existing != null) {
-                existing.setName(dealer.getName())
+                existing.name = dealer.name
                 existing.enabledForAcquisition = dealer.enabledForAcquisition
             } else {
                 dealers.add(dealer)

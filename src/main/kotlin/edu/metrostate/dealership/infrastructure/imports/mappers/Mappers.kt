@@ -39,21 +39,22 @@ fun Vehicle.toXmlExportVehicle(): VehicleExportXml =
         //isRented = isRented
     )
 
-fun Vehicle.toJsonVehicle(): VehicleJson =
+fun Vehicle.toJsonVehicle(dealershipEnabled: Boolean? = true, dealershipName: String? = "Unknown"): VehicleJson =
     VehicleJson(
         dealershipId = dealershipId,
-        dealershipName = "",
+        dealershipName = dealershipName,
         vehicleType = type.toString(),
         vehicleManufacturer = manufacturer,
         vehicleModel = model,
         vehicleId = vehicleId,
         price = price,
         acquisitionDate = acquisitionDate,
-        isRented = isRented
+        isRented = isRented,
+        dealershipEnabled = dealershipEnabled
     )
 
 fun DealerJson.toDomainDealer(): Dealer =
-    Dealer(dealershipId, name, enabledForAcquisition)
+    Dealer(dealershipId, name ?: "Unknown", enabledForAcquisition ?: true)
 
 fun VehicleJson.toDomainVehicle(): Vehicle =
     Vehicle(

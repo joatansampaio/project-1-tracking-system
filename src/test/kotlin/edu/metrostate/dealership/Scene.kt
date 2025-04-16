@@ -1,19 +1,18 @@
 package edu.metrostate.dealership
 
-import edu.metrostate.dealership.Main.Companion.getDependencies
 import edu.metrostate.dealership.domain.models.Dealer
 import edu.metrostate.dealership.domain.models.Price
 import edu.metrostate.dealership.domain.models.Vehicle
 import edu.metrostate.dealership.domain.models.VehicleType.Companion.fromString
-import edu.metrostate.dealership.infrastructure.utils.XmlHandler.Companion.instance
 import java.io.File
 import java.time.Instant
 import java.util.*
 
 class Scene {
-    private val dp = getDependencies(null)
+    private val dp = Main.Companion.getDependencies()
     fun setup(): Scene {
         dp.database.dealers.clear()
+        dp.database.vehicles.clear()
         vehicleDealerMap.clear()
         lastVehicleIndex = 0
         lastDealerIndex = 0
@@ -21,7 +20,7 @@ class Scene {
     }
 
     fun dealer(dealerName: String?, enabledForAcquisition: Boolean): Scene {
-        val dealer = Dealer("#" + ++lastDealerIndex, dealerName, true)
+        val dealer = Dealer("#" + ++lastDealerIndex, dealerName ?: "Unknown", true)
         if (!enabledForAcquisition) {
             dealer.enabledForAcquisition = false
         }
@@ -63,7 +62,7 @@ class Scene {
             fromString(type),
             false
         )
-        val isSuccess = Objects.requireNonNull(dp.vehicleService.addVehicle(newVehicle)).isSuccess
+        val isSuccess = dp.vehicleService.addVehicle(newVehicle).isSuccess
         if (isSuccess) {
             vehicleDealerMap[vehicleId] = dealershipId
         }
@@ -72,8 +71,7 @@ class Scene {
 
     fun deleteVehicle(vehicleId: String): Boolean {
         val effectiveVehicleId = vehicleId.replace("vehicle", "")
-        dp.vehicleService.deleteVehicle(effectiveVehicleId)
-        return true // TODO: fix
+        return dp.vehicleService.deleteVehicle(effectiveVehicleId)
     }
 
     val dealers: List<Dealer>
@@ -87,13 +85,13 @@ class Scene {
     }
 
     fun importJson(): Boolean {
-        val file = File("src/test/jsonTest.json")
+        val file = File("src/test/kotlin/jsonTest.json")
         return dp.jsonHandler.importFile(file)
     }
 
     fun importXml(): Boolean {
-        val file = File("src/test/xmlTest.xml")
-        return Objects.requireNonNull(instance).importFile(file)
+        val file = File("src/test/kotlin/xmlTest.xml")
+        return dp.xmlHandler.importFile(file)
     }
 
     companion object {

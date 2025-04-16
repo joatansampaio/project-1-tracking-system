@@ -1,15 +1,7 @@
 package edu.metrostate.dealership.domain.models
 
 class Dealer(
-    val dealershipId: String,
-    name: String? = null,
+    var dealershipId: String,
+    var name: String = "Unknown",
     var enabledForAcquisition: Boolean = true
-) {
-    private var name: String = name ?: "Not Configured"
-
-    fun getName(): String = name
-
-    fun setName(newName: String) {
-        name = newName
-    }
-}
+)

@@ -28,17 +28,19 @@ class Main : Application() {
         val scene = Scene(fxmlLoader.load(), 1200.0, 800.0)
         setTheme(scene, javaClass)
 
-        val dependencies = getDependencies(stage)
+        val dependencies = getDependencies()
+        val notificationHandler = NotificationHandler(stage)
+        val dataTransferService = DataTransferService(notificationHandler, dependencies.jsonHandler, dependencies.xmlHandler)
 
         val mainController = fxmlLoader.getController<MainController>()
         mainController.injectDependencies(
             dependencies.vehicleService,
             dependencies.dealerService,
-            dependencies.dataTransferService,
-            dependencies.notificationHandler
+            dataTransferService,
+            notificationHandler
         )
 
-        stage.title = "Dealership System v$version"
+        stage.title = "Dealership System v$VERSION"
         stage.scene = scene
         stage.onCloseRequest = EventHandler<WindowEvent> {
             dependencies.jsonHandler.saveSession()
@@ -46,45 +48,41 @@ class Main : Application() {
         stage.show()
     }
 
-    private fun getDependencies(stage: Stage): DependencyPackage {
-        val jsonHandler = JsonHandler.instance
-        val xmlHandler = XmlHandler.instance
-        val database = Database.instance
-        val notificationHandler = NotificationHandler(stage)
-
-        val vehicleRepository = VehicleRepository(database)
-        val dealerRepository = DealerRepository(database)
-
-        val vehicleService = VehicleService(vehicleRepository)
-        val dealerService = DealerService(dealerRepository)
-        val dataTransferService = DataTransferService(notificationHandler, jsonHandler!!, xmlHandler!!)
-
-        return DependencyPackage(
-            jsonHandler,
-            notificationHandler,
-            vehicleService,
-            dealerService,
-            dataTransferService,
-            database
-        )
-    }
-
     data class DependencyPackage(
         val jsonHandler: JsonHandler,
-        val notificationHandler: NotificationHandler,
+        val xmlHandler: XmlHandler,
         val vehicleService: VehicleService,
         val dealerService: DealerService,
-        val dataTransferService: DataTransferService,
         val database: Database
     )
 
     companion object {
-        const val version = 1.0
+        const val VERSION = 3.0
         val logger: Logger = Logger.logger
 
         fun setTheme(scene: Scene, classRef: Class<*>) {
             scene.stylesheets.add(
                 Objects.requireNonNull(classRef.getResource("/css/style.css")).toExternalForm()
+            )
+        }
+
+        fun getDependencies(): DependencyPackage {
+            val jsonHandler = JsonHandler.instance
+            val xmlHandler = XmlHandler.instance
+            val database = Database.instance
+
+            val vehicleRepository = VehicleRepository(database)
+            val dealerRepository = DealerRepository(database)
+
+            val vehicleService = VehicleService(vehicleRepository)
+            val dealerService = DealerService(dealerRepository)
+
+            return DependencyPackage(
+                jsonHandler,
+                xmlHandler,
+                vehicleService,
+                dealerService,
+                database
             )
         }
     }

@@ -22,7 +22,7 @@ class PriceDeserializerTest {
 
     @Test
     fun deserializesObjectWithPriceAndUnit() {
-        val json = "{\"price\": 25.50, \"unit\": \"euros\"}"
+        val json = "{\"price\": 25.50, \"currency\": \"euros\"}"
         val price = gson.fromJson(json, Price::class.java)
         Assertions.assertEquals(25.50, price.price, 0.001)
         Assertions.assertEquals("euros", price.currency)

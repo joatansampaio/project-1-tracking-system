@@ -11,7 +11,7 @@ data class Vehicle(
     var vehicleId: String,
     var manufacturer: String,
     var model: String,
-    var acquisitionDate: Long,
+    var acquisitionDate: Long?,
     var price: Price,
     var dealershipId: String,
     var type: VehicleType,
@@ -24,9 +24,11 @@ data class Vehicle(
         get() = if (isRented) "Yes" else "No"
 
     val formattedAcquisitionDate: String
-        get() = DateTimeFormatter
-            .ofPattern("MM/dd/yyyy HH:mm")
-            .format(Instant.ofEpochMilli(acquisitionDate).atZone(ZoneId.systemDefault()))
+        get() = acquisitionDate?.let {
+            DateTimeFormatter
+                .ofPattern("MM/dd/yyyy HH:mm")
+                .format(Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()))
+        } ?: "Unknown"
 
     fun toggleIsRented() {
         if (type == VehicleType.SPORTS_CAR) {

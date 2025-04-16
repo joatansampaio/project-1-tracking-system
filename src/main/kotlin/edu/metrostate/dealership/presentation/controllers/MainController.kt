@@ -388,7 +388,7 @@ class MainController {
         dealerNameColumn.cellFactory = TextFieldTableCell.forTableColumn()
         dealerNameColumn.setOnEditCommit { event: TableColumn.CellEditEvent<Dealer, String> ->
             val dealer = event.rowValue
-            dealer.setName(event.newValue)
+            dealer.name = event.newValue
             notificationHandler.notify("Dealer Updated")
         }
     }

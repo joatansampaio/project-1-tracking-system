@@ -5,27 +5,30 @@ import edu.metrostate.dealership.domain.models.Price
 
 data class VehicleJson(
     @SerializedName("dealership_id")
-    val dealershipId: String,
+    var dealershipId: String,
 
     @SerializedName("dealership_name")
-    val dealershipName: String,
+    var dealershipName: String?,
 
     @SerializedName("vehicle_type")
-    val vehicleType: String,
+    var vehicleType: String,
 
     @SerializedName("vehicle_manufacturer")
-    val vehicleManufacturer: String,
+    var vehicleManufacturer: String,
 
     @SerializedName("vehicle_model")
-    val vehicleModel: String,
+    var vehicleModel: String,
 
     @SerializedName("vehicle_id")
-    val vehicleId: String,
+    var vehicleId: String,
 
-    val price: Price,
+    var price: Price,
 
     @SerializedName("acquisition_date")
-    val acquisitionDate: Long,
+    var acquisitionDate: Long?,
 
-    val isRented: Boolean
+    @SerializedName("dealership_enabled")
+    var dealershipEnabled: Boolean?,
+
+    var isRented: Boolean
 )

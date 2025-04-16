@@ -7,10 +7,10 @@ data class DealerJson(
     var dealershipId: String,
 
     @SerializedName("dealership_name")
-    var name: String,
+    var name: String? = "Unknown",
 
     @SerializedName("dealership_enabled")
-    var enabledForAcquisition: Boolean,
+    var enabledForAcquisition: Boolean? = true,
 
     var vehicles: List<VehicleJson>
 )

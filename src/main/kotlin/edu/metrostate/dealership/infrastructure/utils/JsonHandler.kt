@@ -2,6 +2,7 @@
 package edu.metrostate.dealership.infrastructure.utils
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import edu.metrostate.dealership.domain.models.Dealer
@@ -15,7 +16,6 @@ import edu.metrostate.dealership.infrastructure.imports.models.json.DealerJson
 import edu.metrostate.dealership.infrastructure.imports.models.json.VehicleJson
 import edu.metrostate.dealership.infrastructure.logging.Logger
 import edu.metrostate.dealership.infrastructure.utils.GsonConfig.gson
-import javafx.collections.ObservableList
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -39,8 +39,8 @@ class JsonHandler private constructor() : IFileHandler {
                 .map { (dealershipId, dealerVehicles) ->
                     DealerJson(
                         dealershipId = dealershipId,
-                        name = "Unknown",
-                        enabledForAcquisition = true,
+                        name = dealerVehicles.first().dealershipName,
+                        enabledForAcquisition = dealerVehicles.first().dealershipEnabled,
                         vehicles = dealerVehicles
                     )
                 }
@@ -58,18 +58,20 @@ class JsonHandler private constructor() : IFileHandler {
     }
 
     override fun exportFile(file: File): Boolean {
-        var file = file
-        val json = extractCurrentStateAsJson()
-        val path = file.absolutePath
+        var exportFile = file
+        // the json structure of our database.json is not the same as the import.
+        // the regular export follows the same import structure.
+        val json = extractCurrentStateAsJson(isDatabase = false)
+        val path = exportFile.absolutePath
 
         if (!path.lowercase(Locale.getDefault()).endsWith(".json")) {
-            file = File("$path.json")
+            exportFile = File("$path.json")
         }
 
         try {
-            FileWriter(file).use { writer ->
+            FileWriter(exportFile).use { writer ->
                 writer.write(json)
-                logger.info("Successfully exported to " + file.absolutePath)
+                logger.info("Successfully exported to " + exportFile.absolutePath)
                 return true
             }
         } catch (e: IOException) {
@@ -97,7 +99,7 @@ class JsonHandler private constructor() : IFileHandler {
         }
     }
 
-    private fun extractCurrentStateAsJson(): String {
+    private fun extractCurrentStateAsJson(isDatabase: Boolean = true): String {
         val gson = GsonBuilder()
             .setPrettyPrinting()
             .create()
@@ -108,17 +110,29 @@ class JsonHandler private constructor() : IFileHandler {
         // Group vehicles by dealershipId
         val groupedVehicles = vehicles.groupBy { it.dealershipId }
 
-        // Build DealerJson list
-        val dealerJsonList = dealers.map { dealer ->
-            DealerJson(
-                dealershipId = dealer.dealershipId,
-                name = dealer.getName(),
-                enabledForAcquisition = dealer.enabledForAcquisition,
-                vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toJsonVehicle() }
-            )
+
+        if (isDatabase) {
+            // Build DealerJson list
+            val dealerJsonList = dealers.map { dealer ->
+                DealerJson(
+                    dealershipId = dealer.dealershipId,
+                    name = dealer.name,
+                    enabledForAcquisition = dealer.enabledForAcquisition,
+                    vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toJsonVehicle() }
+                )
+            }
+            return gson.toJson(DatabaseWrapper(dealerJsonList))
+        }
+        // Not isDatabase: Flatten to list of VehicleJson with dealer info
+        val dealerMap = dealers.associateBy { it.dealershipId }
+
+        val vehicleJsonList = vehicles.map { vehicle ->
+            val dealer = dealerMap[vehicle.dealershipId]
+            vehicle.toJsonVehicle(dealer?.enabledForAcquisition, dealer?.name)
         }
 
-        val wrapper = DatabaseWrapper(dealerJsonList)
+        val wrapper = JsonObject()
+        wrapper.add("car_inventory", gson.toJsonTree(vehicleJsonList))
         return gson.toJson(wrapper)
     }
 

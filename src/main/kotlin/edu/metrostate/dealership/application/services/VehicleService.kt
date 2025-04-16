@@ -7,11 +7,11 @@ import edu.metrostate.dealership.infrastructure.database.Result
 import javafx.collections.ObservableList
 
 class VehicleService(private val repository: VehicleRepository) {
-    fun deleteVehicle(id: String) {
-        repository.deleteVehicle(id)
+    fun deleteVehicle(id: String): Boolean {
+       return repository.deleteVehicle(id)
     }
 
-    fun addVehicle(vehicle: Vehicle?): Result<Boolean>? {
+    fun addVehicle(vehicle: Vehicle): Result<Boolean> {
         return repository.addVehicle(vehicle)
     }
 

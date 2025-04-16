@@ -19,5 +19,5 @@ data class VehicleExportXml(
     var price: PriceXml = PriceXml(),
 
     @JacksonXmlProperty(localName = "AcquisitionDate")
-    var acquisitionDate: Long = 0
+    var acquisitionDate: Long? = null
 )

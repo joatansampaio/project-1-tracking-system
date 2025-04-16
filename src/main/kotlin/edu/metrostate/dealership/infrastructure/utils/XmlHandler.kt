@@ -63,7 +63,7 @@ class XmlHandler private constructor() : IFileHandler {
         val dealerXmlList = validDealers.map { dealer ->
             DealerExportXml(
                 dealershipId = dealer.dealershipId,
-                name = dealer.getName(),
+                name = dealer.name,
                 enabledForAcquisition = dealer.enabledForAcquisition,
                 vehicles = groupedVehicles[dealer.dealershipId].orEmpty().map { it.toXmlExportVehicle() }
             )
@@ -74,15 +74,11 @@ class XmlHandler private constructor() : IFileHandler {
     }
 
     companion object {
+        val instance: XmlHandler by lazy {
+            XmlHandler()
+        }
+
         private val logger: Logger = Logger.logger
         private var databaseContext: Database = Database.instance
-        var instance: XmlHandler? = null
-            get() {
-                if (field == null) {
-                    field = XmlHandler()
-                }
-                return field
-            }
-            private set
     }
 }

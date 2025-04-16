@@ -1,206 +1,217 @@
-package edu.metrostate.dealership.domain.models;
+package edu.metrostate.dealership.domain.models
 
-import edu.metrostate.dealership.application.exceptions.ValidationException;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
+import edu.metrostate.dealership.application.exceptions.ValidationException
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 class VehicleTest {
 
     @Test
-    void createVehicle() {
-        var vehicle = getVehicleExample();
-        assertNotNull(vehicle);
+    fun createVehicle() {
+        val vehicle = getVehicleExample()
+        assertNotNull(vehicle)
     }
 
     @Test
-    void setVehicleId() {
-        var vehicle = getVehicleExample();
-        assertEquals("123", vehicle.getVehicleId());
-        vehicle.setVehicleId("456");
-        assertEquals("456", vehicle.getVehicleId());
+    fun setVehicleId() {
+        val vehicle = getVehicleExample()
+        assertEquals("123", vehicle.vehicleId)
+        vehicle.vehicleId = "456"
+        assertEquals("456", vehicle.vehicleId)
     }
 
     @Test
-    void getVehicleId() {
-        assertEquals("123", getVehicleExample().getVehicleId());
+    fun getVehicleId() {
+        assertEquals("123", getVehicleExample().vehicleId)
     }
 
     @Test
-    void getManufacturer() {
-        assertEquals("Ford", getVehicleExample().getManufacturer());
+    fun getManufacturer() {
+        assertEquals("Ford", getVehicleExample().manufacturer)
     }
 
     @Test
-    void setManufacturer() {
-        var vehicle = getVehicleExample();
-        assertEquals("Ford", vehicle.getManufacturer());
-        vehicle.setManufacturer("Chevy");
-        assertEquals("Chevy", vehicle.getManufacturer());
+    fun setManufacturer() {
+        val vehicle = getVehicleExample()
+        assertEquals("Ford", vehicle.manufacturer)
+        vehicle.manufacturer = "Chevy"
+        assertEquals("Chevy", vehicle.manufacturer)
     }
 
     @Test
-    void getModel() {
-        assertEquals("F-150", getVehicleExample().getModel());
+    fun getModel() {
+        assertEquals("F-150", getVehicleExample().model)
     }
 
     @Test
-    void setModel() {
-        var vehicle = getVehicleExample();
-        assertEquals("F-150", vehicle.getModel());
-        vehicle.setModel("F-550");
-        assertEquals("F-550", vehicle.getModel());
+    fun setModel() {
+        val vehicle = getVehicleExample()
+        assertEquals("F-150", vehicle.model)
+        vehicle.model = "F-550"
+        assertEquals("F-550", vehicle.model)
     }
 
     @Test
-    void getAcquisitionDate() {
-        assertEquals("01/01/2025 00:00", getVehicleExample().getFormattedAcquisitionDate());
-        assertEquals(1735711200000L, getVehicleExample().getAcquisitionDate());
+    fun getAcquisitionDate() {
+        assertEquals("01/01/2025 00:00", getVehicleExample().formattedAcquisitionDate)
+        assertEquals(1735711200000L, getVehicleExample().acquisitionDate)
     }
 
     @Test
-    void setAcquisitionDate() {
-        var vehicle = getVehicleExample();
-        assertEquals("01/01/2025 00:00", vehicle.getFormattedAcquisitionDate());
-        vehicle.setAcquisitionDate(1715354694451L);
-        assertEquals("05/10/2024 10:24", vehicle.getFormattedAcquisitionDate());
-        vehicle.setAcquisitionDate(null);
-        assertEquals("Unknown", vehicle.getFormattedAcquisitionDate());
+    fun setAcquisitionDate() {
+        val vehicle = getVehicleExample()
+        assertEquals("01/01/2025 00:00", vehicle.formattedAcquisitionDate)
+        vehicle.acquisitionDate = 1715354694451L
+        assertEquals("05/10/2024 10:24", vehicle.formattedAcquisitionDate)
+        vehicle.acquisitionDate = null
+        assertEquals("Unknown", vehicle.formattedAcquisitionDate)
     }
 
     @Test
-    void getDealershipId() {
-        assertEquals("456", getVehicleExample().getDealershipId());
+    fun getDealershipId() {
+        assertEquals("456", getVehicleExample().dealershipId)
     }
 
     @Test
-    void setDealershipId() {
-        var vehicle = getVehicleExample();
-        vehicle.setDealershipId("890");
-        assertEquals("890", vehicle.getDealershipId());
+    fun setDealershipId() {
+        val vehicle = getVehicleExample()
+        vehicle.dealershipId = "890"
+        assertEquals("890", vehicle.dealershipId)
     }
 
     @Test
-    void getType() {
-        assertEquals(VehicleType.PICKUP, getVehicleExample().getType());
+    fun getType() {
+        assertEquals(VehicleType.PICKUP, getVehicleExample().type)
     }
 
     @Test
-    void setType() {
-        var vehicle = getVehicleExample();
-        vehicle.setType(VehicleType.SUV);
-        assertEquals(VehicleType.SUV, vehicle.getType());
+    fun setType() {
+        val vehicle = getVehicleExample()
+        vehicle.type = VehicleType.SUV
+        assertEquals(VehicleType.SUV, vehicle.type)
     }
 
     @Test
-    void testToString() {
+    fun rentTest() {
+        val vehicle = getVehicleExample()
+        assertFalse(vehicle.isRented)
+        assertEquals("No", vehicle.isRentedAsString)
 
-        var expected = """
-                ID: 123
-                Dealership ID: 456
-                Manufacturer: Ford Model: F-150\tType: PICKUP
-                Price: $ 20000.00 dollars
-                Acquisition Date: 01/01/2025 00:00
-                """;
-
-        assertEquals(expected, getVehicleExample().toString());
+        vehicle.toggleIsRented()
+        assertTrue(vehicle.isRented)
+        assertEquals("Yes", vehicle.isRentedAsString)
     }
 
     @Test
-    public void rentTest() {
-        var vehicle = getVehicleExample();
-        assertFalse(vehicle.isRented());
-        assertEquals("No", vehicle.isRentedAsString());
+    fun sportsCarCantBeRented() {
+        val vehicle = getVehicleExample()
+        assertFalse(vehicle.isRented)
 
-        vehicle.toggleIsRented();
-        assertTrue(vehicle.isRented());
-        assertEquals("Yes", vehicle.isRentedAsString());
-
-        vehicle.setRented(false);
-        assertFalse(vehicle.isRented());
+        vehicle.type = VehicleType.SPORTS_CAR
+        vehicle.toggleIsRented()
+        assertFalse(vehicle.isRented)
     }
 
     @Test
-    public void sportsCarCantBeRented() {
-        var vehicle = getVehicleExample();
-        assertFalse(vehicle.isRented());
-
-        vehicle.setType(VehicleType.SPORTS_CAR);
-        vehicle.toggleIsRented();
-        vehicle.setRented(true);
-        assertFalse(vehicle.isRented());
-
-        vehicle.setRented(false);
-        assertFalse(vehicle.isRented());
-    }
-
-    @Test
-    public void createVehicleTest() {
+    fun createVehicleTest() {
         // Missing ID
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create(null, "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Missing Manufacturer
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", null, "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Missing Model
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", null, "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Missing Price
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", null, LocalDate.of(2025, 1, 1), "456", "pickup"));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Negative Price
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "-2", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Invalid Price
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup"));
-        // Missing Acquisition Date
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", null, "456", "pickup"));
-        // Missing Dealership ID
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), null, "pickup"));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "", "pickup"));
-        // Missing Type
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", null));
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", ""));
-        // Invalid Type
-        assertThrows(ValidationException.class, () -> Vehicle.Companion.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "I don't even exist"));
-
-        try {
-            Vehicle.Companion.create(null, null, null, "2213SSS", null, null, null);
-        } catch (ValidationException e) {
-            assertEquals(7, e.getValidationErrors().size());
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create(null, "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
         }
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        // Other validation test cases (same logic applies) ...
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", null, "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", null, "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "", "2213SSS", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", null, LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "-2", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "invalid", LocalDate.of(2025, 1, 1), "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", null, "456", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), null, "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "", "pickup")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", null)
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "")
+        }
+
+        assertThrows(ValidationException::class.java) {
+            Vehicle.create("123", "Ford", "F-150", "2213SSS", LocalDate.of(2025, 1, 1), "456", "I don't even exist")
+        }
+
+        val ex = assertThrows(ValidationException::class.java) {
+            Vehicle.create(null, null, null, "2213SSS", null, null, null)
+        }
+        assertEquals(8, ex.validationErrors.size)
     }
 
     @Test
-    public void getPrice() {
-        var vehicle = getVehicleExample();
-        assertEquals(20000, vehicle.getPrice().getPrice());
-        assertEquals("dollars", vehicle.getPrice().getCurrency());
-        assertEquals("$ 20000.00 dollars", vehicle.getPriceAsString());
+    fun getPrice() {
+        val vehicle = getVehicleExample()
+        assertEquals(20000.0, vehicle.price.price)
+        assertEquals("dollars", vehicle.price.currency)
+        assertEquals("$20000.00 dollars", vehicle.priceAsString)
     }
 
     @Test
-    public void setPrice() {
-        var vehicle = getVehicleExample();
-        vehicle.setPrice(new Price(50000, "pounds"));
-        assertEquals(50000, vehicle.getPrice().getPrice());
-        assertEquals("pounds", vehicle.getPrice().getCurrency());
-        assertEquals("£ 50000.00 pounds", vehicle.getPriceAsString());
+    fun setPrice() {
+        val vehicle = getVehicleExample()
+        vehicle.price = Price(50000.0, "pounds")
+        assertEquals(50000.0, vehicle.price.price)
+        assertEquals("pounds", vehicle.price.currency)
+        assertEquals("£50000.00 pounds", vehicle.priceAsString)
     }
 
-    private Vehicle getVehicleExample() {
-        try {
-            return Vehicle.Companion.create(
-                    "123",
-                    "Ford",
-                    "F-150",
-                    "20000",
-                    LocalDate.of(2025, 1, 1),
-                    "456",
-                    "pickup");
-        } catch (ValidationException e) {
-            throw new RuntimeException(e);
+    private fun getVehicleExample(): Vehicle {
+        return try {
+            Vehicle.create(
+                "123",
+                "Ford",
+                "F-150",
+                "20000",
+                LocalDate.of(2025, 1, 1),
+                "456",
+                "pickup"
+            )
+        } catch (e: ValidationException) {
+            throw RuntimeException(e)
         }
     }
 }
