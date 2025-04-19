@@ -20,7 +20,7 @@ import java.util.*
 class XmlHandler private constructor() : IFileHandler {
     /**
      * Imports an XML formatted file using the jackson library
-     * @param file - The file to be imported
+     * @param file - The file object to be imported from the system
      * @return true if operation completed otherwise log an error and return false
      */
     override fun importFile(file: File): Boolean {
@@ -38,7 +38,7 @@ class XmlHandler private constructor() : IFileHandler {
 
     /**
      * Exports an XML formatted file using the jackson library
-     * @param file - The file to be exported to
+     * @param file - The file object to be exported to the system
      * @return true if operation completed otherwise log an error and return false
      */
     override fun exportFile(file: File): Boolean {
@@ -66,6 +66,7 @@ class XmlHandler private constructor() : IFileHandler {
             } catch (e: Exception) {
                 logger.error("Error exporting XML: " + e.message!!)
             }
+            //Export operation failed in the try catch above, so return false
             return false
     }
 
