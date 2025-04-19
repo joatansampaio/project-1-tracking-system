@@ -64,10 +64,13 @@ class JsonHandler private constructor() : IFileHandler {
         val json = extractCurrentStateAsJson(isDatabase = false)
         val path = exportFile.absolutePath
 
+        //Make sure the file has the right extension
+        //Necessary because the ui does allow exporting without the proper extension
         if (!path.lowercase(Locale.getDefault()).endsWith(".json")) {
             exportFile = File("$path.json")
         }
 
+        //Try writing the json to file
         try {
             FileWriter(exportFile).use { writer ->
                 writer.write(json)
@@ -163,7 +166,7 @@ class JsonHandler private constructor() : IFileHandler {
             JsonHandler()
         }
 
-        val logger: Logger = Logger.logger;
+        val logger: Logger = Logger.logger
 
         private var databaseContext: Database = Database.instance
     }
