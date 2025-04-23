@@ -5,6 +5,8 @@ plugins {
   id 'org.javamodularity.moduleplugin' version '1.8.12'
   id 'org.openjfx.javafxplugin' version '0.0.13'
   id 'org.beryx.jlink' version '2.25.0'
+  id 'org.jetbrains.dokka' version '2.0.0'
+  id 'org.jetbrains.dokka-javadoc' version '2.0.0'
 }
 
 group 'edu.metrostate'
@@ -74,3 +76,13 @@ jlink {
 jlinkZip {
   group = 'distribution'
 }
+
+
+//Set both output types to same place; documentation/html and documentation/javadoc
+dokka {
+  dokkaPublicationDirectory.set(layout.getProjectDirectory().dir("documentation"))
+}
+
+
+
+
