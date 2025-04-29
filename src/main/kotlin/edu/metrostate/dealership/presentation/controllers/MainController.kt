@@ -36,6 +36,12 @@ import java.io.File
 import kotlin.math.min
 import kotlin.system.exitProcess
 
+/**
+ * Main controller for the dealership management application.
+ * Manages the primary UI with both vehicle and dealer tables,
+ * navigation between views, and actions such as import/export,
+ * adding/deleting vehicles or dealers, and toggling properties.
+ */
 class MainController {
     private val logger = Logger.logger
 
@@ -46,7 +52,7 @@ class MainController {
     private lateinit var notificationHandler: NotificationHandler
     private var hasVisitedDealersTab = false
 
-    // Vehicle Table
+    // Vehicle View
     @FXML lateinit var vehicleTable: TableView<Vehicle>
     @FXML lateinit var vehicleIdColumn: TableColumn<Vehicle, String>
     @FXML lateinit var manufacturerColumn: TableColumn<Vehicle, String>
@@ -59,7 +65,7 @@ class MainController {
 
     private lateinit var filteredVehicles: FilteredList<Vehicle>
 
-    // Dealer Table
+    // Dealer View
     @FXML lateinit var dealerTable: TableView<Dealer>
     @FXML lateinit var dealerIdColumn: TableColumn<Dealer, String>
     @FXML lateinit var dealerNameColumn: TableColumn<Dealer, String>
@@ -67,6 +73,7 @@ class MainController {
     @FXML lateinit var numberOfVehiclesForDealer: TableColumn<Dealer?, String?>
     @FXML lateinit var dealershipIdCombo: ComboBox<String?>
     @FXML lateinit var toggleAcquisitionBtn: Button
+    @FXML lateinit var addDealerBtn: Button
 
     // Actions
     @FXML lateinit var addVehicleBtn: Button
@@ -79,6 +86,10 @@ class MainController {
 
     @FXML lateinit var transferVehicleBtn: Button
 
+    /**
+     * Initializes the controller when the FXML is loaded.
+     * Sets up tables, listeners, properties, and loads data.
+     */
     @FXML
     fun initialize() {
         setupVehiclesTable()
@@ -88,6 +99,10 @@ class MainController {
         initializeDataAsync()
     }
 
+    /**
+     * Opens a dialog to add a new vehicle.
+     * Loads the add-vehicle.fxml and centers it on the main window.
+     */
     @FXML
     fun onAddVehicle() {
         try {
@@ -118,6 +133,73 @@ class MainController {
         }
     }
 
+    /**
+     * Shows a simple text input dialogs to add a new dealer.
+     */
+    @FXML
+    fun onAddDealer() {
+        // Create a dialog for dealer ID
+        val idDialog = TextInputDialog()
+        idDialog.title = "Add Dealer"
+        idDialog.headerText = null
+        idDialog.contentText = "Dealer ID:"
+        setTheme(idDialog.dialogPane.scene, javaClass)
+
+        // Show the dialog and wait for input
+        val idResult = idDialog.showAndWait()
+        // Process the ID if present
+        idResult.ifPresent { id ->
+            val dealerId = id.trim()
+
+            // Check if ID already exists
+            if (dealerId.isEmpty()) {
+                notificationHandler.notifyError("Dealer ID cannot be empty.")
+                return@ifPresent
+            }
+            if (dealerService.dealershipIDs.contains(dealerId)) {
+                notificationHandler.notifyError("Dealer ID already exists.")
+                return@ifPresent
+            }
+
+            // Ask for dealer name
+            val nameDialog = TextInputDialog("New Dealer")
+            nameDialog.title = "Add Dealer"
+            nameDialog.headerText = null
+            nameDialog.contentText = "Name:"
+
+            setTheme(nameDialog.dialogPane.scene, javaClass)
+
+            val nameResult = nameDialog.showAndWait()
+
+            // Process the name and create dealer
+            nameResult.ifPresent { name ->
+                try {
+                    // Create new dealer
+                    val newDealer = Dealer(
+                        dealershipId = dealerId,
+                        name = if (name.isNotBlank()) name.trim() else "New Dealer",
+                        enabledForAcquisition = true // This is our default
+                    )
+
+                    dealerService.addDealer(newDealer)
+
+                    // Update UI
+                    updateDealershipIds()
+                    dealerTable.refresh()
+                    notificationHandler.notify("Dealer added successfully.")
+
+                } catch (e: Exception) {
+                    notificationHandler.notifyError("Failed to add dealer: ${e.message}")
+                    logger.error("Error adding dealer: $e")
+                }
+            }
+        }
+    }
+
+    /**
+     * Deletes the currently selected vehicle.
+     * Updates the selection after deletion to maintain a smooth UI experience.
+     */
     @FXML
     fun onDeleteVehicle() {
         val selected = vehicleTable.selectionModel.selectedItem
@@ -146,6 +228,10 @@ class MainController {
         notificationHandler.notifyError(response.errorMessage)
     }
 
+    /**
+     * Toggles the acquisition status of the selected dealer.
+     * Updates the table to reflect the change.
+     */
     @FXML
     fun toggleVehicleAcquisition() {
         val dealer = dealerTable.selectionModel.selectedItem
@@ -154,6 +240,10 @@ class MainController {
         notificationHandler.notify("Success")
     }
 
+    /**
+     * Transfers inventory between dealerships.
+     * Note: This functionality is currently commented out/incomplete.
+     */
     @FXML
     fun transferDealershipInventory() {
         //intelliJ is wrong this is used
@@ -202,11 +292,34 @@ class MainController {
         } else dealershipId + "_" + c[0]
     }
 
+    /**
+     * Imports data from a JSON file.
+     * Delegates to the data transfer service.
+     */
     @FXML fun onImportJson() { dataTransferService.importJson(stage) }
+
+    /**
+     * Imports data from an XML file.
+     * Delegates to the data transfer service.
+     */
     @FXML fun onImportXml() { dataTransferService.importXml(stage) }
+
+    /**
+     * Exports data to a JSON file.
+     * Delegates to the data transfer service.
+     */
     @FXML fun onExportJson() { dataTransferService.exportJson(stage) }
+
+    /**
+     * Exports data to an XML file.
+     * Delegates to the data transfer service.
+     */
     @FXML fun onExportXml() { dataTransferService.exportXml(stage) }
 
+    /**
+     * Toggles the rental status of the selected vehicle.
+     * Updates the table to reflect the change.
+     */
     @FXML
     fun toggleRented() {
         vehicleTable.selectionModel.selectedItem?.let {
@@ -216,6 +329,12 @@ class MainController {
         }
     }
 
+    /**
+     * Handles the exit action from the menu.
+     * Optionally saves the session before exiting.
+     *
+     * @param event The action event containing information about the source
+     */
     @FXML
     fun onExit(event: ActionEvent) {
         val item = event.source as MenuItem
@@ -266,6 +385,10 @@ class MainController {
         }
     }
 
+    /**
+     * Updates the dealership ID ComboBox with current dealer IDs.
+     * Adds an "All" option for showing vehicles from all dealerships.
+     */
     private fun updateDealershipIds() {
         val dealerIds = FXCollections.observableArrayList<String?>()
         dealerIds.add("All")
@@ -274,6 +397,10 @@ class MainController {
         dealershipIdCombo.items = dealerIds
     }
 
+    /**
+     * Sets up visibility and style properties for UI elements.
+     * Binds managed properties to visible properties to prevent empty space.
+     */
     private fun setupOtherProperties() {
         // That will make the buttons not take the space when hidden
         toggleAcquisitionBtn.managedProperty().bind(toggleAcquisitionBtn.visibleProperty())
@@ -283,10 +410,15 @@ class MainController {
         addVehicleBtn.managedProperty().bind(addVehicleBtn.visibleProperty())
         dealershipIdCombo.managedProperty().bind(dealershipIdCombo.visibleProperty())
         toggleRentedBtn.managedProperty().bind(toggleRentedBtn.visibleProperty())
+        addDealerBtn.managedProperty().bind(addDealerBtn.visibleProperty())
         goToDealersViewBtn.style = "--fx-min-width: 100px; -fx-background-color: #212121"
         goToVehiclesViewBtn.style = "--fx-min-width: 100px; -fx-background-color: #343434"
     }
 
+    /**
+     * Loads the previous application state from disk.
+     * Attempts to load from database.json if it exists.
+     */
     private fun initializeFromPreviousState() {
         this.jsonHandler = instance
         val dbFile = File("database.json")
@@ -301,6 +433,10 @@ class MainController {
         logger.error("Failed to load previous database state.")
     }
 
+    /**
+     * Sets up the vehicles table with appropriate cell factories and value factories.
+     * Configures the display format for each column.
+     */
     private fun setupVehiclesTable() {
         logger.info("Configuring Vehicle TableView columns.")
         vehicleIdColumn.cellValueFactory = PropertyValueFactory("vehicleId")
@@ -349,6 +485,10 @@ class MainController {
         }
     }
 
+    /**
+     * Sets up the dealers table with appropriate cell factories and value factories.
+     * Configures the display format for each column and enables editing for the name column.
+     */
     private fun setupDealersTable() {
         logger.info("Configuring Dealer TableView columns.")
         dealerIdColumn.cellValueFactory = PropertyValueFactory("dealershipId")
@@ -393,6 +533,10 @@ class MainController {
         }
     }
 
+    /**
+     * Sets up listeners for table selections and dropdown changes.
+     * Configures button states based on selections and applies filters.
+     */
     private fun setupListeners() {
         logger.info("Configuring listeners.")
         // To enable/disable the delete button based on if a row is selected.
@@ -445,11 +589,17 @@ class MainController {
             }))
     }
 
+    /**
+     * Toggles visibility of UI elements based on which tab/view is active.
+     *
+     * @param isDealerTab true if dealer tab is active, false for vehicle tab
+     */
+// Modify the toggleTabView method to include the addDealerBtn
     private fun toggleTabView(isDealerTab: Boolean) {
         listOf(vehicleTable, deleteVehicleBtn, addVehicleBtn, dealershipIdCombo, toggleRentedBtn)
             .forEach { it.isVisible = !isDealerTab }
 
-        listOf(dealerTable, deleteDealerBtn, toggleAcquisitionBtn, toggleTransferBtn)
+        listOf(dealerTable, deleteDealerBtn, toggleAcquisitionBtn, toggleTransferBtn, addDealerBtn)
             .forEach { it.isVisible = isDealerTab }
 
         goToDealersViewBtn.style = "--fx-min-width: 100px; -fx-background-color:" +
@@ -459,6 +609,10 @@ class MainController {
                 if (isDealerTab) "#212121" else "#343434"
     }
 
+    /**
+     * Switches to the dealers view.
+     * Shows a helpful tip the first time the user visits this tab.
+     */
     fun goToDealersView() {
         toggleTabView(true)
         if (!hasVisitedDealersTab) {
@@ -467,6 +621,11 @@ class MainController {
         }
     }
 
+    /**
+     * Applies a filter to the vehicles table based on the selected dealership.
+     *
+     * @param dealershipId The ID of the dealer to filter by, or "All" for no filter
+     */
     fun goToVehiclesView() {
         toggleTabView(false)
     }
@@ -477,9 +636,22 @@ class MainController {
         }
     }
 
+    /**
+     * Gets the current stage from the scene.
+     *
+     * @return The Stage containing this controller's view
+     */
     private val stage: Stage
         get() = vehicleTable.scene.window as Stage
 
+    /**
+     * Injects required dependencies into the controller.
+     *
+     * @param vehicleService Service for managing vehicles
+     * @param dealerService Service for managing dealers
+     * @param dataTransferService Service for importing/exporting data
+     * @param notificationHandler Service for displaying notifications
+     */
     fun injectDependencies(
         vehicleService: VehicleService,
         dealerService: DealerService,
@@ -491,7 +663,6 @@ class MainController {
         this.dataTransferService = dataTransferService
         this.notificationHandler = notificationHandler
     }
-
 
     @FXML
     fun transferVehicle() {

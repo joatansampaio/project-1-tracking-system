@@ -7,6 +7,20 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * Represents a vehicle in the dealership management system.
+ * This class contains all relevant information about a vehicle including
+ * its identifiers, specifications, pricing, and status.
+ *
+ * @property vehicleId Unique identifier for the vehicle
+ * @property manufacturer The company that manufactured the vehicle
+ * @property model The model name of the vehicle
+ * @property acquisitionDate The timestamp (in milliseconds) when the vehicle was acquired by the dealership
+ * @property price The price of the vehicle, represented as a Price object
+ * @property dealershipId The ID of the dealership that owns this vehicle
+ * @property type The type of vehicle (sedan, sports car, etc.)
+ * @property isRented Whether the vehicle is currently rented out
+ */
 data class Vehicle(
     var vehicleId: String,
     var manufacturer: String,

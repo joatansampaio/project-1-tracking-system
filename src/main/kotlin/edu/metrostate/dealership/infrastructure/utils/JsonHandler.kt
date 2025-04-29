@@ -1,4 +1,3 @@
-//Handles reading of a JSON formatted data file
 package edu.metrostate.dealership.infrastructure.utils
 
 import com.google.gson.GsonBuilder
@@ -22,18 +21,35 @@ import java.io.IOException
 import java.nio.file.Files
 import java.util.*
 
+
+/**
+ * Handles reading and writing of JSON formatted data files for the dealership management system.
+ * Implements the IFileHandler interface to provide specific JSON processing capabilities.
+ * This class uses the singleton pattern for application-wide access.
+ */
 class JsonHandler private constructor() : IFileHandler {
 
+    /**
+     * Imports dealership and vehicle data from a JSON file.
+     *
+     * The expected JSON format contains a "car_inventory" array of vehicle objects,
+     * where each vehicle contains dealership information. The import process will:
+     * 1. Parse the vehicle data
+     * 2. Group vehicles by dealership
+     * 3. Create dealership objects with their associated vehicles
+     * 4. Import the data into the database context
+     *
+     * @param file The JSON file to import
+     * @return true if the import was successful, false if an error occurred
+     */
     override fun importFile(file: File): Boolean {
         return try {
             val json = Files.readString(file.toPath())
             val jsonObject = JsonParser.parseString(json).asJsonObject
 
-            // Deserialize car_inventory array
             val listType = object : TypeToken<List<VehicleJson>>() {}.type
             val vehicles: List<VehicleJson> = gson.fromJson(jsonObject["car_inventory"], listType)
 
-            // Group by dealershipId and create DealerJson
             val dealerJsonList = vehicles
                 .groupBy { it.dealershipId }
                 .map { (dealershipId, dealerVehicles) ->
@@ -57,6 +73,16 @@ class JsonHandler private constructor() : IFileHandler {
         }
     }
 
+    /**
+     * Exports the current dealership and vehicle data to a JSON file.
+     *
+     * The export format matches the expected import format with a "car_inventory" array
+     * of vehicle objects that include dealership information. This ensures compatibility
+     * with the import function.
+     *
+     * @param file The destination file for the export (will append .json extension if missing)
+     * @return true if the export was successful, false if an error occurred
+     */
     override fun exportFile(file: File): Boolean {
         var exportFile = file
         // the json structure of our database.json is not the same as the import.
@@ -84,7 +110,12 @@ class JsonHandler private constructor() : IFileHandler {
     }
 
     /**
-     * The following methods are internal processes to auto-save & load the database.json
+     * Saves the current database state to a file named "database.json" in the application directory.
+     *
+     * This method is used for auto-saving functionality and persistence between application sessions.
+     * The format used is the internal database format, not the import/export format.
+     *
+     * @throws IOException if writing to the file fails (will terminate the application)
      */
     fun saveSession() {
         val json = extractCurrentStateAsJson()
@@ -102,6 +133,13 @@ class JsonHandler private constructor() : IFileHandler {
         }
     }
 
+    /**
+     * Extracts the current state of the system as a JSON string.
+     *
+     * @param isDatabase Flag indicating whether to format the JSON for database storage (true)
+     *                   or for export (false). Default is true.
+     * @return JSON string representation of the current state
+     */
     private fun extractCurrentStateAsJson(isDatabase: Boolean = true): String {
         val gson = GsonBuilder()
             .setPrettyPrinting()
@@ -139,6 +177,15 @@ class JsonHandler private constructor() : IFileHandler {
         return gson.toJson(wrapper)
     }
 
+    /**
+     * Loads a previously saved database state from a JSON file.
+     *
+     * This method expects the JSON file to be in the internal database format,
+     * as created by the saveSession() method.
+     *
+     * @param file The database JSON file to load (typically "database.json")
+     * @return true if the load was successful, false if an error occurred
+     */
     fun loadSession(file: File): Boolean {
         return try {
             val json = Files.readString(file.toPath())

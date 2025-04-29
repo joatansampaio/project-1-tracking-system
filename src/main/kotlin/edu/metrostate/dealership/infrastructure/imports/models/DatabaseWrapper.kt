@@ -1,7 +1,6 @@
 package edu.metrostate.dealership.infrastructure.imports.models
 
 import edu.metrostate.dealership.infrastructure.imports.models.json.DealerJson
-import edu.metrostate.dealership.infrastructure.imports.models.xml.DealerXml
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty

@@ -3,6 +3,9 @@ package edu.metrostate.dealership.infrastructure.imports.models.json
 import com.google.gson.annotations.SerializedName
 import edu.metrostate.dealership.domain.models.Price
 
+/**
+ * Follows the structure of car_inventory.json. More documentation on @Dealer.kt
+ */
 data class VehicleJson(
     @SerializedName("dealership_id")
     var dealershipId: String,
