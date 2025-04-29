@@ -16,6 +16,7 @@ simple solution for managing vehicle inventories across dealerships.
 - **Jackson FasterXML** – XML parsing and writing
 - **JUnit 5** – Unit testing framework
 - **Gradle** – Dependency and build management
+- **Dokka** - API Documentation
 
 ---
 
@@ -54,7 +55,7 @@ simple solution for managing vehicle inventories across dealerships.
 
 ### 🏢 Dealer Management
 
-- **Add Dealer**: `Dealers Tab > Add Dealer` or `File > Add Dealer`
+- **Add Dealer**: `Dealers Tab > Add Dealer`
 - **Edit Dealer Name**: Double-click the dealer name
 - **Delete Dealer**: Select dealer and press `Delete`
 - **Toggle Acquisition**: Select dealer and click `Toggle Acquisition`
@@ -64,3 +65,7 @@ simple solution for managing vehicle inventories across dealerships.
 ## 🔄 Kotlin Transition
 
 Version 3 Transitioned to Kotlin.
+
+## For InteliJ
+
+If you have touble starting the application, create a gradle build `:run` to properly start it.
