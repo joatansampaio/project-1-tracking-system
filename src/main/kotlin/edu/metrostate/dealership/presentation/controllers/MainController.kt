@@ -246,43 +246,27 @@ class MainController {
      */
     @FXML
     fun transferDealershipInventory() {
+        print("herehere")
+        val deal = dealerTable.selectionModel.selectedItem
+        val j = deal.dealershipId
         //intelliJ is wrong this is used
-        val dealer2 = dealerTable.selectionModel.selectedItem
-        if (dealer2 != null) {
-            // TODO: vehicles are not coming from dealer anymore
-            //  so that has to be addressed.
-//            vehicleService.getVehicles().setAll(
-//                    dealerService.getDealers()
-//                            .stream()
-//                            .filter(d -> d.getDealershipId().equals(dealer2.getDealershipId()))
-//                            .flatMap(dealer -> dealer.getVehicles().stream())
-//                            .collect(Collectors.toList()));
-//            transferVehicleBtn.setVisible(true);
-//            TextInputDialog dialog = new TextInputDialog();
-//            dialog.setTitle("Transfer to which dealer");
-//            Optional<String> b = dialog.showAndWait();
-//            String g;
-//            g = b.orElse("Dealer Error");
-//            Dealer dealer1 = dealerService.getDealers()
-//                    .stream()
-//                    .filter(d -> d.getDealershipId().equals(g)).findFirst().get();
-//            if (!g.equals("Dealer Error")) {
-//                dealer2.getVehicles().forEach(vehicle -> {
-//                    vehicle.dealershipId = g;
-//                   vehicle.vehicleId = fixID(vehicle.vehicleId, vehicle.dealershipId);
-//                   dealer1.addVehicle(vehicle);
-//                   // vehicleService.addVehicle(vehicle);
-//                   // vehicleService.deleteVehicle();
-//                });
-//                dealer2.setVehicles(new ArrayList<Vehicle>());
-//                updateDealershipIds();
-//                updateAllVehicles();
-//            }
-//
-//            vehicleTable.refresh();
-//            dealerTable.refresh();
-//            //notificationHandler.notify("Success");
-        }
+        val loader = FXMLLoader(javaClass.getResource("/edu/metrostate/dealership/DealerSelect.fxml"))
+        val root = loader.load<Parent>()
+        val dealerSelectionController = loader.getController<DealerSelectionController>()
+        dealerSelectionController.injects(j, false, notificationHandler)
+        val scene = Scene(root)
+        setTheme(scene, javaClass) // Apply our theme
+
+        val dialogStage = Stage()
+        val ownerStage = stage
+        dialogStage.scene = scene
+        dialogStage.title = "Select Dealer for transfer"
+        dialogStage.initModality(Modality.WINDOW_MODAL) // Make the dialog modal
+        dialogStage.initOwner(ownerStage) // Set the owner of the dialog
+        dialogStage.isResizable = false
+        dialogStage.showAndWait()
+        vehicleTable.refresh()
+        dealerTable.refresh()
     }
 
     fun fixID(vehicleID: String, dealershipId: String): String {
@@ -545,6 +529,9 @@ class MainController {
                 deleteVehicleBtn.isDisable =
                     newSelection == null
                 deleteVehicleBtn.style = "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#f54444")
+                transferVehicleBtn.isDisable =
+                    newSelection == null
+                transferVehicleBtn.style = "-fx-background-color:" + (if (newSelection == null) "#2a2a2a" else "#3399ff")
             }
         dealerTable.selectionModel.selectedItemProperty()
             .addListener { _: ObservableValue<out Dealer>?, _: Dealer?, newSelection: Dealer? ->
@@ -596,7 +583,7 @@ class MainController {
      */
 // Modify the toggleTabView method to include the addDealerBtn
     private fun toggleTabView(isDealerTab: Boolean) {
-        listOf(vehicleTable, deleteVehicleBtn, addVehicleBtn, dealershipIdCombo, toggleRentedBtn)
+        listOf(vehicleTable, deleteVehicleBtn, addVehicleBtn, dealershipIdCombo, toggleRentedBtn, transferVehicleBtn)
             .forEach { it.isVisible = !isDealerTab }
 
         listOf(dealerTable, deleteDealerBtn, toggleAcquisitionBtn, toggleTransferBtn, addDealerBtn)
@@ -666,5 +653,27 @@ class MainController {
 
     @FXML
     fun transferVehicle() {
+        print("here")
+        val veh = vehicleTable.selectionModel.selectedItem
+        val j = veh.vehicleId
+        //intelliJ is wrong this is used
+        val loader = FXMLLoader(javaClass.getResource("/edu/metrostate/dealership/DealerSelect.fxml"))
+        val root = loader.load<Parent>()
+        val dealerSelectionController = loader.getController<DealerSelectionController>()
+        dealerSelectionController.injects(j, true, notificationHandler)
+        val scene = Scene(root)
+        setTheme(scene, javaClass) // Apply our theme
+
+        val dialogStage = Stage()
+        val ownerStage = stage
+        dialogStage.scene = scene
+        dialogStage.title = "Select Dealer for transfer"
+        dialogStage.initModality(Modality.WINDOW_MODAL) // Make the dialog modal
+        dialogStage.initOwner(ownerStage) // Set the owner of the dialog
+        dialogStage.isResizable = false
+        dialogStage.showAndWait()
+        vehicleTable.refresh()
+        dealerTable.refresh()
+
     }
 }
