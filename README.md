@@ -69,3 +69,15 @@ Version 3 Transitioned to Kotlin.
 ## For InteliJ
 
 If you have touble starting the application, create a gradle build `:run` to properly start it.
+
+## 📑 Documentation
+
+For more information see the documentation folder in the root folder of the project from the GitHub repository or archive.
+Example: project root->documentation
+
+Dokka generated html (Kotlin api style) pages are in the html folder inside the documentation folder.
+Use IntelliJ to open index.html in your web browser for a better experience.
+Example: project root->documentation->html->index.html
+
+Dokka generated html pages (Java api style) pages are in the javadoc folder inside the documentation folder.
+Example: project root->documentation->javadoc->index.html
