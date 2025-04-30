@@ -280,13 +280,19 @@ class MainController {
      * Imports data from a JSON file.
      * Delegates to the data transfer service.
      */
-    @FXML fun onImportJson() { dataTransferService.importJson(stage) }
+    @FXML fun onImportJson() {
+        dataTransferService.importJson(stage)
+        updateDealershipIds()
+    }
 
     /**
      * Imports data from an XML file.
      * Delegates to the data transfer service.
      */
-    @FXML fun onImportXml() { dataTransferService.importXml(stage) }
+    @FXML fun onImportXml() {
+        dataTransferService.importXml(stage)
+        updateDealershipIds()
+    }
 
     /**
      * Exports data to a JSON file.
