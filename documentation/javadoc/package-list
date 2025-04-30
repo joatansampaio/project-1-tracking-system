@@ -1,0 +1,24 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:edu.metrostate.dealership.domain.models/Vehicle.Companion///PointingToDeclaration/edu/metrostate/dealership/domain/models/Vehicle.Companion.html
+$dokka.location:edu.metrostate.dealership.domain.models/VehicleType.Companion///PointingToDeclaration/edu/metrostate/dealership/domain/models/VehicleType.Companion.html
+$dokka.location:edu.metrostate.dealership.infrastructure.database/Database.Companion///PointingToDeclaration/edu/metrostate/dealership/infrastructure/database/Database.Companion.html
+$dokka.location:edu.metrostate.dealership.infrastructure.database/Result.Companion///PointingToDeclaration/edu/metrostate/dealership/infrastructure/database/Result.Companion.html
+$dokka.location:edu.metrostate.dealership.infrastructure.logging/Logger.Companion///PointingToDeclaration/edu/metrostate/dealership/infrastructure/logging/Logger.Companion.html
+$dokka.location:edu.metrostate.dealership.infrastructure.utils/JsonHandler.Companion///PointingToDeclaration/edu/metrostate/dealership/infrastructure/utils/JsonHandler.Companion.html
+$dokka.location:edu.metrostate.dealership.infrastructure.utils/XmlHandler.Companion///PointingToDeclaration/edu/metrostate/dealership/infrastructure/utils/XmlHandler.Companion.html
+$dokka.location:edu.metrostate.dealership/Main.Companion///PointingToDeclaration/edu/metrostate/dealership/Main.Companion.html
+$dokka.location:edu.metrostate.dealership/Main.DependencyPackage///PointingToDeclaration/edu/metrostate/dealership/Main.DependencyPackage.html
+edu.metrostate.dealership
+edu.metrostate.dealership.application.exceptions
+edu.metrostate.dealership.application.services
+edu.metrostate.dealership.domain.models
+edu.metrostate.dealership.domain.repositories
+edu.metrostate.dealership.infrastructure.database
+edu.metrostate.dealership.infrastructure.imports.mappers
+edu.metrostate.dealership.infrastructure.imports.models
+edu.metrostate.dealership.infrastructure.imports.models.json
+edu.metrostate.dealership.infrastructure.imports.models.xml
+edu.metrostate.dealership.infrastructure.logging
+edu.metrostate.dealership.infrastructure.utils
+edu.metrostate.dealership.presentation.controllers

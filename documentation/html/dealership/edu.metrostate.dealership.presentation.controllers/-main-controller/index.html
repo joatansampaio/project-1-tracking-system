@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MainController</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../../index.html">
+                    dealership
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.0-SNAPSHOT        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":/main"
+                                       data-filter=":/main"/>
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    dealership
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="dealership::edu.metrostate.dealership.presentation.controllers/MainController///PointingToDeclaration//-251573632">
+  <div class="breadcrumbs"><a href="../../../index.html">dealership</a><span class="delimiter">/</span><a href="../index.html">edu.metrostate.dealership.presentation.controllers</a><span class="delimiter">/</span><span class="current">MainController</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Main</span><wbr></wbr><span><span>Controller</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">MainController</a></div><p class="paragraph">Main controller for the dealership management application. Manages the primary UI with both vehicle and dealer tables, navigation between views, and actions such as import/export, adding/deleting vehicles or dealers, and toggling properties.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="955225503%2FConstructors%2F-251573632" anchor-label="MainController" id="955225503%2FConstructors%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-main-controller.html"><span>Main</span><wbr></wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="955225503%2FConstructors%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="984618891%2FProperties%2F-251573632" anchor-label="acquisitionDate" id="984618891%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="acquisition-date.html"><span>acquisition</span><wbr></wbr><span><span>Date</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="984618891%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="acquisition-date.html">acquisitionDate</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1226857358%2FProperties%2F-251573632" anchor-label="addDealerBtn" id="-1226857358%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-dealer-btn.html"><span>add</span><wbr></wbr><span>Dealer</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1226857358%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="add-dealer-btn.html">addDealerBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1407577173%2FProperties%2F-251573632" anchor-label="addVehicleBtn" id="1407577173%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-vehicle-btn.html"><span>add</span><wbr></wbr><span>Vehicle</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1407577173%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="add-vehicle-btn.html">addVehicleBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1481212938%2FProperties%2F-251573632" anchor-label="dealerIdColumn" id="1481212938%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dealer-id-column.html"><span>dealer</span><wbr></wbr><span>Id</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1481212938%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="dealer-id-column.html">dealerIdColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-dealer/index.html">Dealer</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1672118554%2FProperties%2F-251573632" anchor-label="dealerNameColumn" id="1672118554%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dealer-name-column.html"><span>dealer</span><wbr></wbr><span>Name</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1672118554%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="dealer-name-column.html">dealerNameColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-dealer/index.html">Dealer</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1621892530%2FProperties%2F-251573632" anchor-label="dealershipIdColumn" id="-1621892530%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dealership-id-column.html"><span>dealership</span><wbr></wbr><span>Id</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1621892530%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="dealership-id-column.html">dealershipIdColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="4138984%2FProperties%2F-251573632" anchor-label="dealershipIdCombo" id="4138984%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dealership-id-combo.html"><span>dealership</span><wbr></wbr><span>Id</span><wbr></wbr><span><span>Combo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="4138984%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="dealership-id-combo.html">dealershipIdCombo</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/ComboBox///PointingToDeclaration/">ComboBox</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1809034481%2FProperties%2F-251573632" anchor-label="dealerTable" id="1809034481%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dealer-table.html"><span>dealer</span><wbr></wbr><span><span>Table</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1809034481%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="dealer-table.html">dealerTable</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableView///PointingToDeclaration/">TableView</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-dealer/index.html">Dealer</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1477190930%2FProperties%2F-251573632" anchor-label="deleteDealerBtn" id="-1477190930%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete-dealer-btn.html"><span>delete</span><wbr></wbr><span>Dealer</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1477190930%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="delete-dealer-btn.html">deleteDealerBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2057796263%2FProperties%2F-251573632" anchor-label="deleteVehicleBtn" id="-2057796263%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete-vehicle-btn.html"><span>delete</span><wbr></wbr><span>Vehicle</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2057796263%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="delete-vehicle-btn.html">deleteVehicleBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1836004396%2FProperties%2F-251573632" anchor-label="goToDealersViewBtn" id="-1836004396%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="go-to-dealers-view-btn.html"><span>go</span><wbr></wbr><span>To</span><wbr></wbr><span>Dealers</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1836004396%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="go-to-dealers-view-btn.html">goToDealersViewBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1119038329%2FProperties%2F-251573632" anchor-label="goToVehiclesViewBtn" id="1119038329%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="go-to-vehicles-view-btn.html"><span>go</span><wbr></wbr><span>To</span><wbr></wbr><span>Vehicles</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1119038329%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="go-to-vehicles-view-btn.html">goToVehiclesViewBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-737241963%2FProperties%2F-251573632" anchor-label="isEnabledForAcquisitionColumn" id="-737241963%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-enabled-for-acquisition-column.html"><span>is</span><wbr></wbr><span>Enabled</span><wbr></wbr><span>For</span><wbr></wbr><span>Acquisition</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-737241963%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="is-enabled-for-acquisition-column.html">isEnabledForAcquisitionColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-dealer/index.html">Dealer</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="515493884%2FProperties%2F-251573632" anchor-label="isRentedColumn" id="515493884%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-rented-column.html"><span>is</span><wbr></wbr><span>Rented</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="515493884%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="is-rented-column.html">isRentedColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-757192147%2FProperties%2F-251573632" anchor-label="manufacturerColumn" id="-757192147%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="manufacturer-column.html"><span>manufacturer</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-757192147%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="manufacturer-column.html">manufacturerColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1313882745%2FProperties%2F-251573632" anchor-label="modelColumn" id="-1313882745%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="model-column.html"><span>model</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1313882745%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="model-column.html">modelColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="525360907%2FProperties%2F-251573632" anchor-label="numberOfVehiclesForDealer" id="525360907%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="number-of-vehicles-for-dealer.html"><span>number</span><wbr></wbr><span>Of</span><wbr></wbr><span>Vehicles</span><wbr></wbr><span>For</span><wbr></wbr><span><span>Dealer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="525360907%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="number-of-vehicles-for-dealer.html">numberOfVehiclesForDealer</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-dealer/index.html">Dealer</a><span class="token operator">?</span><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1080736921%2FProperties%2F-251573632" anchor-label="priceColumn" id="-1080736921%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="price-column.html"><span>price</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1080736921%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="price-column.html">priceColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-431762831%2FProperties%2F-251573632" anchor-label="toggleAcquisitionBtn" id="-431762831%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="toggle-acquisition-btn.html"><span>toggle</span><wbr></wbr><span>Acquisition</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-431762831%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="toggle-acquisition-btn.html">toggleAcquisitionBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="967647574%2FProperties%2F-251573632" anchor-label="toggleRentedBtn" id="967647574%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="toggle-rented-btn.html"><span>toggle</span><wbr></wbr><span>Rented</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="967647574%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="toggle-rented-btn.html">toggleRentedBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1874441705%2FProperties%2F-251573632" anchor-label="toggleTransferBtn" id="1874441705%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="toggle-transfer-btn.html"><span>toggle</span><wbr></wbr><span>Transfer</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1874441705%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="toggle-transfer-btn.html">toggleTransferBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1671999143%2FProperties%2F-251573632" anchor-label="transferVehicleBtn" id="-1671999143%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transfer-vehicle-btn.html"><span>transfer</span><wbr></wbr><span>Vehicle</span><wbr></wbr><span><span>Btn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1671999143%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="transfer-vehicle-btn.html">transferVehicleBtn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/Button///PointingToDeclaration/">Button</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2100487945%2FProperties%2F-251573632" anchor-label="vehicleIdColumn" id="2100487945%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="vehicle-id-column.html"><span>vehicle</span><wbr></wbr><span>Id</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2100487945%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="vehicle-id-column.html">vehicleIdColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-99466670%2FProperties%2F-251573632" anchor-label="vehicleTable" id="-99466670%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="vehicle-table.html"><span>vehicle</span><wbr></wbr><span><span>Table</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-99466670%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="vehicle-table.html">vehicleTable</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableView///PointingToDeclaration/">TableView</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1856162358%2FProperties%2F-251573632" anchor-label="vehicleTypeColumn" id="-1856162358%2FProperties%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="vehicle-type-column.html"><span>vehicle</span><wbr></wbr><span>Type</span><wbr></wbr><span><span>Column</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1856162358%2FProperties%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">lateinit </span><span class="token keyword">var </span><a href="vehicle-type-column.html">vehicleTypeColumn</a><span class="token operator">: </span><span data-unresolved-link="javafx.scene.control/TableColumn///PointingToDeclaration/">TableColumn</span><span class="token operator">&lt;</span><a href="../../edu.metrostate.dealership.domain.models/-vehicle/index.html">Vehicle</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1912394707%2FFunctions%2F-251573632" anchor-label="fixID" id="1912394707%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fix-i-d.html"><span>fix</span><wbr></wbr><span><span>ID</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1912394707%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="fix-i-d.html"><span class="token function">fixID</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">vehicleID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">dealershipId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1165089226%2FFunctions%2F-251573632" anchor-label="goToDealersView" id="1165089226%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="go-to-dealers-view.html"><span>go</span><wbr></wbr><span>To</span><wbr></wbr><span>Dealers</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1165089226%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="go-to-dealers-view.html"><span class="token function">goToDealersView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Switches to the dealers view. Shows a helpful tip the first time the user visits this tab.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1265949627%2FFunctions%2F-251573632" anchor-label="goToVehiclesView" id="-1265949627%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="go-to-vehicles-view.html"><span>go</span><wbr></wbr><span>To</span><wbr></wbr><span>Vehicles</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1265949627%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="go-to-vehicles-view.html"><span class="token function">goToVehiclesView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Applies a filter to the vehicles table based on the selected dealership.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1522562116%2FFunctions%2F-251573632" anchor-label="initialize" id="1522562116%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="initialize.html"><span><span>initialize</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1522562116%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="initialize.html"><span class="token function">initialize</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes the controller when the FXML is loaded. Sets up tables, listeners, properties, and loads data.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-224125303%2FFunctions%2F-251573632" anchor-label="injectDependencies" id="-224125303%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="inject-dependencies.html"><span>inject</span><wbr></wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-224125303%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="inject-dependencies.html"><span class="token function">injectDependencies</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">vehicleService<span class="token operator">: </span><a href="../../edu.metrostate.dealership.application.services/-vehicle-service/index.html">VehicleService</a><span class="token punctuation">, </span></span><span class="parameter ">dealerService<span class="token operator">: </span><a href="../../edu.metrostate.dealership.application.services/-dealer-service/index.html">DealerService</a><span class="token punctuation">, </span></span><span class="parameter ">dataTransferService<span class="token operator">: </span><a href="../../edu.metrostate.dealership.application.services/-data-transfer-service/index.html">DataTransferService</a><span class="token punctuation">, </span></span><span class="parameter ">notificationHandler<span class="token operator">: </span><a href="../../edu.metrostate.dealership.infrastructure.utils/-notification-handler/index.html">NotificationHandler</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Injects required dependencies into the controller.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="635611627%2FFunctions%2F-251573632" anchor-label="onAddDealer" id="635611627%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-add-dealer.html"><span>on</span><wbr></wbr><span>Add</span><wbr></wbr><span><span>Dealer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635611627%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-add-dealer.html"><span class="token function">onAddDealer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Shows a simple text input dialogs to add a new dealer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1131397942%2FFunctions%2F-251573632" anchor-label="onAddVehicle" id="-1131397942%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-add-vehicle.html"><span>on</span><wbr></wbr><span>Add</span><wbr></wbr><span><span>Vehicle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1131397942%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-add-vehicle.html"><span class="token function">onAddVehicle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Opens a dialog to add a new vehicle. Loads the add-vehicle.fxml and centers it on the main window.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1836714129%2FFunctions%2F-251573632" anchor-label="onDeleteDealer" id="1836714129%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-delete-dealer.html"><span>on</span><wbr></wbr><span>Delete</span><wbr></wbr><span><span>Dealer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1836714129%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-delete-dealer.html"><span class="token function">onDeleteDealer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1743041252%2FFunctions%2F-251573632" anchor-label="onDeleteVehicle" id="1743041252%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-delete-vehicle.html"><span>on</span><wbr></wbr><span>Delete</span><wbr></wbr><span><span>Vehicle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1743041252%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-delete-vehicle.html"><span class="token function">onDeleteVehicle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Deletes the currently selected vehicle. Updates the selection after deletion to maintain a smooth UI experience.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1471874559%2FFunctions%2F-251573632" anchor-label="onExit" id="-1471874559%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-exit.html"><span>on</span><wbr></wbr><span><span>Exit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1471874559%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-exit.html"><span class="token function">onExit</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">event<span class="token operator">: </span><span data-unresolved-link="javafx.event/ActionEvent///PointingToDeclaration/">ActionEvent</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Handles the exit action from the menu. Optionally saves the session before exiting.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="841398905%2FFunctions%2F-251573632" anchor-label="onExportJson" id="841398905%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-export-json.html"><span>on</span><wbr></wbr><span>Export</span><wbr></wbr><span><span>Json</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="841398905%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-export-json.html"><span class="token function">onExportJson</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Exports data to a JSON file. Delegates to the data transfer service.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-580405150%2FFunctions%2F-251573632" anchor-label="onExportXml" id="-580405150%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-export-xml.html"><span>on</span><wbr></wbr><span>Export</span><wbr></wbr><span><span>Xml</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-580405150%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-export-xml.html"><span class="token function">onExportXml</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Exports data to an XML file. Delegates to the data transfer service.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="757877800%2FFunctions%2F-251573632" anchor-label="onImportJson" id="757877800%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-import-json.html"><span>on</span><wbr></wbr><span>Import</span><wbr></wbr><span><span>Json</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="757877800%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-import-json.html"><span class="token function">onImportJson</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Imports data from a JSON file. Delegates to the data transfer service.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1772205267%2FFunctions%2F-251573632" anchor-label="onImportXml" id="1772205267%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-import-xml.html"><span>on</span><wbr></wbr><span>Import</span><wbr></wbr><span><span>Xml</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1772205267%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-import-xml.html"><span class="token function">onImportXml</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Imports data from an XML file. Delegates to the data transfer service.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="575095688%2FFunctions%2F-251573632" anchor-label="toggleRented" id="575095688%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="toggle-rented.html"><span>toggle</span><wbr></wbr><span><span>Rented</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="575095688%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="toggle-rented.html"><span class="token function">toggleRented</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Toggles the rental status of the selected vehicle. Updates the table to reflect the change.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1365262337%2FFunctions%2F-251573632" anchor-label="toggleVehicleAcquisition" id="-1365262337%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="toggle-vehicle-acquisition.html"><span>toggle</span><wbr></wbr><span>Vehicle</span><wbr></wbr><span><span>Acquisition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1365262337%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="toggle-vehicle-acquisition.html"><span class="token function">toggleVehicleAcquisition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Toggles the acquisition status of the selected dealer. Updates the table to reflect the change.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1941880086%2FFunctions%2F-251573632" anchor-label="transferDealershipInventory" id="-1941880086%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transfer-dealership-inventory.html"><span>transfer</span><wbr></wbr><span>Dealership</span><wbr></wbr><span><span>Inventory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1941880086%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="transfer-dealership-inventory.html"><span class="token function">transferDealershipInventory</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Transfers inventory between dealerships. Note: This functionality is currently commented out/incomplete.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1517013605%2FFunctions%2F-251573632" anchor-label="transferVehicle" id="1517013605%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transfer-vehicle.html"><span>transfer</span><wbr></wbr><span><span>Vehicle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1517013605%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="transfer-vehicle.html"><span class="token function">transferVehicle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

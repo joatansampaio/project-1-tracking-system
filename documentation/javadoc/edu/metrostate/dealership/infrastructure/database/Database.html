@@ -1,0 +1,975 @@
+<!DOCTYPE HTML>
+<!-- NewPage -->
+<html lang="en"><head>
+    <title>Database 1.0-SNAPSHOT API </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="dc.created" content="2020-03-25">
+    <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+    <link rel="stylesheet" type="text/css" href="../../../../../dokka-javadoc-stylesheet.css" title="Style">
+    <link rel="stylesheet" type="text/css" href="../../../../../jquery/jquery-ui.css" title="Style">
+    <script type="text/javascript" src="../../../../../jquery/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../../../../../jquery/jquery-migrate-3.4.0.min.js"></script>
+    <script type="text/javascript" src="../../../../../jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../../../../../search.js"></script>
+    <script async type="text/javascript" src="../../../../../module-search-index.js"></script>
+    <script async type="text/javascript" src="../../../../../package-search-index.js"></script>
+    <script async type="text/javascript" src="../../../../../type-search-index.js"></script>
+    <script async type="text/javascript" src="../../../../../member-search-index.js"></script>
+    <script async type="text/javascript" src="../../../../../tag-search-index.js"></script>
+</head><body>
+<script type="text/javascript">
+var pathtoroot = "../../../../../";
+</script>
+<noscript>
+    <div>JavaScript is disabled on your browser.</div>
+</noscript><header role="banner">
+    <nav role="navigation">
+        <div class="fixedNav">
+            <!-- ========= START OF TOP NAVBAR ======= -->
+            <div class="topNav"><a id="navbar.top">
+                <!--   -->
+            </a>
+                <div class="skipNav"><a href="#skip.navbar.top" title="Skip navigation links">Skip navigation links</a>
+                </div>
+                <a id="navbar.top.firstrow">
+                    <!--   -->
+                </a>
+                <ul class="navList" title="Navigation">
+    <li><a href="../../../../../index.html">Overview</a></li>
+    
+    <li><a href="package-summary.html">Package</a></li>
+    
+    <li class="navBarCell1Rev">Class</li>
+    
+    <li><a href="package-tree.html">Tree</a></li>
+    
+    <li><a href="../../../../../deprecated.html">Deprecated</a></li>
+    <li><a href="../../../../../index-files/index-1.html">Index</a></li>
+    <li>Help</li>
+</ul></div>
+            <div class="subNav">
+<ul class="navList" id="allclasses_navbar_top" style="display: block;">
+    <li><a href="../../../../../allclasses.html">All&nbsp;Classes</a></li>
+</ul>
+
+<ul class="navListSearch">
+<li><label for="search">SEARCH:</label>
+<input type="text" id="search" value="search" class="ui-autocomplete-input" autocomplete="off" placeholder="Search">
+<input type="reset" id="reset" value="reset">
+</li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+</div>
+<a id="skip.navbar.top">
+<!--   -->
+</a></div><!-- ========= END OF TOP NAVBAR ========= -->
+        </div>
+        <div class="navPadding">&nbsp;</div>
+        <script type="text/javascript"><!--
+        $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
+        //-->
+        </script>
+    </nav>
+</header>
+
+<main role="main">
+    <div class="header">
+        <div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">edu.metrostate.dealership.infrastructure.database</a></div>
+        <h2 title="Class Database" class="title">Class Database</h2>
+    </div>
+    <div class="contentContainer">
+        <!-- <ul class="inheritance">
+            <li>java.lang.Object</li>
+            <li>
+                <ul class="inheritance">
+                    <li>adaptation.Adaptation</li>
+                </ul>
+            </li>
+        </ul> TODO inheritance tree -->
+        <div class="description">
+            <ul class="blockList">
+                <li class="blockList">
+                    
+                    <dl>
+                        <dt>All Implemented Interfaces:</dt>
+                        <dd>
+                            
+                        </dd>
+                    </dl>
+                    
+                    <hr>
+                    <pre class="wrap-overflow">
+
+public final class <span class="typeNameLabel"><a href=Database.html>Database</a></span>
+
+                    </pre>
+                    <div class="block"><p>In-memory singleton database implementation for the dealership management system. Stores all dealers and vehicles data and provides CRUD operations for them. This class follows the singleton pattern for application-wide access to a single data source.</p></div>
+
+                    <dl>
+
+                    
+
+                    
+
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="summary">
+            <ul class="blockList">
+                <li class="blockList">
+                <!-- ======== NESTED CLASS SUMMARY ======== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="nested.class.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Nested Class Summary</h3>
+                                <div class="memberSummary">
+                                    <table>
+                                        <caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+                                        <tr>
+                                            <th class="colFirst" scope="col">Modifier and Type</th>
+                                            <th class="colSecond" scope="col">Class</th>
+                                            <th class="colLast" scope="col">Description</th>
+                                        </tr>
+                                        
+                                        <tr class="altColor">
+                                            <td class="colFirst"><code>public class</code></td>
+                                            <th class="colSecond" scope="row"><code><a href="Database.Companion.html">Database.Companion</a></span></code>
+                                            </th>
+                                            <td class="colLast"><p>Singleton companion object for the Database class.</p></td>
+                                        </tr>
+                                        
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- =========== FIELD SUMMARY =========== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="field.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Field Summary</h3>
+                                <div class="memberSummary">
+                                    <table>
+                                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+                                        <tr>
+                                            <th class="colFirst" scope="col">Modifier and Type</th>
+                                            <th class="colSecond" scope="col">Field</th>
+                                            <th class="colLast" scope="col">Description</th>
+                                        </tr>
+                                        
+                                        <tr class="altColor">
+                                            <td class="colFirst"><code>private  ObservableList&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt;</code></td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#dealers>dealers</a></code></th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor">
+                                            <td class="colFirst"><code>private  ObservableList&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt;</code></td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#vehicles>vehicles</a></code></th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="altColor">
+                                            <td class="colFirst"><code>public final static <a href=Database.Companion.html>Database.Companion</a></code></td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#Companion>Companion</a></code></th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- ======== CONSTRUCTOR SUMMARY ======== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="constructor.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Constructor Summary</h3>
+                                <div class="memberSummary">
+                                    <table>
+                                        <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+                                        <tbody>
+                                        <tr>
+                                            <th class="colFirst" scope="col">Constructor</th>
+                                            <th class="colLast" scope="col">Description</th>
+                                        </tr>
+
+                                        
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- =========== ENUM CONSTANT SUMMARY =========== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="enum.constant.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Enum Constant Summary</h3>
+                                <table class="memberSummary">
+                                    <caption><span>Enum Constants</span><span class="tabEnd">&nbsp;</span></caption>
+                                    <tr>
+                                        <th class="colFirst" scope="col">Enum Constant</th>
+                                        <th class="colLast" scope="col">Description</th>
+                                    </tr>
+                                    
+                                </table>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- ========== METHOD SUMMARY =========== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="method.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Method Summary</h3>
+                                <div class="memberSummary">
+                                    <div role="tablist" aria-orientation="horizontal">
+                                        <button role="tab" aria-selected="true" aria-controls="memberSummary_tabpanel" tabindex="0" onkeydown="switchTab(event)" id="t0" class="activeTableTab">All Methods</button>
+                                        <!-- TODO: Instance and Concrete Methods #1118 -->
+                                    </div>
+                                    <div id="memberSummary_tabpanel" role="tabpanel">
+                                    <table aria-labelledby="t0">
+                                        <tr>
+                                            <th class="colFirst" scope="col">Modifier and Type</th>
+                                            <th class="colSecond" scope="col">Method</th>
+                                            <th class="colLast" scope="col">Description</th>
+                                        </tr>
+                                        
+                                        <tr id="i0" class="altColor">
+                                            <td class="colFirst"><code>final ObservableList&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt;</code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#getDealers()>getDealers</a>() </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i1" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#setDealers(javafx.collections.ObservableList)>setDealers</a>(ObservableList&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt; value) </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i2" class="altColor">
+                                            <td class="colFirst"><code>final ObservableList&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt;</code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#getVehicles()>getVehicles</a>() </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i3" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#setVehicles(javafx.collections.ObservableList)>setVehicles</a>(ObservableList&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt; value) </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i4" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a>&gt;</code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#getDealershipIDs()>getDealershipIDs</a>() </code>
+                                            </th>
+                                            <td class="colLast">Retrieves all dealership IDs in the system.</td>
+                                        </tr>
+                                        
+                                        <tr id="i5" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=Result.html>Result</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a>&gt;</code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#deleteDealer(java.lang.String)>deleteDealer</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId) </code>
+                                            </th>
+                                            <td class="colLast">Deletes a dealer from the database by its ID.</td>
+                                        </tr>
+                                        
+                                        <tr id="i6" class="altColor">
+                                            <td class="colFirst"><code>final <a href=../../domain/models/Dealer.html>Dealer</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#getDealerByID(java.lang.String)>getDealerByID</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId) </code>
+                                            </th>
+                                            <td class="colLast">Retrieves a dealer by its ID.</td>
+                                        </tr>
+                                        
+                                        <tr id="i7" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#toggleAcquisition(java.lang.String)>toggleAcquisition</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId) </code>
+                                            </th>
+                                            <td class="colLast">Toggles the acquisition status of a dealer.</td>
+                                        </tr>
+                                        
+                                        <tr id="i8" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#updateDealer(java.lang.String,java.lang.String)>updateDealer</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId, <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> name) </code>
+                                            </th>
+                                            <td class="colLast">Updates a dealer's information.</td>
+                                        </tr>
+                                        
+                                        <tr id="i9" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=Result.html>Result</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a>&gt;</code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#addVehicle(edu.metrostate.dealership.domain.models.Vehicle)>addVehicle</a>(<a href=../../domain/models/Vehicle.html>Vehicle</a> vehicle) </code>
+                                            </th>
+                                            <td class="colLast">Adds a vehicle to the database.</td>
+                                        </tr>
+                                        
+                                        <tr id="i10" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#deleteVehicle(java.lang.String)>deleteVehicle</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> id) </code>
+                                            </th>
+                                            <td class="colLast">Deletes a vehicle from the database by its ID.</td>
+                                        </tr>
+                                        
+                                        <tr id="i11" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#importJSON(java.util.List)>importJSON</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../imports/models/json/DealerJson.html>DealerJson</a>&gt; incomingDealers) </code>
+                                            </th>
+                                            <td class="colLast">Imports dealer and vehicle data from JSON format.</td>
+                                        </tr>
+                                        
+                                        <tr id="i12" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#importXML(java.util.List)>importXML</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../imports/models/xml/DealerXml.html>DealerXml</a>&gt; incomingDealers) </code>
+                                            </th>
+                                            <td class="colLast">Imports dealer and vehicle data from XML format.</td>
+                                        </tr>
+                                        
+                                        <tr id="i13" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#toggleIsRented(java.lang.String)>toggleIsRented</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> vehicleId) </code>
+                                            </th>
+                                            <td class="colLast">Toggles the rental status of a vehicle.</td>
+                                        </tr>
+                                        
+                                        <tr id="i14" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#setDealers(java.util.List)>setDealers</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt; dealers) </code>
+                                            </th>
+                                            <td class="colLast">Sets the list of dealers in the database.</td>
+                                        </tr>
+                                        
+                                        <tr id="i15" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=Database.html#setVehicles(java.util.List)>setVehicles</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt; vehicles) </code>
+                                            </th>
+                                            <td class="colLast">Sets the list of vehicles in the database.</td>
+                                        </tr>
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <ul class="blockList">
+                                
+                                    <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
+                                        <!--   -->
+                                    </a>
+                                        <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+                                        <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString,
+                                            wait, wait, wait</code></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                </li>
+            </ul>
+        </div>
+        <div class="details">
+            <ul class="blockList">
+                <li class="blockList">
+                    <!-- ========= CONSTRUCTOR DETAIL ======== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="constructor.detail">
+                                <!--   -->
+                            </a>
+                                <h3>Constructor Detail</h3>
+                                
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- ============ METHOD DETAIL ========== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="method.detail">
+                                <!--   -->
+                            </a>
+                                <h3>Method Detail</h3>
+                                
+                                <a id="getDealers()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getDealers</h4>
+                                        <pre class="methodSignature"> final ObservableList&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt; <a href=Database.html#getDealers()>getDealers</a>()</pre>
+                                        <div class="block"></div>
+
+                                        <dl>
+
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="setDealers(javafx.collections.ObservableList)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setDealers</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#setDealers(javafx.collections.ObservableList)>setDealers</a>(ObservableList&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt; value)</pre>
+                                        <div class="block"></div>
+
+                                        <dl>
+
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="getVehicles()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getVehicles</h4>
+                                        <pre class="methodSignature"> final ObservableList&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt; <a href=Database.html#getVehicles()>getVehicles</a>()</pre>
+                                        <div class="block"></div>
+
+                                        <dl>
+
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="setVehicles(javafx.collections.ObservableList)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setVehicles</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#setVehicles(javafx.collections.ObservableList)>setVehicles</a>(ObservableList&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt; value)</pre>
+                                        <div class="block"></div>
+
+                                        <dl>
+
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="getDealershipIDs()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getDealershipIDs</h4>
+                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a>&gt; <a href=Database.html#getDealershipIDs()>getDealershipIDs</a>()</pre>
+                                        <div class="block"><p>Retrieves all dealership IDs in the system.</p></div>
+
+                                        <dl>
+
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>A list of all dealership IDs as strings</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="deleteDealer(java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>deleteDealer</h4>
+                                        <pre class="methodSignature"> final <a href=Result.html>Result</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a>&gt; <a href=Database.html#deleteDealer(java.lang.String)>deleteDealer</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId)</pre>
+                                        <div class="block"><p>Deletes a dealer from the database by its ID.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>dealershipId</code> - The ID of the dealer to delete</dd>
+                                            
+                                            
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>A success result if the dealer was deleted, or a failure result with error message if not found</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="getDealerByID(java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getDealerByID</h4>
+                                        <pre class="methodSignature"> final <a href=../../domain/models/Dealer.html>Dealer</a> <a href=Database.html#getDealerByID(java.lang.String)>getDealerByID</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId)</pre>
+                                        <div class="block"><p>Retrieves a dealer by its ID.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>dealershipId</code> - The ID of the dealer to retrieve</dd>
+                                            
+                                            
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>The dealer object if found, or null if no dealer with the given ID exists</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="toggleAcquisition(java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>toggleAcquisition</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#toggleAcquisition(java.lang.String)>toggleAcquisition</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId)</pre>
+                                        <div class="block"><p>Toggles the acquisition status of a dealer. If the dealer is currently enabled for acquisition, it will be disabled, and vice versa.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>dealershipId</code> - The ID of the dealer whose acquisition status should be toggled</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="updateDealer(java.lang.String,java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>updateDealer</h4>
+                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a> <a href=Database.html#updateDealer(java.lang.String,java.lang.String)>updateDealer</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> dealershipId, <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> name)</pre>
+                                        <div class="block"><p>Updates a dealer's information. Currently only supports updating the dealer's name.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>dealershipId</code> - The ID of the dealer to update</dd>
+                                            
+                                            
+                                            
+                                            <dd><code>name</code> - The new name for the dealer</dd>
+                                            
+                                            
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>true if the dealer was found and updated, false if the dealer wasn't found or the name was blank</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="addVehicle(edu.metrostate.dealership.domain.models.Vehicle)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>addVehicle</h4>
+                                        <pre class="methodSignature"> final <a href=Result.html>Result</a>&lt;<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a>&gt; <a href=Database.html#addVehicle(edu.metrostate.dealership.domain.models.Vehicle)>addVehicle</a>(<a href=../../domain/models/Vehicle.html>Vehicle</a> vehicle)</pre>
+                                        <div class="block"><p>Adds a vehicle to the database. The vehicle will be associated with its dealership using the dealershipId property.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>vehicle</code> - The vehicle to add</dd>
+                                            
+                                            
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>A success result if the vehicle was added, or a failure result with an error message if:     - The specified dealer doesn't exist     - The dealer is not enabled for acquisition     - A vehicle with the same ID already exists</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="deleteVehicle(java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>deleteVehicle</h4>
+                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Boolean.html>Boolean</a> <a href=Database.html#deleteVehicle(java.lang.String)>deleteVehicle</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> id)</pre>
+                                        <div class="block"><p>Deletes a vehicle from the database by its ID.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>id</code> - The ID of the vehicle to delete</dd>
+                                            
+                                            
+                                        
+
+                                        
+                                            <dt><span class="returnLabel">Returns:</span></dt>
+                                            <dd><p>true if a vehicle with the specified ID was found and deleted, false otherwise</p></dd>
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="importJSON(java.util.List)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>importJSON</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#importJSON(java.util.List)>importJSON</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../imports/models/json/DealerJson.html>DealerJson</a>&gt; incomingDealers)</pre>
+                                        <div class="block"><p>Imports dealer and vehicle data from JSON format. Processes the incoming JSON models and adds them to the database.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>incomingDealers</code> - List of dealer objects in JSON format</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="importXML(java.util.List)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>importXML</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#importXML(java.util.List)>importXML</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../imports/models/xml/DealerXml.html>DealerXml</a>&gt; incomingDealers)</pre>
+                                        <div class="block"><p>Imports dealer and vehicle data from XML format. Processes the incoming XML models and adds them to the database.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>incomingDealers</code> - List of dealer objects in XML format</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="toggleIsRented(java.lang.String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>toggleIsRented</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#toggleIsRented(java.lang.String)>toggleIsRented</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html>String</a> vehicleId)</pre>
+                                        <div class="block"><p>Toggles the rental status of a vehicle. If the vehicle is currently rented, it will be marked as available, and vice versa.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>vehicleId</code> - The ID of the vehicle whose rental status should be toggled</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="setDealers(java.util.List)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setDealers</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#setDealers(java.util.List)>setDealers</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../../domain/models/Dealer.html>Dealer</a>&gt; dealers)</pre>
+                                        <div class="block"><p>Sets the list of dealers in the database. Replaces the current observable list with a new one created from the provided list. Used primarily during database loading operations.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>dealers</code> - The list of dealers to set in the database</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                                <a id="setVehicles(java.util.List)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockListLast"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setVehicles</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html>Unit</a> <a href=Database.html#setVehicles(java.util.List)>setVehicles</a>(<a href=https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/List.html>List</a>&lt;<a href=../../domain/models/Vehicle.html>Vehicle</a>&gt; vehicles)</pre>
+                                        <div class="block"><p>Sets the list of vehicles in the database. Replaces the current observable list with a new one created from the provided list. Used primarily during database loading operations.</p></div>
+
+                                        <dl>
+
+                                        
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>vehicles</code> - The list of vehicles to set in the database</dd>
+                                            
+                                            
+                                        
+
+                                        
+
+                                        
+
+                                        </dl>
+                                    </li>
+                                </ul>
+                                
+                            </li>
+                        </ul>
+                    </section>
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<footer role="contentinfo">
+    <nav role="navigation">
+        <!-- ======= START OF BOTTOM NAVBAR ====== -->
+        <div class="bottomNav"><a id="navbar.bottom">
+            <!--   -->
+        </a>
+            <div class="skipNav"><a href="#skip.navbar.bottom" title="Skip navigation links">Skip navigation links</a>
+            </div>
+            <a id="navbar.bottom.firstrow">
+                <!--   -->
+            </a>
+            <ul class="navList" title="Navigation">
+    <li><a href="../../../../../index.html">Overview</a></li>
+    
+    <li><a href="package-summary.html">Package</a></li>
+    
+    <li class="navBarCell1Rev">Class</li>
+    
+    <li><a href="package-tree.html">Tree</a></li>
+    
+    <li><a href="../../../../../deprecated.html">Deprecated</a></li>
+    <li><a href="../../../../../index-files/index-1.html">Index</a></li>
+    <li>Help</li>
+</ul></div>
+        <a id="skip.navbar.bottom">
+            <!--   -->
+        </a>
+        <div class="subNav">
+<ul class="navList" id="allclasses_navbar_top" style="display: block;">
+    <li><a href="../../../../../allclasses.html">All&nbsp;Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+</div>
+<a id="skip.navbar.top">
+<!--   -->
+</a></div><!-- ======== END OF BOTTOM NAVBAR ======= -->
+    </nav>
+</footer><ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0"
+    style="display: none;"></ul>
+<span role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></span>
+</body>
+</html>
