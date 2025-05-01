@@ -37,7 +37,7 @@ class Database private constructor()  {
      * @return A list of all dealership IDs as strings
      */
     fun getDealershipIDs(): List<String> {
-        return dealers.map { it.dealershipId.toString() }
+        return dealers.map { it.dealershipId }
     }
 
     /**
@@ -114,7 +114,7 @@ class Database private constructor()  {
             return Result.failure("A Vehicle with ID ${vehicle.vehicleId} already exists.")
         }
 
-        vehicles.add(vehicle);
+        vehicles.add(vehicle)
         return Result.success()
     }
 
@@ -170,7 +170,7 @@ class Database private constructor()  {
         val dealers = incomingDealers.map { it.toDomainDealer() }
         val vehicles = incomingDealers
             .flatMap { dealer ->
-                dealer.vehicles!!.map { it.toDomainVehicle(dealer.dealershipId) }
+                dealer.vehicles.map { it.toDomainVehicle(dealer.dealershipId) }
             }
 
         importInner(dealers, vehicles)
@@ -253,7 +253,7 @@ class Database private constructor()  {
      * @param dealers The list of dealers to set in the database
      */
     fun setDealers(dealers: List<Dealer>) {
-        this.dealers = FXCollections.observableArrayList(dealers);
+        this.dealers = FXCollections.observableArrayList(dealers)
     }
 
     /**
@@ -264,7 +264,7 @@ class Database private constructor()  {
      * @param vehicles The list of vehicles to set in the database
      */
     fun setVehicles(vehicles: List<Vehicle>) {
-        this.vehicles = FXCollections.observableArrayList(vehicles);
+        this.vehicles = FXCollections.observableArrayList(vehicles)
     }
 
     /**

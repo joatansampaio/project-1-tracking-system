@@ -16,7 +16,6 @@ import javafx.event.EventHandler
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.stage.Stage
-import javafx.stage.WindowEvent
 import java.util.*
 
 class Main : Application() {
@@ -42,7 +41,7 @@ class Main : Application() {
 
         stage.title = "Dealership System v$VERSION"
         stage.scene = scene
-        stage.onCloseRequest = EventHandler<WindowEvent> {
+        stage.onCloseRequest = EventHandler {
             dependencies.jsonHandler.saveSession()
         }
         stage.show()

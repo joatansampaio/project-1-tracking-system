@@ -14,7 +14,6 @@ class DealerService(private val repository: DealerRepository) {
         repository.toggleAcquisition(dealershipId)
     }
 
-    fun transferInventory() {}
     val dealers: ObservableList<Dealer>
         get() = repository.dealers
 

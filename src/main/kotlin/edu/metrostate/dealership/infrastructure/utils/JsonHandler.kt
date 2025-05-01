@@ -20,6 +20,7 @@ import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Files
 import java.util.*
+import kotlin.system.exitProcess
 
 
 /**
@@ -129,7 +130,7 @@ class JsonHandler private constructor() : IFileHandler {
             }
         } catch (e: IOException) {
             logger.error(e.message!!)
-            System.exit(0)
+            exitProcess(0)
         }
     }
 

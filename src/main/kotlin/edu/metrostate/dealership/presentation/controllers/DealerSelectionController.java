@@ -1,6 +1,5 @@
 package edu.metrostate.dealership.presentation.controllers;
 
-import edu.metrostate.dealership.application.services.VehicleService;
 import edu.metrostate.dealership.domain.models.Dealer;
 import edu.metrostate.dealership.domain.models.Vehicle;
 import edu.metrostate.dealership.infrastructure.database.Database;
@@ -14,7 +13,6 @@ import javafx.stage.Stage;
 
 public class DealerSelectionController {
 
-    private VehicleService vehicleService;
     private NotificationHandler notificationHandler;
     @FXML
     private ComboBox<String> dealershipIdCombo2;
@@ -28,12 +26,6 @@ public class DealerSelectionController {
         ));
     }
 
-    private void setupFields() {
-    }
-
-    @FXML
-    private void transferDealershipInventory(ActionEvent event) {
-    }
 
     public void onConfirm(ActionEvent event) {
         boolean flag = true;
@@ -45,20 +37,20 @@ public class DealerSelectionController {
             }
         }
 
+
         try {
+            assert check != null;
             if (!check.getEnabledForAcquisition()){
                 notificationHandler.notifyError("Dealer Not Enabled for Acquisition");
                 flag = false;
             }
             if (!isSingle && flag) {
-               System.out.print("Made it to not single");
                 for (Vehicle vehicle : Database.Companion.getInstance().getVehicles()) {
                     if (vehicle.getDealershipId().equals(selectedID)) {
                         vehicle.setDealershipId(dealershipIdCombo2.getValue());
                     }
                 }
             } else if (isSingle && flag) {
-                System.out.print("Made it to single");
                 for (Vehicle vehicle : Database.Companion.getInstance().getVehicles()) {
                     if (vehicle.getVehicleId().equals(selectedID)) {
                         vehicle.setDealershipId(dealershipIdCombo2.getValue());

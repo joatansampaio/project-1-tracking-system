@@ -5,7 +5,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 /**
  * Represents a vehicle in the dealership management system.
@@ -45,11 +44,10 @@ data class Vehicle(
         } ?: "Unknown"
 
     fun toggleIsRented() {
-        if (type == VehicleType.SPORTS_CAR) {
-            println("bad") // Should be replaced with error handling
-            isRented = false
+        isRented = if (type == VehicleType.SPORTS_CAR) {
+            false
         } else {
-            isRented = !isRented
+            !isRented
         }
     }
 

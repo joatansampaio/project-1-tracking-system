@@ -246,7 +246,6 @@ class MainController {
      */
     @FXML
     fun transferDealershipInventory() {
-        print("herehere")
         val deal = dealerTable.selectionModel.selectedItem
         val j = deal.dealershipId
         //intelliJ is wrong this is used
@@ -614,15 +613,15 @@ class MainController {
         }
     }
 
+    fun goToVehiclesView() {
+        toggleTabView(false)
+    }
+
     /**
      * Applies a filter to the vehicles table based on the selected dealership.
      *
      * @param dealershipId The ID of the dealer to filter by, or "All" for no filter
      */
-    fun goToVehiclesView() {
-        toggleTabView(false)
-    }
-
     private fun applyVehicleFilter(dealershipId: String?) {
         filteredVehicles.setPredicate { vehicle ->
             dealershipId == null || dealershipId == "All" || vehicle.dealershipId == dealershipId
@@ -659,7 +658,6 @@ class MainController {
 
     @FXML
     fun transferVehicle() {
-        print("here")
         val veh = vehicleTable.selectionModel.selectedItem
         val j = veh.vehicleId
         //intelliJ is wrong this is used
